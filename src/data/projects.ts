@@ -15,6 +15,15 @@ export interface Project {
   date: string;
 }
 
+// Load projects from localStorage or use defaults
+export const getProjects = (): Project[] => {
+  const saved = localStorage.getItem('portfolioProjects');
+  if (saved) {
+    return JSON.parse(saved);
+  }
+  return projects;
+};
+
 export const projects: Project[] = [
   {
     id: 1,
@@ -122,14 +131,17 @@ export const projects: Project[] = [
 
 // Filter functions for project categories
 export const getProjectsByCategory = (category: string) => {
-  if (category === "All") return projects;
-  return projects.filter(project => project.category === category);
+  const allProjects = getProjects();
+  if (category === "All") return allProjects;
+  return allProjects.filter(project => project.category === category);
 };
 
 export const getFeaturedProjects = () => {
-  return projects.filter(project => project.featured);
+  const allProjects = getProjects();
+  return allProjects.filter(project => project.featured);
 };
 
 export const getProjectById = (id: number) => {
-  return projects.find(project => project.id === id);
+  const allProjects = getProjects();
+  return allProjects.find(project => project.id === id);
 };

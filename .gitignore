@@ -80,3 +80,7 @@ yarn-error.log
 # yarn.lock
 # pnpm-lock.yaml
 
+ADMIN_GUIDE.md
+ADMIN_QUICKSTART.md
+DEPLOYMENT_GUIDE.md
+

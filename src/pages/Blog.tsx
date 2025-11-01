@@ -1,6 +1,60 @@
+import { useState, useEffect } from "react";
 import { FaRocket } from "react-icons/fa";
+import { FiCalendar, FiClock, FiTag } from "react-icons/fi";
+import { getBlogs, type BlogPost } from "../data/blogs";
 
 export default function Blog() {
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [selectedTag, setSelectedTag] = useState<string>("All");
+
+  useEffect(() => {
+    setBlogs(getBlogs());
+  }, []);
+
+  // Get all unique tags
+  const allTags = ["All", ...new Set(blogs.flatMap(blog => blog.tags))];
+
+  // Filter blogs by tag
+  const filteredBlogs = selectedTag === "All" 
+    ? blogs 
+    : blogs.filter(blog => blog.tags.includes(selectedTag));
+
+  if (blogs.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20">
+          <div className="container mx-auto px-6 md:px-20">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog & Articles</h1>
+            <p className="text-xl text-indigo-100 max-w-3xl">
+              Sharing insights about AI/ML, software development, and technology
+            </p>
+          </div>
+        </section>
+
+        {/* Coming Soon Content */}
+        <div className="container mx-auto px-6 md:px-20 py-20">
+          <div className="bg-white rounded-2xl shadow-lg p-12 text-center max-w-2xl mx-auto">
+            <div className="text-6xl text-indigo-600 mb-6">
+              <FaRocket className="inline" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Coming Soon!</h2>
+            <p className="text-gray-600 text-lg mb-8">
+              I'm currently working on creating valuable content. Check the admin panel to add your first blog post!
+            </p>
+            
+            <a
+              href="/admin"
+              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors inline-block"
+            >
+              Go to Admin Panel
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -13,93 +67,96 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* Coming Soon Content */}
-      <div className="container mx-auto px-6 md:px-20 py-20">
-        <div className="bg-white rounded-2xl shadow-lg p-12 text-center max-w-2xl mx-auto">
-          <div className="text-6xl text-indigo-600 mb-6">
-            <FaRocket className="inline" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Coming Soon!</h2>
-          <p className="text-gray-600 text-lg mb-8">
-            I'm currently working on creating valuable content about AI/ML, software development best practices,
-            and my learning journey. Stay tuned for:
-          </p>
-          
-          <div className="text-left max-w-md mx-auto space-y-3 mb-8">
-            <div className="flex items-start gap-3">
-              <span className="text-indigo-600 text-xl">•</span>
-              <span className="text-gray-700">Deep dives into machine learning algorithms</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="text-indigo-600 text-xl">•</span>
-              <span className="text-gray-700">Project walkthroughs and tutorials</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="text-indigo-600 text-xl">•</span>
-              <span className="text-gray-700">Tech stack reviews and comparisons</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="text-indigo-600 text-xl">•</span>
-              <span className="text-gray-700">Career tips for CS students</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-4 justify-center">
-            <a
-              href={`mailto:your.email@example.com?subject=Blog Subscription`}
-              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              Notify Me When Live
-            </a>
-            <a
-              href="https://medium.com/@yourusername"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-colors"
-            >
-              Follow on Medium
-            </a>
+      {/* Main Content */}
+      <div className="container mx-auto px-6 md:px-20 py-16">
+        {/* Tag Filter */}
+        <div className="mb-12">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">Filter by Tag:</h3>
+          <div className="flex flex-wrap gap-3">
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setSelectedTag(tag)}
+                className={`px-4 py-2 rounded-full font-medium transition-all ${
+                  selectedTag === tag
+                    ? "bg-indigo-600 text-white shadow-lg"
+                    : "bg-white text-gray-700 hover:bg-gray-100 shadow"
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Optional: Show placeholder blog cards */}
-        <div className="mt-16">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            What to Expect
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Getting Started with TensorFlow",
-                category: "Machine Learning",
-                readTime: "5 min read",
-              },
-              {
-                title: "Building Scalable React Applications",
-                category: "Web Development",
-                readTime: "8 min read",
-              },
-              {
-                title: "My Journey in Computer Engineering",
-                category: "Career",
-                readTime: "6 min read",
-              },
-            ].map((article, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl shadow-lg p-6 opacity-60 cursor-not-allowed"
-              >
-                <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-600 text-sm font-semibold rounded-full mb-3">
-                  {article.category}
-                </span>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">{article.title}</h4>
-                <p className="text-gray-600 text-sm">{article.readTime}</p>
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <span className="text-sm text-gray-500">Coming Soon...</span>
+        {/* Blog Count */}
+        <div className="mb-8">
+          <p className="text-gray-600">
+            Showing <span className="font-semibold text-indigo-600">{filteredBlogs.length}</span>{" "}
+            {filteredBlogs.length === 1 ? "article" : "articles"}
+          </p>
+        </div>
+
+        {/* Blog Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredBlogs.map((blog) => (
+            <article
+              key={blog.id}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+            >
+              {blog.image && (
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  className="w-full h-48 object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://via.placeholder.com/400x200?text=Blog+Image';
+                  }}
+                />
+              )}
+              
+              <div className="p-6">
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {blog.tags.slice(0, 2).map((tag, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-600 text-xs font-semibold rounded-full"
+                    >
+                      <FiTag size={12} />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                  {blog.title}
+                </h3>
+                
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {blog.excerpt}
+                </p>
+
+                {/* Meta Info */}
+                <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-200">
+                  <span className="flex items-center gap-1">
+                    <FiCalendar size={14} />
+                    {new Date(blog.date).toLocaleDateString()}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <FiClock size={14} />
+                    {blog.readTime}
+                  </span>
+                </div>
+
+                <div className="mt-4">
+                  <button className="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">
+                    Read More →
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
         </div>
       </div>
     </div>

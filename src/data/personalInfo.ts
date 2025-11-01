@@ -125,16 +125,20 @@ export const experience = [
 // Certifications
 export const certifications = [
   {
+    id: 1,
     name: "Machine Learning Specialization",
     issuer: "Coursera (Stanford University)",
     date: "2023",
     credentialUrl: "https://coursera.org/verify/...",
+    description: "Completed comprehensive course covering supervised and unsupervised learning"
   },
   {
+    id: 2,
     name: "AWS Certified Cloud Practitioner",
     issuer: "Amazon Web Services",
     date: "2023",
     credentialUrl: "https://aws.amazon.com/...",
+    description: "Demonstrated cloud computing knowledge and skills"
   },
   // Add your actual certifications
 ];
