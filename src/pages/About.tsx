@@ -1,28 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   FaGraduationCap,
   FaBriefcase,
-  FaCertificate,
   FaCode,
   FaBrain,
   FaLaptopCode,
   FaTools,
 } from "react-icons/fa";
-import { personalInfo, skills, education, experience, certifications } from "../data/personalInfo";
-import { getCertifications, type Certification } from "../data/certifications";
+import { personalInfo, skills, education, experience } from "../data/personalInfo";
 
 export default function About() {
   const [activeTab, setActiveTab] = useState<"education" | "experience">("education");
-  const [adminCertifications, setAdminCertifications] = useState<Certification[]>([]);
-
-  useEffect(() => {
-    // Load certifications from admin panel
-    const adminCerts = getCertifications();
-    setAdminCertifications(adminCerts);
-  }, []);
-
-  // Combine admin certifications with default ones (if any)
-  const allCertifications = adminCertifications.length > 0 ? adminCertifications : certifications;
 
   const skillCategories = [
     { title: "Programming Languages", icon: <FaCode />, data: skills.programming },
@@ -188,44 +176,6 @@ export default function About() {
                 ))}
               </div>
             )}
-          </div>
-        </section>
-
-        {/* Certifications */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Certifications & Achievements
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {allCertifications.map((cert, index) => (
-              <div key={'id' in cert ? cert.id : `cert-${index}`} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="flex items-start gap-4">
-                  <FaCertificate className="text-3xl text-yellow-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{cert.name}</h3>
-                    <p className="text-gray-600 mb-2">{cert.issuer}</p>
-                    <p className="text-sm text-gray-500 mb-3">
-                      {typeof cert.date === 'string' && cert.date.includes('-') 
-                        ? new Date(cert.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
-                        : cert.date}
-                    </p>
-                    {'description' in cert && cert.description && (
-                      <p className="text-sm text-gray-600 mb-3">{cert.description}</p>
-                    )}
-                    {cert.credentialUrl && (
-                      <a
-                        href={cert.credentialUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700 text-sm font-medium inline-flex items-center gap-1"
-                      >
-                        View Credential →
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </section>
       </div>
