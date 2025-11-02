@@ -17,12 +17,12 @@ export default function Hero() {
 
       {/* Name */}
       <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4">
-        Sahaswari Samoda
+        Sahaswari Senanayaka
       </h1>
 
       {/* Tagline */}
       <h2 className="text-xl md:text-2xl text-blue-600 font-semibold mb-6">
-        Computer Engineering Student | AI/ML & Software Developer
+        Computer Engineering Undergraduate | Former Associate Software Developer
       </h2>
 
       {/* Short bio */}
