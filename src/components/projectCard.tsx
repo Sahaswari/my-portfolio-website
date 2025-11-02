@@ -7,9 +7,9 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 group">
+    <div className="bg-secondary rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 group border border-neutral-800">
       {/* Project Image */}
-      <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500 overflow-hidden">
+      <div className="relative h-48 bg-primary overflow-hidden">
         {project.image ? (
           <img
             src={project.image}
@@ -21,14 +21,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             }}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-white text-4xl font-bold">
+          <div className="w-full h-full flex items-center justify-center text-accent text-4xl font-bold">
             {project.title.charAt(0)}
           </div>
         )}
         
         {/* Category Badge */}
         <div className="absolute top-4 right-4">
-          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-blue-600 text-xs font-semibold rounded-full">
+          <span className="px-3 py-1 bg-secondary/90 backdrop-blur-sm text-accent text-xs font-semibold rounded-full">
             {project.category}
           </span>
         </div>
@@ -36,7 +36,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         {/* Featured Badge */}
         {project.featured && (
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-yellow-400 text-gray-900 text-xs font-semibold rounded-full">
+            <span className="px-3 py-1 bg-accent text-secondary text-xs font-semibold rounded-full">
               ⭐ Featured
             </span>
           </div>
@@ -46,12 +46,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       {/* Project Content */}
       <div className="p-6">
         {/* Title */}
-        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
+        <h3 className="text-xl font-bold text-white mb-2 line-clamp-1 font-serif">
           {project.title}
         </h3>
 
         {/* Date */}
-        <p className="text-sm text-gray-500 mb-3">
+        <p className="text-sm text-neutral-400 mb-3">
           {new Date(project.date).toLocaleDateString("en-US", {
             month: "short",
             year: "numeric",
@@ -59,7 +59,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </p>
 
         {/* Description */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+        <p className="text-neutral-300 text-sm mb-4 line-clamp-3">
           {project.description}
         </p>
 
@@ -68,13 +68,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {project.technologies.slice(0, 4).map((tech, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded"
+              className="px-2 py-1 bg-primary text-accent text-xs font-medium rounded"
             >
               {tech}
             </span>
           ))}
           {project.technologies.length > 4 && (
-            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded">
+            <span className="px-2 py-1 bg-neutral-800 text-neutral-300 text-xs font-medium rounded">
               +{project.technologies.length - 4} more
             </span>
           )}
@@ -87,7 +87,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-neutral-800 text-white text-sm font-medium rounded-lg hover:bg-neutral-700 transition-colors"
             >
               <FaGithub />
               Code
@@ -98,7 +98,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border border-accent text-accent text-sm font-medium rounded-lg hover:bg-accent hover:text-secondary transition-colors"
             >
               <FaExternalLinkAlt />
               Live
@@ -109,7 +109,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border border-purple-600 text-purple-600 text-sm font-medium rounded-lg hover:bg-purple-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border border-blue-500 text-blue-500 text-sm font-medium rounded-lg hover:bg-blue-500 hover:text-secondary transition-colors"
             >
               <FaVideo />
               Demo

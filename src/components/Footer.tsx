@@ -38,17 +38,17 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-primary text-neutral-300">
       <div className="container mx-auto px-6 md:px-20 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              <span className="text-blue-500">{"<"}</span>
+            <h3 className="text-2xl font-bold text-white mb-4 font-serif">
+              <span className="text-accent">{"<"}</span>
               {personalInfo.name.split(" ")[0]}
-              <span className="text-blue-500">{" />"}</span>
+              <span className="text-accent">{" />"}</span>
             </h3>
-            <p className="text-gray-400 mb-4">
+            <p className="text-neutral-400 mb-4">
               Computer Engineering student passionate about AI/ML and Software
               Development. Building innovative solutions for real-world problems.
             </p>
@@ -59,7 +59,7 @@ export default function Footer() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-2xl text-gray-400 hover:text-blue-500 transition-colors"
+                  className="text-2xl text-neutral-400 hover:text-accent transition-colors"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -70,13 +70,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold text-white mb-4 font-serif">Quick Links</h4>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-gray-400 hover:text-blue-500 transition-colors"
+                    className="text-neutral-400 hover:text-accent transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -87,12 +87,12 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Get in Touch</h4>
-            <ul className="space-y-2 text-gray-400">
+            <h4 className="text-lg font-semibold text-white mb-4 font-serif">Get in Touch</h4>
+            <ul className="space-y-2 text-neutral-400">
               <li>
                 <a
                   href={`mailto:${personalInfo.email}`}
-                  className="hover:text-blue-500 transition-colors"
+                  className="hover:text-accent transition-colors"
                 >
                   {personalInfo.email}
                 </a>
@@ -104,10 +104,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p className="text-gray-400 text-sm">
+        <div className="border-t border-neutral-800 mt-8 pt-8 text-center">
+          <p className="text-neutral-400 text-sm">
             © {currentYear} {personalInfo.name}. Made with{" "}
-            <FaHeart className="inline text-red-500" /> using React & TypeScript.
+            <FaHeart className="inline text-accent" /> using React & TypeScript.
           </p>
         </div>
       </div>

@@ -4,29 +4,29 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center px-6 md:px-20 bg-gradient-to-b from-white to-gray-50"
+      className="min-h-screen flex items-center px-6 md:px-20 bg-primary"
     >
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Text Content */}
           <div>
       {/* Intro text */}
-      <p className="text-sm md:text-base text-gray-600 mb-2">
+      <p className="text-sm md:text-base text-neutral-400 mb-2">
         👋 Hi, I’m
       </p>
 
       {/* Name */}
-      <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4">
+      <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 font-serif">
         Sahaswari Senanayaka
       </h1>
 
       {/* Tagline */}
-      <h2 className="text-xl md:text-2xl text-blue-600 font-semibold mb-6">
+      <h2 className="text-xl md:text-2xl text-accent font-semibold mb-6">
         Computer Engineering Undergraduate | Former Associate Software Developer
       </h2>
 
       {/* Short bio */}
-      <p className="max-w-2xl text-gray-700 mb-8 leading-relaxed">
+      <p className="max-w-2xl text-neutral-300 mb-8 leading-relaxed">
         I’m passionate about solving real-world problems through intelligent
         systems and software solutions. I love exploring how AI and machine
         learning can create meaningful impact, from data analysis to
@@ -37,14 +37,14 @@ export default function Hero() {
       <div className="flex flex-wrap gap-4">
         <a
           href="/resume.pdf"
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition"
+          className="px-6 py-3 bg-accent text-secondary rounded-xl shadow hover:bg-opacity-90 transition"
         >
           Download Resume
         </a>
 
         <a
           href="#projects"
-          className="px-6 py-3 border border-blue-600 text-blue-600 rounded-xl hover:bg-blue-50 transition"
+          className="px-6 py-3 border border-accent text-accent rounded-xl hover:bg-accent hover:text-secondary transition"
         >
           View Projects
         </a>
@@ -55,15 +55,15 @@ export default function Hero() {
     <div className="flex justify-center lg:justify-end">
       <div className="relative">
         {/* Decorative background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-accent to-blue-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
         
         {/* Image container */}
         <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full opacity-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-accent to-blue-500 rounded-full opacity-10"></div>
           <img
             src={profileImage}
             alt="Sahaswari Samoda"
-            className="w-full h-full object-cover rounded-full border-8 border-white shadow-2xl"
+            className="w-full h-full object-cover rounded-full border-8 border-accent shadow-2xl"
             onError={(e) => {
               // Fallback if image not found
               const target = e.target as HTMLImageElement;
@@ -71,7 +71,7 @@ export default function Hero() {
               const parent = target.parentElement;
               if (parent) {
                 parent.innerHTML = `
-                  <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-600 rounded-full border-8 border-white shadow-2xl">
+                  <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent to-blue-500 rounded-full border-8 border-accent shadow-2xl">
                     <div class="text-center text-white">
                       <svg class="w-32 h-32 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -86,8 +86,8 @@ export default function Hero() {
         </div>
 
         {/* Floating decoration elements */}
-        <div className="absolute -top-4 -right-4 w-20 h-20 bg-blue-500 rounded-full opacity-20 animate-bounce"></div>
-        <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-500 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute -top-4 -right-4 w-20 h-20 bg-accent rounded-full opacity-20 animate-bounce"></div>
+        <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-500 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '0.5s' }}></div>
       </div>
     </div>
   </div>

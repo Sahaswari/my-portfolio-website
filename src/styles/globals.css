@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto+Slab:wght@400;700&display=swap');
 @import "tailwindcss";
 
 @layer base {
@@ -6,7 +7,7 @@
   }
 
   body {
-    @apply text-gray-900 bg-white;
+    @apply bg-secondary text-neutral-300 font-sans;
   }
 }
 
@@ -25,4 +26,3 @@
 .animate-slideDown {
   animation: slideDown 0.3s ease-out;
 }
-

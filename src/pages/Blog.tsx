@@ -21,12 +21,12 @@ export default function Blog() {
 
   if (blogs.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-secondary">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20">
+        <section className="bg-primary text-white py-20">
           <div className="container mx-auto px-6 md:px-20">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog & Articles</h1>
-            <p className="text-xl text-indigo-100 max-w-3xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 font-serif">Blog & Articles</h1>
+            <p className="text-xl text-neutral-300 max-w-3xl">
               Sharing insights about AI/ML, software development, and technology
             </p>
           </div>
@@ -34,18 +34,18 @@ export default function Blog() {
 
         {/* Coming Soon Content */}
         <div className="container mx-auto px-6 md:px-20 py-20">
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center max-w-2xl mx-auto">
-            <div className="text-6xl text-indigo-600 mb-6">
+          <div className="bg-primary rounded-2xl shadow-lg p-12 text-center max-w-2xl mx-auto border border-neutral-800">
+            <div className="text-6xl text-accent mb-6">
               <FaRocket className="inline" />
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Coming Soon!</h2>
-            <p className="text-gray-600 text-lg mb-8">
+            <h2 className="text-3xl font-bold text-white mb-4 font-serif">Coming Soon!</h2>
+            <p className="text-neutral-400 text-lg mb-8">
               I'm currently working on creating valuable content. Check the admin panel to add your first blog post!
             </p>
             
             <a
               href="/admin"
-              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors inline-block"
+              className="px-6 py-3 bg-accent text-secondary font-semibold rounded-lg hover:bg-opacity-90 transition-colors inline-block"
             >
               Go to Admin Panel
             </a>
@@ -56,12 +56,12 @@ export default function Blog() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-secondary">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20">
+      <section className="bg-primary text-white py-20">
         <div className="container mx-auto px-6 md:px-20">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog & Articles</h1>
-          <p className="text-xl text-indigo-100 max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-serif">Blog & Articles</h1>
+          <p className="text-xl text-neutral-300 max-w-3xl">
             Sharing insights about AI/ML, software development, and technology
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function Blog() {
       <div className="container mx-auto px-6 md:px-20 py-16">
         {/* Tag Filter */}
         <div className="mb-12">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Filter by Tag:</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">Filter by Tag:</h3>
           <div className="flex flex-wrap gap-3">
             {allTags.map((tag) => (
               <button
@@ -79,8 +79,8 @@ export default function Blog() {
                 onClick={() => setSelectedTag(tag)}
                 className={`px-4 py-2 rounded-full font-medium transition-all ${
                   selectedTag === tag
-                    ? "bg-indigo-600 text-white shadow-lg"
-                    : "bg-white text-gray-700 hover:bg-gray-100 shadow"
+                    ? "bg-accent text-secondary shadow-lg"
+                    : "bg-primary text-neutral-300 hover:bg-neutral-800 shadow"
                 }`}
               >
                 {tag}
@@ -91,8 +91,8 @@ export default function Blog() {
 
         {/* Blog Count */}
         <div className="mb-8">
-          <p className="text-gray-600">
-            Showing <span className="font-semibold text-indigo-600">{filteredBlogs.length}</span>{" "}
+          <p className="text-neutral-400">
+            Showing <span className="font-semibold text-accent">{filteredBlogs.length}</span>{" "}
             {filteredBlogs.length === 1 ? "article" : "articles"}
           </p>
         </div>
@@ -102,7 +102,7 @@ export default function Blog() {
           {filteredBlogs.map((blog) => (
             <article
               key={blog.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              className="bg-primary rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border border-neutral-800"
             >
               {blog.image && (
                 <img
@@ -121,7 +121,7 @@ export default function Blog() {
                   {blog.tags.slice(0, 2).map((tag, idx) => (
                     <span
                       key={idx}
-                      className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-indigo-600 text-xs font-semibold rounded-full"
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-secondary text-accent text-xs font-semibold rounded-full"
                     >
                       <FiTag size={12} />
                       {tag}
@@ -129,16 +129,16 @@ export default function Blog() {
                   ))}
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 font-serif">
                   {blog.title}
                 </h3>
                 
-                <p className="text-gray-600 mb-4 line-clamp-3">
+                <p className="text-neutral-400 mb-4 line-clamp-3">
                   {blog.excerpt}
                 </p>
 
                 {/* Meta Info */}
-                <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-200">
+                <div className="flex items-center justify-between text-sm text-neutral-500 pt-4 border-t border-neutral-800">
                   <span className="flex items-center gap-1">
                     <FiCalendar size={14} />
                     {new Date(blog.date).toLocaleDateString()}
@@ -150,7 +150,7 @@ export default function Blog() {
                 </div>
 
                 <div className="mt-4">
-                  <button className="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">
+                  <button className="text-accent font-semibold hover:text-opacity-90 transition-colors">
                     Read More →
                   </button>
                 </div>
