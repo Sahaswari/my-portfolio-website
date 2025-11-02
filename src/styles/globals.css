@@ -2,12 +2,29 @@
 @import "tailwindcss";
 
 @layer base {
+  :root {
+    --primary: #081b29;
+    --secondary: #112e42;
+    --accent: #00abf0;
+    --neutral-100: #f3f4f6;
+    --neutral-200: #e5e7eb;
+    --neutral-300: #d1d5db;
+    --neutral-400: #9ca3af;
+    --neutral-500: #6b7280;
+    --neutral-600: #4b5563;
+    --neutral-700: #374151;
+    --neutral-800: #1f2937;
+    --neutral-900: #111827;
+  }
+
   * {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-secondary text-neutral-300 font-sans;
+    background-color: var(--secondary);
+    color: var(--neutral-300);
+    font-family: 'Poppins', sans-serif;
   }
 }
 
