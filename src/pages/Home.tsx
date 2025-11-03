@@ -151,13 +151,13 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-indigo-700 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-green-600 to-indigo-700 relative overflow-hidden">
         {/* Subtle Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#086608FC_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:32px_32px]"></div>
         
         <div className="container mx-auto px-6 md:px-20 text-center relative z-10">
           <div className="inline-block mb-4">
-            <span className="px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-full border border-white/20">
+            <span className="px-4 py-2 bg-white/10 backdrop-green-sm text-white text-sm font-semibold rounded-full border border-white/20">
               LET'S CONNECT
             </span>
           </div>
@@ -171,7 +171,7 @@ export default function Home() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               to="/contact"
-              className="group px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+              className="group px-8 py-4 bg-white text-green-600 font-semibold rounded-lg hover:bg-blue-50 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
             >
               Get in Touch
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

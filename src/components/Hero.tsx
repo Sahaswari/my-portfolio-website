@@ -74,7 +74,7 @@ export default function Hero() {
                 <div className="relative w-full h-full rounded-xl overflow-hidden">
                   <img
                     src={profileImage}
-                    alt="Sahaswari Samoda"
+                    alt="Sahaswari Senanayaka"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
