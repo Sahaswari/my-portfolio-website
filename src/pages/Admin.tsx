@@ -238,39 +238,39 @@ export default function Admin() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-secondary">
-        <div className="bg-primary p-8 rounded-xl shadow-2xl w-full max-w-md border border-neutral-800">
-          <h1 className="text-3xl font-bold text-white mb-6 text-center font-serif">Admin Login</h1>
+        <div className="bg-light p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200">
+          <h1 className="text-3xl font-bold text-primary mb-6 text-center font-serif">Admin Login</h1>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-neutral-300 mb-2">Username</label>
+              <label className="block text-text mb-2">Username</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+                className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
                 placeholder="Enter username"
                 required
               />
             </div>
             <div>
-              <label className="block text-neutral-300 mb-2">Password</label>
+              <label className="block text-text mb-2">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+                className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
                 placeholder="Enter password"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-accent hover:bg-opacity-90 text-secondary font-bold py-2 rounded-lg transition-colors"
+              className="w-full bg-primary hover:bg-blue-800 text-light font-bold py-2 rounded-lg transition-colors"
             >
               Login
             </button>
           </form>
-          <p className="text-neutral-500 text-sm mt-4 text-center">
+          <p className="text-gray-500 text-sm mt-4 text-center">
             Default: admin / admin123
           </p>
         </div>
@@ -279,14 +279,14 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-secondary text-white">
+    <div className="min-h-screen bg-secondary text-text">
       {/* Header */}
-      <header className="bg-primary border-b border-neutral-800 px-6 py-4">
+      <header className="bg-light border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold font-serif">Portfolio Admin Panel</h1>
+          <h1 className="text-2xl font-bold font-serif text-primary">Portfolio Admin Panel</h1>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-light rounded-lg transition-colors"
           >
             <FiLogOut />
             Logout
@@ -301,8 +301,8 @@ export default function Admin() {
             onClick={() => setActiveTab('projects')}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === 'projects'
-                ? 'bg-accent text-secondary'
-                : 'bg-primary text-neutral-300 hover:bg-neutral-800'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
             }`}
           >
             Projects ({projects.length})
@@ -311,8 +311,8 @@ export default function Admin() {
             onClick={() => setActiveTab('blogs')}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === 'blogs'
-                ? 'bg-accent text-secondary'
-                : 'bg-primary text-neutral-300 hover:bg-neutral-800'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
             }`}
           >
             Blogs ({blogs.length})
@@ -321,8 +321,8 @@ export default function Admin() {
             onClick={() => setActiveTab('achievements')}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === 'achievements'
-                ? 'bg-accent text-secondary'
-                : 'bg-primary text-neutral-300 hover:bg-neutral-800'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
             }`}
           >
             Achievements ({achievements.length})
@@ -331,8 +331,8 @@ export default function Admin() {
             onClick={() => setActiveTab('certifications')}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === 'certifications'
-                ? 'bg-accent text-secondary'
-                : 'bg-primary text-neutral-300 hover:bg-neutral-800'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
             }`}
           >
             Certifications ({certifications.length})
@@ -343,7 +343,7 @@ export default function Admin() {
         {!editingItem && (
           <button
             onClick={handleAdd}
-            className="mb-6 flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+            className="mb-6 flex items-center gap-2 px-4 py-2 bg-highlight hover:bg-green-600 text-light rounded-lg transition-colors"
           >
             <FiPlus />
             Add New {activeTab === 'projects' ? 'Project' : activeTab === 'blogs' ? 'Blog' : activeTab === 'achievements' ? 'Achievement' : 'Certification'}
@@ -352,8 +352,8 @@ export default function Admin() {
 
         {/* Edit Form */}
         {editingItem && (
-          <div className="bg-primary p-6 rounded-xl mb-6 border border-neutral-800">
-            <h2 className="text-xl font-bold mb-4 font-serif">
+          <div className="bg-light p-6 rounded-xl mb-6 border border-gray-200">
+            <h2 className="text-xl font-bold mb-4 font-serif text-primary">
               {isAddingNew ? 'Add New' : 'Edit'} {activeTab === 'projects' ? 'Project' : activeTab === 'blogs' ? 'Blog' : activeTab === 'achievements' ? 'Achievement' : 'Certification'}
             </h2>
             
@@ -376,14 +376,14 @@ export default function Admin() {
             <div className="flex gap-4 mt-6">
               <button
                 onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-2 bg-accent hover:bg-opacity-90 text-secondary font-bold rounded-lg transition-colors"
+                className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-blue-800 text-light font-bold rounded-lg transition-colors"
               >
                 <FiSave />
                 Save
               </button>
               <button
                 onClick={handleCancel}
-                className="px-6 py-2 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors"
+                className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-light rounded-lg transition-colors"
               >
                 Cancel
               </button>
@@ -394,26 +394,26 @@ export default function Admin() {
         {/* List */}
         <div className="grid gap-4">
           {getCurrentData().map((item) => (
-            <div key={item.id} className="bg-primary p-4 rounded-lg border border-neutral-800 flex justify-between items-start">
+            <div key={item.id} className="bg-light p-4 rounded-lg border border-gray-200 flex justify-between items-start">
               <div className="flex-1">
-                <h3 className="text-lg font-semibold">
+                <h3 className="text-lg font-semibold text-primary">
                   {'title' in item ? item.title : 'name' in item ? item.name : ''}
                 </h3>
-                <p className="text-neutral-400 text-sm mt-1">
+                <p className="text-text text-sm mt-1">
                   {'description' in item ? item.description : 'excerpt' in item ? item.excerpt : 'issuer' in item ? item.issuer : ''}
                 </p>
-                <p className="text-neutral-500 text-xs mt-2">{item.date}</p>
+                <p className="text-gray-500 text-xs mt-2">{item.date}</p>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(item)}
-                  className="p-2 bg-accent hover:bg-opacity-90 text-secondary rounded-lg transition-colors"
+                  className="p-2 bg-primary hover:bg-blue-800 text-light rounded-lg transition-colors"
                 >
                   <FiEdit2 />
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="p-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+                  className="p-2 bg-red-600 hover:bg-red-700 text-light rounded-lg transition-colors"
                 >
                   <FiTrash2 />
                 </button>
@@ -422,7 +422,7 @@ export default function Admin() {
           ))}
           
           {getCurrentData().length === 0 && !editingItem && (
-            <p className="text-center text-neutral-500 py-8">
+            <p className="text-center text-gray-500 py-8">
               No {activeTab} added yet. Click "Add New" to get started.
             </p>
           )}
@@ -442,22 +442,22 @@ function ProjectForm({ item: project, updateField }: ProjectFormProps) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-neutral-300 mb-2">Title *</label>
+        <label className="block text-text mb-2">Title *</label>
         <input
           type="text"
           value={project.title}
           onChange={(e) => updateField('title', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Category *</label>
+        <label className="block text-text mb-2">Category *</label>
         <select
           value={project.category}
           onChange={(e) => updateField('category', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
         >
           <option value="AI/ML">AI/ML</option>
           <option value="Web Development">Web Development</option>
@@ -468,66 +468,66 @@ function ProjectForm({ item: project, updateField }: ProjectFormProps) {
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Short Description *</label>
+        <label className="block text-text mb-2">Short Description *</label>
         <textarea
           value={project.description}
           onChange={(e) => updateField('description', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           rows={2}
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Long Description</label>
+        <label className="block text-text mb-2">Long Description</label>
         <textarea
           value={project.longDescription}
           onChange={(e) => updateField('longDescription', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           rows={4}
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Image URL</label>
+        <label className="block text-text mb-2">Image URL</label>
         <input
           type="text"
           value={project.image}
           onChange={(e) => updateField('image', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           placeholder="/projects/project-name.jpg"
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Technologies (comma-separated)</label>
+        <label className="block text-text mb-2">Technologies (comma-separated)</label>
         <input
           type="text"
           value={Array.isArray(project.technologies) ? project.technologies.join(', ') : ''}
           onChange={(e) => updateField('technologies', e.target.value.split(',').map((t: string) => t.trim()))}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           placeholder="React, Node.js, MongoDB"
         />
       </div>
       
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-neutral-300 mb-2">GitHub URL</label>
+          <label className="block text-text mb-2">GitHub URL</label>
           <input
             type="url"
             value={project.githubUrl || ''}
             onChange={(e) => updateField('githubUrl', e.target.value)}
-            className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           />
         </div>
         
         <div>
-          <label className="block text-neutral-300 mb-2">Live URL</label>
+          <label className="block text-text mb-2">Live URL</label>
           <input
             type="url"
             value={project.liveUrl || ''}
             onChange={(e) => updateField('liveUrl', e.target.value)}
-            className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           />
         </div>
       </div>
@@ -539,16 +539,16 @@ function ProjectForm({ item: project, updateField }: ProjectFormProps) {
           onChange={(e) => updateField('featured', e.target.checked)}
           className="w-4 h-4"
         />
-        <label className="text-neutral-300">Featured Project</label>
+        <label className="text-text">Featured Project</label>
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Date</label>
+        <label className="block text-text mb-2">Date</label>
         <input
           type="date"
           value={project.date}
           onChange={(e) => updateField('date', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
         />
       </div>
     </div>
@@ -565,89 +565,89 @@ function BlogForm({ item: blog, updateField }: BlogFormProps) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-neutral-300 mb-2">Title *</label>
+        <label className="block text-text mb-2">Title *</label>
         <input
           type="text"
           value={blog.title}
           onChange={(e) => updateField('title', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Excerpt *</label>
+        <label className="block text-text mb-2">Excerpt *</label>
         <textarea
           value={blog.excerpt}
           onChange={(e) => updateField('excerpt', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           rows={2}
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Content *</label>
+        <label className="block text-text mb-2">Content *</label>
         <textarea
           value={blog.content}
           onChange={(e) => updateField('content', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           rows={8}
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Author</label>
+        <label className="block text-text mb-2">Author</label>
         <input
           type="text"
           value={blog.author}
           onChange={(e) => updateField('author', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Tags (comma-separated)</label>
+        <label className="block text-text mb-2">Tags (comma-separated)</label>
         <input
           type="text"
           value={Array.isArray(blog.tags) ? blog.tags.join(', ') : ''}
           onChange={(e) => updateField('tags', e.target.value.split(',').map((t: string) => t.trim()))}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           placeholder="AI, Machine Learning, Tutorial"
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Image URL</label>
+        <label className="block text-text mb-2">Image URL</label>
         <input
           type="text"
           value={blog.image}
           onChange={(e) => updateField('image', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           placeholder="/blog/blog-image.jpg"
         />
       </div>
       
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-neutral-300 mb-2">Read Time</label>
+          <label className="block text-text mb-2">Read Time</label>
           <input
             type="text"
             value={blog.readTime}
             onChange={(e) => updateField('readTime', e.target.value)}
-            className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
             placeholder="5 min read"
           />
         </div>
         
         <div>
-          <label className="block text-neutral-300 mb-2">Date</label>
+          <label className="block text-text mb-2">Date</label>
           <input
             type="date"
             value={blog.date}
             onChange={(e) => updateField('date', e.target.value)}
-            className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           />
         </div>
       </div>
@@ -665,33 +665,33 @@ function AchievementForm({ item: achievement, updateField }: AchievementFormProp
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-neutral-300 mb-2">Title *</label>
+        <label className="block text-text mb-2">Title *</label>
         <input
           type="text"
           value={achievement.title}
           onChange={(e) => updateField('title', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Description *</label>
+        <label className="block text-text mb-2">Description *</label>
         <textarea
           value={achievement.description}
           onChange={(e) => updateField('description', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           rows={3}
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Type</label>
+        <label className="block text-text mb-2">Type</label>
         <select
           value={achievement.type}
           onChange={(e) => updateField('type', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
         >
           <option value="award">Award</option>
           <option value="certification">Certification</option>
@@ -701,12 +701,12 @@ function AchievementForm({ item: achievement, updateField }: AchievementFormProp
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Date</label>
+        <label className="block text-text mb-2">Date</label>
         <input
           type="date"
           value={achievement.date}
           onChange={(e) => updateField('date', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
         />
       </div>
     </div>
@@ -723,58 +723,58 @@ function CertificationForm({ item: certification, updateField }: CertificationFo
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-neutral-300 mb-2">Certification Name *</label>
+        <label className="block text-text mb-2">Certification Name *</label>
         <input
           type="text"
           value={certification.name}
           onChange={(e) => updateField('name', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           placeholder="e.g., AWS Certified Solutions Architect"
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Issuing Organization *</label>
+        <label className="block text-text mb-2">Issuing Organization *</label>
         <input
           type="text"
           value={certification.issuer}
           onChange={(e) => updateField('issuer', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           placeholder="e.g., Amazon Web Services, Coursera"
           required
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Description</label>
+        <label className="block text-text mb-2">Description</label>
         <textarea
           value={certification.description || ''}
           onChange={(e) => updateField('description', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           rows={3}
           placeholder="Brief description of the certification..."
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Credential URL</label>
+        <label className="block text-text mb-2">Credential URL</label>
         <input
           type="url"
           value={certification.credentialUrl || ''}
           onChange={(e) => updateField('credentialUrl', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           placeholder="https://coursera.org/verify/..."
         />
       </div>
       
       <div>
-        <label className="block text-neutral-300 mb-2">Issue Date *</label>
+        <label className="block text-text mb-2">Issue Date *</label>
         <input
           type="date"
           value={certification.date}
           onChange={(e) => updateField('date', e.target.value)}
-          className="w-full px-4 py-2 bg-secondary text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent border border-neutral-700"
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           required
         />
       </div>

@@ -38,8 +38,8 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-secondary shadow-md py-4"
-          : "bg-transparent py-6"
+          ? "bg-white shadow-md py-3"
+          : "bg-white/95 backdrop-blur-sm py-4"
       }`}
     >
       <nav className="container mx-auto px-6 md:px-20">
@@ -47,31 +47,24 @@ export default function Header() {
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold text-white hover:text-accent transition-colors"
+            className="text-2xl font-bold text-slate-900 hover:text-blue-600 transition-colors duration-200"
           >
-            <span className="text-accent">{"<"}</span>
-            SS
-            <span className="text-accent">{" />"}</span>
+            <span className="text-blue-600">SS</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center space-x-8">
+          <ul className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <li key={link.path}>
                 <Link
                   to={link.path}
-                  className={`text-sm font-medium transition-colors relative group ${
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
                     isActive(link.path)
-                      ? "text-accent"
-                      : "text-neutral-300 hover:text-accent"
+                      ? "text-blue-600 bg-blue-50"
+                      : "text-slate-700 hover:text-blue-600 hover:bg-slate-50"
                   }`}
                 >
                   {link.name}
-                  <span
-                    className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full ${
-                      isActive(link.path) ? "w-full" : ""
-                    }`}
-                  ></span>
                 </Link>
               </li>
             ))}
@@ -82,7 +75,7 @@ export default function Header() {
             <a
               href="/resume.pdf"
               download
-              className="px-5 py-2.5 bg-transparent border-2 border-accent text-accent text-sm font-medium rounded-lg hover:bg-accent hover:text-secondary transition-colors"
+              className="px-6 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-md shadow-sm hover:bg-blue-700 hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
             >
               Download CV
             </a>
@@ -91,7 +84,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-2xl text-white hover:text-accent transition-colors"
+            className="md:hidden text-2xl text-slate-700 hover:text-blue-600 transition-colors"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
@@ -100,16 +93,16 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-secondary shadow-lg py-4 px-6 animate-slideDown">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-2xl py-6 px-6 border-t border-blue-100 animate-slideIn">
             <ul className="space-y-4">
               {navLinks.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className={`block text-base font-medium transition-colors ${
+                    className={`block text-base font-semibold transition-all duration-300 py-2 px-4 rounded-lg ${
                       isActive(link.path)
-                        ? "text-accent"
-                        : "text-neutral-300 hover:text-accent"
+                        ? "text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md"
+                        : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                     }`}
                   >
                     {link.name}
@@ -120,7 +113,7 @@ export default function Header() {
                 <a
                   href="/resume.pdf"
                   download
-                  className="block px-5 py-2.5 bg-accent text-secondary text-center text-sm font-medium rounded-lg hover:bg-opacity-90 transition-colors"
+                  className="block px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center text-sm font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-300"
                 >
                   Download CV
                 </a>

@@ -4,94 +4,100 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center px-6 md:px-20 bg-primary"
+      className="min-h-screen flex items-center px-6 md:px-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-20 relative overflow-hidden"
     >
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Subtle Background Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      
+      {/* Minimal Accent Shapes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-blue-100 rounded-full opacity-30 blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-indigo-100 rounded-full opacity-20 blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Side - Text Content */}
-          <div>
-      {/* Intro text */}
-      <p className="text-sm md:text-base text-neutral-400 mb-2">
-        👋 Hi, I’m
-      </p>
+          <div className="animate-fadeIn space-y-6">
+            <div className="inline-block">
+              <p className="text-sm md:text-base text-blue-600 font-semibold tracking-wide uppercase">
+                Software Engineer
+              </p>
+              <div className="h-1 w-20 bg-blue-600 mt-2"></div>
+            </div>
+            
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight">
+              Sahaswari<br />Senanayaka
+            </h1>
+            
+            <h2 className="text-xl md:text-2xl text-slate-700 font-medium leading-relaxed">
+              Computer Engineering Undergraduate | Former Associate Software Developer
+            </h2>
+            
+            <p className="max-w-2xl text-slate-600 text-lg leading-relaxed">
+              I'm passionate about solving real-world problems through intelligent
+              systems and software solutions. I love exploring how AI and machine
+              learning can create meaningful impact, from data analysis to
+              applications that make life easier.
+            </p>
+            
+            <div className="flex flex-wrap gap-4 pt-4">
+              <a
+                href="/resume.pdf"
+                className="group px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-blue-700 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download Resume
+              </a>
+              <a
+                href="#projects"
+                className="group px-8 py-4 border-2 border-slate-300 text-slate-700 font-semibold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-200 flex items-center gap-2"
+              >
+                View Projects
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
 
-      {/* Name */}
-      <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 font-serif">
-        Sahaswari Senanayaka
-      </h1>
-
-      {/* Tagline */}
-      <h2 className="text-xl md:text-2xl text-accent font-semibold mb-6">
-        Computer Engineering Undergraduate | Former Associate Software Developer
-      </h2>
-
-      {/* Short bio */}
-      <p className="max-w-2xl text-neutral-300 mb-8 leading-relaxed">
-        I’m passionate about solving real-world problems through intelligent
-        systems and software solutions. I love exploring how AI and machine
-        learning can create meaningful impact, from data analysis to
-        applications that make life easier.
-      </p>
-
-      {/* Buttons */}
-      <div className="flex flex-wrap gap-4">
-        <a
-          href="/resume.pdf"
-          className="px-6 py-3 bg-accent text-secondary rounded-xl shadow hover:bg-opacity-90 transition"
-        >
-          Download Resume
-        </a>
-
-        <a
-          href="#projects"
-          className="px-6 py-3 border border-accent text-accent rounded-xl hover:bg-accent hover:text-secondary transition"
-        >
-          View Projects
-        </a>
-      </div>
-    </div>
-
-    {/* Right Side - Image */}
-    <div className="flex justify-center lg:justify-end">
-      <div className="relative">
-        {/* Decorative background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent to-blue-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
-        
-        {/* Image container */}
-        <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-          <div className="absolute inset-0 bg-gradient-to-br from-accent to-blue-500 rounded-full opacity-10"></div>
-          <img
-            src={profileImage}
-            alt="Sahaswari Samoda"
-            className="w-full h-full object-cover rounded-full border-8 border-accent shadow-2xl"
-            onError={(e) => {
-              // Fallback if image not found
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const parent = target.parentElement;
-              if (parent) {
-                parent.innerHTML = `
-                  <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent to-blue-500 rounded-full border-8 border-accent shadow-2xl">
-                    <div class="text-center text-white">
-                      <svg class="w-32 h-32 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                      </svg>
-                      <p class="text-xl font-semibold">SS</p>
-                    </div>
-                  </div>
-                `;
-              }
-            }}
-          />
+          {/* Right Side - Image */}
+          <div className="flex justify-center lg:justify-end animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+            <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
+              {/* Professional Border Accent */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl opacity-10 blur-lg"></div>
+              
+              {/* Main Image Container */}
+              <div className="relative w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl p-2 shadow-2xl border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
+                <div className="relative w-full h-full rounded-xl overflow-hidden">
+                  <img
+                    src={profileImage}
+                    alt="Sahaswari Samoda"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+              </div>
+              
+              {/* Subtle Corner Accent */}
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 border-4 border-blue-600 opacity-20 rounded-lg"></div>
+            </div>
+          </div>
         </div>
-
-        {/* Floating decoration elements */}
-        <div className="absolute -top-4 -right-4 w-20 h-20 bg-accent rounded-full opacity-20 animate-bounce"></div>
-        <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-500 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '0.5s' }}></div>
       </div>
-    </div>
-  </div>
-</div>
+
+      {/* Bottom Scroll Indicator */}
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <span className="text-xs text-slate-500 uppercase tracking-wider">Scroll</span>
+        <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
     </section>
   );
 }

@@ -38,17 +38,15 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-primary text-neutral-300">
+    <footer className="bg-slate-900 text-slate-300">
       <div className="container mx-auto px-6 md:px-20 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="text-2xl font-bold text-white mb-4 font-serif">
-              <span className="text-accent">{"<"}</span>
+            <h3 className="text-2xl font-bold text-white mb-4">
               {personalInfo.name.split(" ")[0]}
-              <span className="text-accent">{" />"}</span>
             </h3>
-            <p className="text-neutral-400 mb-4">
+            <p className="text-gray-300 mb-4">
               Computer Engineering student passionate about AI/ML and Software
               Development. Building innovative solutions for real-world problems.
             </p>
@@ -59,7 +57,7 @@ export default function Footer() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-2xl text-neutral-400 hover:text-accent transition-colors"
+                  className="text-2xl text-gray-300 hover:text-blue-400 transform hover:scale-110 transition-all duration-300"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -76,7 +74,7 @@ export default function Footer() {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-neutral-400 hover:text-accent transition-colors"
+                    className="text-gray-300 hover:text-blue-400 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -88,11 +86,11 @@ export default function Footer() {
           {/* Contact Info */}
           <div>
             <h4 className="text-lg font-semibold text-white mb-4 font-serif">Get in Touch</h4>
-            <ul className="space-y-2 text-neutral-400">
+            <ul className="space-y-2 text-gray-300">
               <li>
                 <a
                   href={`mailto:${personalInfo.email}`}
-                  className="hover:text-accent transition-colors"
+                  className="hover:text-blue-400 transition-colors"
                 >
                   {personalInfo.email}
                 </a>
@@ -104,10 +102,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-neutral-800 mt-8 pt-8 text-center">
-          <p className="text-neutral-400 text-sm">
+        <div className="border-t border-blue-700 mt-8 pt-8 text-center">
+          <p className="text-gray-300 text-sm">
             © {currentYear} {personalInfo.name}. Made with{" "}
-            <FaHeart className="inline text-accent" /> using React & TypeScript.
+            <FaHeart className="inline text-yellow-400" /> using React & TypeScript.
           </p>
         </div>
       </div>

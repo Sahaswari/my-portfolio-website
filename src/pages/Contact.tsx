@@ -70,12 +70,12 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50">
       {/* Hero Section */}
-      <section className="bg-primary text-white py-20">
+      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 pt-28">
         <div className="container mx-auto px-6 md:px-20">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-serif">Get in Touch</h1>
-          <p className="text-xl text-neutral-300 max-w-3xl">
+          <p className="text-xl text-blue-100 max-w-3xl font-medium">
             Have a project in mind or want to discuss opportunities? I'd love to hear from you!
           </p>
         </div>
@@ -86,13 +86,13 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="bg-primary rounded-xl shadow-lg p-8 border border-neutral-800">
-              <h2 className="text-2xl font-bold text-white mb-6 font-serif">Send Me a Message</h2>
+            <div className="bg-white rounded-xl shadow-lg p-8 border border-blue-100">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-6 font-serif">Send Me a Message</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name */}
                 <div>
-                  <label htmlFor="name" className="block text-neutral-300 font-medium mb-2">
+                  <label htmlFor="name" className="block text-blue-900 font-semibold mb-2">
                     Your Name *
                   </label>
                   <input
@@ -102,14 +102,14 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-secondary border border-neutral-700 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition text-white"
+                    className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                     placeholder="John Doe"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label htmlFor="email" className="block text-neutral-300 font-medium mb-2">
+                  <label htmlFor="email" className="block text-blue-900 font-semibold mb-2">
                     Your Email *
                   </label>
                   <input
@@ -119,14 +119,14 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-secondary border border-neutral-700 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition text-white"
+                    className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                     placeholder="john@example.com"
                   />
                 </div>
 
                 {/* Subject */}
                 <div>
-                  <label htmlFor="subject" className="block text-neutral-300 font-medium mb-2">
+                  <label htmlFor="subject" className="block text-blue-900 font-semibold mb-2">
                     Subject *
                   </label>
                   <input
@@ -136,14 +136,14 @@ export default function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-secondary border border-neutral-700 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition text-white"
+                    className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                     placeholder="Project Inquiry"
                   />
                 </div>
 
                 {/* Message */}
                 <div>
-                  <label htmlFor="message" className="block text-neutral-300 font-medium mb-2">
+                  <label htmlFor="message" className="block text-blue-900 font-semibold mb-2">
                     Message *
                   </label>
                   <textarea
@@ -153,19 +153,19 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 bg-secondary border border-neutral-700 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition resize-none text-white"
+                    className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
                     placeholder="Tell me about your project or inquiry..."
                   />
                 </div>
 
                 {/* Status Messages */}
                 {status === "success" && (
-                  <div className="p-4 bg-green-900/50 border border-green-700 text-green-300 rounded-lg">
+                  <div className="p-4 bg-green-50 border-2 border-green-400 text-green-800 font-semibold rounded-lg">
                     ✓ Message sent successfully! I'll get back to you soon.
                   </div>
                 )}
                 {status === "error" && (
-                  <div className="p-4 bg-red-900/50 border border-red-700 text-red-300 rounded-lg">
+                  <div className="p-4 bg-red-50 border-2 border-red-400 text-red-800 font-semibold rounded-lg">
                     ✗ {errorMessage}
                   </div>
                 )}
@@ -174,10 +174,10 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className={`w-full py-3 px-6 bg-accent text-secondary font-semibold rounded-lg transition-colors ${
+                  className={`w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-lg transition-all duration-300 ${
                     status === "sending"
                       ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-opacity-90 shadow-lg hover:shadow-xl"
+                      : "hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:scale-105"
                   }`}
                 >
                   {status === "sending" ? "Sending..." : "Send Message"}
@@ -189,23 +189,23 @@ export default function Contact() {
           {/* Contact Info Sidebar */}
           <div className="space-y-6">
             {/* Contact Details */}
-            <div className="bg-primary rounded-xl shadow-lg p-6 border border-neutral-800">
-              <h3 className="text-xl font-bold text-white mb-4 font-serif">Contact Information</h3>
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-blue-100">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-4 font-serif">Contact Information</h3>
               <div className="space-y-4">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-start gap-4">
-                    <div className="text-2xl text-accent mt-1">{info.icon}</div>
+                    <div className="text-2xl text-blue-600 mt-1">{info.icon}</div>
                     <div>
-                      <p className="text-sm text-neutral-400 mb-1">{info.title}</p>
+                      <p className="text-sm text-blue-600 mb-1 font-semibold">{info.title}</p>
                       {info.link ? (
                         <a
                           href={info.link}
-                          className="text-white font-medium hover:text-accent transition-colors"
+                          className="text-blue-900 font-semibold hover:text-blue-600 transition-colors"
                         >
                           {info.value}
                         </a>
                       ) : (
-                        <p className="text-white font-medium">{info.value}</p>
+                        <p className="text-blue-900 font-semibold">{info.value}</p>
                       )}
                     </div>
                   </div>
@@ -214,8 +214,8 @@ export default function Contact() {
             </div>
 
             {/* Social Links */}
-            <div className="bg-primary rounded-xl shadow-lg p-6 border border-neutral-800">
-              <h3 className="text-xl font-bold text-white mb-4 font-serif">Connect with Me</h3>
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-blue-100">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-4 font-serif">Connect with Me</h3>
               <div className="flex gap-4">
                 {socialLinks.map((social, index) => (
                   <a
@@ -223,7 +223,7 @@ export default function Contact() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-3xl text-neutral-400 hover:text-accent transition-colors"
+                    className="text-3xl text-blue-600 hover:text-yellow-500 transform hover:scale-125 transition-all duration-300"
                     aria-label={social.name}
                   >
                     {social.icon}
@@ -233,9 +233,9 @@ export default function Contact() {
             </div>
 
             {/* Availability */}
-            <div className="bg-primary rounded-xl p-6 border border-neutral-800">
-              <h3 className="text-lg font-bold text-white mb-2 font-serif">Currently Available</h3>
-              <p className="text-neutral-300">
+            <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 border-2 border-green-300 shadow-lg">
+              <h3 className="text-lg font-bold text-green-700 mb-2 font-serif">Currently Available ✨</h3>
+              <p className="text-blue-900 font-semibold">
                 I'm actively seeking opportunities in AI/ML and Software Development. Open to internships,
                 full-time positions, and freelance projects.
               </p>
