@@ -22,7 +22,7 @@ export default function About() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-sky-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-600 to-green-800 text-white py-20 pt-28">
+      <section className="bg-gradient-to-r from-green-800 to-green-900 text-white py-20 pt-28">
         <div className="container mx-auto px-6 md:px-20">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-serif">About Me</h1>
           <p className="text-xl text-green-100 max-w-3xl">
@@ -73,10 +73,10 @@ export default function About() {
           <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent mb-8 text-center font-serif">Skills & Technologies</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {skillCategories.map((category, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg p-6 border border-green-100 hover:shadow-xl transition-shadow duration-300">
+              <div key={index} className="bg-white rounded-xl shadow-lg p-6 border border-yellow-100 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl text-green-600">{category.icon}</span>
-                  <h3 className="text-xl font-semibold text-green-700 font-serif">{category.title}</h3>
+                  <span className="text-3xl text-yellow-400">{category.icon}</span>
+                  <h3 className="text-xl font-semibold text-black-700 font-serif">{category.title}</h3>
                 </div>
                 <div className="space-y-4">
                   {category.data.map((skill, idx) => (
@@ -85,9 +85,9 @@ export default function About() {
                         <span className="text-green-900 font-semibold">{skill.name}</span>
                         <span className="text-green-600 font-bold text-lg">{skill.level}%</span>
                       </div>
-                      <div className="w-full bg-green-100 rounded-full h-2.5">
+                      <div className="w-full bg-black-100 rounded-full h-2.5">
                         <div
-                          className="bg-gradient-to-r from-green-600 to-green-400 h-2.5 rounded-full transition-all duration-1000"
+                          className="bg-gradient-to-r from-yellow-100 to-yellow-400 h-2.5 rounded-full transition-all duration-1000"
                           style={{ width: `${skill.level}%` }}
                         ></div>
                       </div>
