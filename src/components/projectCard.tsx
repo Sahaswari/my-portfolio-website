@@ -7,7 +7,7 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group border border-slate-200 hover:border-blue-500">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group border border-slate-200 hover:border-green-500">
       {/* Project Image */}
       <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
         {project.image ? (
@@ -28,7 +28,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         
         {/* Category Badge */}
         <div className="absolute top-4 right-4">
-          <span className="px-3 py-1 bg-white text-blue-600 text-xs font-semibold rounded-md shadow-md border border-blue-200">
+          <span className="px-3 py-1 bg-white text-green-600 text-xs font-semibold rounded-md shadow-md border border-green-200">
             {project.category}
           </span>
         </div>
@@ -36,7 +36,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         {/* Featured Badge */}
         {project.featured && (
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-md shadow-md">
+            <span className="px-3 py-1 bg-green-600 text-white text-xs font-semibold rounded-md shadow-md">
               FEATURED
             </span>
           </div>
@@ -98,7 +98,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border-2 border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:border-blue-600 hover:text-blue-600 transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 border-2 border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:border-green-600 hover:text-green-600 transition-all duration-200"
             >
               <FaExternalLinkAlt className="text-sm" />
               Live
@@ -109,7 +109,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border-2 border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:border-blue-600 hover:text-blue-600 transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 border-2 border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:border-green-600 hover:text-green-600 transition-all duration-200"
             >
               <FaVideo className="text-sm" />
               Demo

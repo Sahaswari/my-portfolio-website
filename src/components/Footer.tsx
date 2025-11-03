@@ -67,7 +67,7 @@ export default function Footer() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-2xl text-gray-300 hover:text-blue-400 transform hover:scale-110 transition-all duration-300"
+                  className="text-2xl text-gray-300 hover:text-green-400 transform hover:scale-110 transition-all duration-300"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -84,7 +84,7 @@ export default function Footer() {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-gray-300 hover:text-blue-400 transition-colors"
+                    className="text-gray-300 hover:text-green-400 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -100,7 +100,7 @@ export default function Footer() {
               <li>
                 <a
                   href={`mailto:${personalInfo.email}`}
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-green-400 transition-colors"
                 >
                   {personalInfo.email}
                 </a>
@@ -112,7 +112,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-blue-700 mt-8 pt-8 text-center">
+        <div className="border-t border-green-700 mt-8 pt-8 text-center">
           <p className="text-gray-300 text-sm">
             © {currentYear} {personalInfo.name}. Made with{" "}
             <FaHeart className="inline text-yellow-400" /> using React & TypeScript.

@@ -4,10 +4,10 @@
 @layer base {
   :root {
     /* Primary Colors */
-    --primary-blue: #0fd215;
+    --primary-green: #0fd215;
     --primary-dark: #0fd215;
-    --light-blue: #60a5fa;
-    --sky-blue: #e0f2fe;
+    --light-green: #60a5fa;
+    --sky-green: #e0f2fe;
     
     /* Accent Colors */
     --yellow: #fbbf24;
@@ -49,7 +49,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--primary-blue);
+    background: var(--primary-green);
     border-radius: 5px;
   }
 

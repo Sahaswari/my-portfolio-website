@@ -10,12 +10,12 @@ export default function Projects() {
   const filteredProjects = getProjectsByCategory(selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-sky-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 pt-28">
+      <section className="bg-gradient-to-r from-green-600 to-green-800 text-white py-20 pt-28">
         <div className="container mx-auto px-6 md:px-20">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-serif">My Projects</h1>
-          <p className="text-xl text-blue-100 max-w-3xl">
+          <p className="text-xl text-green-100 max-w-3xl">
             A collection of projects showcasing my expertise in AI/ML, Software Development, and Data Science
           </p>
         </div>
@@ -32,8 +32,8 @@ export default function Projects() {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-2.5 rounded-full font-semibold transition-all duration-300 ${
                   selectedCategory === category
-                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg scale-105"
-                    : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-md border border-blue-100"
+                    ? "bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg scale-105"
+                    : "bg-white text-gray-700 hover:bg-green-50 hover:text-green-600 shadow-md border border-green-100"
                 }`}
               >
                 {category}
@@ -44,7 +44,7 @@ export default function Projects() {
 
         {/* Project Count */}
         <div className="text-center mb-8">
-          <p className="text-blue-800 text-lg font-semibold">
+          <p className="text-green-800 text-lg font-semibold">
             Showing <span className="font-bold text-green-600 text-xl">{filteredProjects.length}</span>{" "}
             {filteredProjects.length === 1 ? "project" : "projects"}
           </p>
@@ -64,15 +64,15 @@ export default function Projects() {
         )}
 
         {/* CTA Section */}
-        <section className="mt-20 bg-white rounded-2xl p-10 text-center border border-blue-200 shadow-lg">
-          <h2 className="text-3xl font-bold mb-4 font-serif bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Interested in Working Together?</h2>
-          <p className="text-lg text-blue-800 mb-6 max-w-2xl mx-auto font-medium">
+        <section className="mt-20 bg-white rounded-2xl p-10 text-center border border-green-200 shadow-lg">
+          <h2 className="text-3xl font-bold mb-4 font-serif bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">Interested in Working Together?</h2>
+          <p className="text-lg text-green-800 mb-6 max-w-2xl mx-auto font-medium">
             I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a
               href="/contact"
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             >
               Get in Touch
             </a>
@@ -80,7 +80,7 @@ export default function Projects() {
               href="https://github.com/yourusername"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 border-2 border-blue-600 text-blue-700 font-semibold rounded-lg hover:bg-blue-50 transition-all duration-300"
+              className="px-8 py-3 border-2 border-green-600 text-green-700 font-semibold rounded-lg hover:bg-green-50 transition-all duration-300"
             >
               View GitHub
             </a>

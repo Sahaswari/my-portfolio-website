@@ -265,7 +265,7 @@ export default function Admin() {
             </div>
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-blue-800 text-light font-bold py-2 rounded-lg transition-colors"
+              className="w-full bg-primary hover:bg-green-800 text-light font-bold py-2 rounded-lg transition-colors"
             >
               Login
             </button>
@@ -376,7 +376,7 @@ export default function Admin() {
             <div className="flex gap-4 mt-6">
               <button
                 onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-blue-800 text-light font-bold rounded-lg transition-colors"
+                className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-green-800 text-light font-bold rounded-lg transition-colors"
               >
                 <FiSave />
                 Save
@@ -407,7 +407,7 @@ export default function Admin() {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(item)}
-                  className="p-2 bg-primary hover:bg-blue-800 text-light rounded-lg transition-colors"
+                  className="p-2 bg-primary hover:bg-green-800 text-light rounded-lg transition-colors"
                 >
                   <FiEdit2 />
                 </button>

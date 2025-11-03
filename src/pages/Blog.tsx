@@ -35,7 +35,7 @@ export default function Blog() {
         {/* Coming Soon Content */}
         <div className="container mx-auto px-6 md:px-20 py-20">
           <div className="bg-slate-50 rounded-lg shadow-lg p-12 text-center max-w-2xl mx-auto border border-slate-200">
-            <div className="text-6xl mb-6 text-blue-600">
+            <div className="text-6xl mb-6 text-green-600">
               <FaRocket className="inline-block" />
             </div>
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Coming Soon!</h2>
@@ -45,7 +45,7 @@ export default function Blog() {
             
             <a
               href="/admin"
-              className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center gap-2"
+              className="px-8 py-3 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center gap-2"
             >
               <span>Go to Admin Panel</span>
             </a>
@@ -88,7 +88,7 @@ export default function Blog() {
                 onClick={() => setSelectedTag(tag)}
                 className={`px-5 py-2 rounded-md font-medium transition-all duration-200 ${
                   selectedTag === tag
-                    ? "bg-blue-600 text-white shadow-sm"
+                    ? "bg-green-600 text-white shadow-sm"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200"
                 }`}
               >
@@ -111,7 +111,7 @@ export default function Blog() {
           {filteredBlogs.map((blog) => (
             <article
               key={blog.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-blue-500 group"
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-green-500 group"
             >
               {blog.image && (
                 <div className="relative overflow-hidden">
@@ -161,7 +161,7 @@ export default function Blog() {
                 </div>
 
                 <div className="mt-4">
-                  <button className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+                  <button className="inline-flex items-center gap-2 text-green-600 font-semibold hover:text-green-700 transition-colors">
                     <span>Read More</span>
                     <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

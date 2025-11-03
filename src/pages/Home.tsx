@@ -36,11 +36,11 @@ export default function Home() {
         <div className="container mx-auto px-6 md:px-20">
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
-              <span className="px-4 py-2 bg-blue-50 text-blue-600 text-sm font-semibold rounded-full border border-blue-200">
+              <span className="px-4 py-2 bg-green-50 text-green-600 text-sm font-semibold rounded-full border border-green-200">
                 EXPERTISE
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">What I Do</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">What I Do</h2>
             <p className="text-slate-600 text-lg max-w-2xl mx-auto">
               Passionate about creating innovative solutions at the intersection of AI and software engineering
             </p>
@@ -50,18 +50,18 @@ export default function Home() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-slate-50 p-8 rounded-xl hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-blue-400 relative group"
+                className="bg-slate-50 p-8 rounded-xl hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-green-400 relative group"
               >
                 {/* Clean Top Accent */}
                 <div className={`absolute top-0 left-0 right-0 h-1 ${
-                  index === 0 ? 'bg-blue-600' :
+                  index === 0 ? 'bg-green-600' :
                   index === 1 ? 'bg-indigo-600' :
                   'bg-cyan-600'
                 }`}></div>
                 
                 {/* Icon */}
                 <div className={`inline-block p-4 rounded-lg mb-4 ${
-                  index === 0 ? 'bg-blue-100 text-blue-600' :
+                  index === 0 ? 'bg-green-100 text-green-600' :
                   index === 1 ? 'bg-indigo-100 text-indigo-600' :
                   'bg-cyan-100 text-cyan-600'
                 }`}>
@@ -80,7 +80,7 @@ export default function Home() {
         <div className="container mx-auto px-6 md:px-20">
           <div className="text-center mb-12">
             <div className="inline-block mb-4">
-              <span className="px-4 py-2 bg-white text-blue-600 text-sm font-semibold rounded-full border border-blue-200 shadow-sm">
+              <span className="px-4 py-2 bg-white text-green-600 text-sm font-semibold rounded-full border border-green-200 shadow-sm">
                 FEATURED WORK
               </span>
             </div>
@@ -99,7 +99,7 @@ export default function Home() {
           <div className="text-center">
             <Link
               to="/projects"
-              className="group inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-blue-400 relative overflow-hidden"
+              className="group inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-green-400 relative overflow-hidden"
             >
               <span className="relative z-10">View All Projects</span>
               <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -110,7 +110,7 @@ export default function Home() {
       </section>
 
       {/* Skills Overview Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-white">
+      <section className="py-20 bg-gradient-to-br from-green-50 to-white">
         <div className="container mx-auto px-6 md:px-20">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
@@ -125,7 +125,7 @@ export default function Home() {
               </p>
               <Link
                 to="/about"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
               >
                 Learn More About Me
                 <FaArrowRight />
@@ -134,13 +134,13 @@ export default function Home() {
 
             <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-lg">
               <h3 className="text-2xl font-bold mb-6 text-slate-900 flex items-center gap-2">
-                <span className="w-1 h-8 bg-blue-600"></span>
+                <span className="w-1 h-8 bg-green-600"></span>
                 Core Competencies
               </h3>
               <div className="space-y-4">
                 {personalInfo.about.interests.map((interest, index) => (
                   <div key={index} className="flex items-center gap-3 group">
-                    <span className="flex-shrink-0 w-2 h-2 bg-blue-600 rounded-full group-hover:scale-150 transition-transform"></span>
+                    <span className="flex-shrink-0 w-2 h-2 bg-green-600 rounded-full group-hover:scale-150 transition-transform"></span>
                     <span className="text-lg text-slate-700">{interest}</span>
                   </div>
                 ))}
@@ -164,14 +164,14 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Let's Work Together
           </h2>
-          <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-green-100 text-lg mb-8 max-w-2xl mx-auto">
             I'm currently available for internships, full-time positions, and freelance projects.
             Let's discuss how we can collaborate!
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               to="/contact"
-              className="group px-8 py-4 bg-white text-green-600 font-semibold rounded-lg hover:bg-blue-50 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+              className="group px-8 py-4 bg-white text-green-600 font-semibold rounded-lg hover:bg-green-50 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
             >
               Get in Touch
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

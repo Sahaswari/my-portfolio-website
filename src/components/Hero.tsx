@@ -4,14 +4,14 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center px-6 md:px-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-20 relative overflow-hidden"
+      className="min-h-screen flex items-center px-6 md:px-20 bg-gradient-to-br from-slate-50 via-white to-green-50 pt-20 relative overflow-hidden"
     >
       {/* Subtle Background Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
       
       {/* Minimal Accent Shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-blue-100 rounded-full opacity-30 blur-3xl"></div>
+        <div className="absolute top-20 right-20 w-96 h-96 bg-green-100 rounded-full opacity-30 blur-3xl"></div>
         <div className="absolute bottom-20 left-20 w-80 h-80 bg-indigo-100 rounded-full opacity-20 blur-3xl"></div>
       </div>
 
@@ -20,18 +20,18 @@ export default function Hero() {
           {/* Left Side - Text Content */}
           <div className="animate-fadeIn space-y-6">
             <div className="inline-block">
-              <p className="text-sm md:text-base text-blue-600 font-semibold tracking-wide uppercase">
-                Software Engineer
-              </p>
-              <div className="h-1 w-20 bg-blue-600 mt-2"></div>
+              {/* <p className="text-sm md:text-base text-green-600 font-semibold tracking-wide uppercase">
+                Associate Software Engineer
+              </p> */}
+              {/* <div className="h-1 w-20 bg-green-600 mt-2"></div> */}
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight">
+            <h1 className="text-4xl md:text-4xl lg:text-7xl font-bold text-slate-800 leading-tight">
               Sahaswari<br />Senanayaka
             </h1>
             
             <h2 className="text-xl md:text-2xl text-slate-700 font-medium leading-relaxed">
-              Computer Engineering Undergraduate | Former Associate Software Developer
+             Former Associate Software Engineer | Former AI/ML & Software Development Intern | B.Sc. Eng. in Computer Engineering Undergraduate
             </h2>
             
             <p className="max-w-2xl text-slate-600 text-lg leading-relaxed">
@@ -44,7 +44,7 @@ export default function Hero() {
             <div className="flex flex-wrap gap-4 pt-4">
               <a
                 href="/resume.pdf"
-                className="group px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-blue-700 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+                className="group px-8 py-4 bg-green-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-green-700 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -53,7 +53,7 @@ export default function Hero() {
               </a>
               <a
                 href="#projects"
-                className="group px-8 py-4 border-2 border-slate-300 text-slate-700 font-semibold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-200 flex items-center gap-2"
+                className="group px-8 py-4 border-2 border-slate-300 text-slate-700 font-semibold rounded-lg hover:border-green-600 hover:text-green-600 transition-all duration-200 flex items-center gap-2"
               >
                 View Projects
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,11 +67,11 @@ export default function Hero() {
           <div className="flex justify-center lg:justify-end animate-fadeIn" style={{ animationDelay: '0.2s' }}>
             <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
               {/* Professional Border Accent */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl opacity-10 blur-lg"></div>
+              <div className="absolute -inset-4 bg-gradient-to-r from-green-600 to-indigo-600 rounded-full opacity-10 blur-lg"></div>
               
               {/* Main Image Container */}
-              <div className="relative w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl p-2 shadow-2xl border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
-                <div className="relative w-full h-full rounded-xl overflow-hidden">
+              <div className="relative w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 rounded-full p-2 shadow-2xl border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
+                <div className="relative w-full h-full rounded-full overflow-hidden">
                   <img
                     src={profileImage}
                     alt="Sahaswari Senanayaka"
@@ -85,7 +85,7 @@ export default function Hero() {
               </div>
               
               {/* Subtle Corner Accent */}
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 border-4 border-blue-600 opacity-20 rounded-lg"></div>
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 border-4 border-green-600 opacity-20 rounded-full"></div>
             </div>
           </div>
         </div>
