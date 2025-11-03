@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaLaptopCode } from "react-icons/fa";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,8 +48,10 @@ export default function Header() {
           <Link
             to="/"
             className="text-2xl font-bold text-slate-900 hover:text-blue-600 transition-colors duration-200"
+            aria-label="Home"
           >
-            <span className="text-blue-600">SS</span>
+              <FaLaptopCode className="text-green-600 w-10 h-10" aria-hidden="true" />
+            {/* <span className="text-blue-600">SS</span> */}
           </Link>
 
           {/* Desktop Navigation */}
