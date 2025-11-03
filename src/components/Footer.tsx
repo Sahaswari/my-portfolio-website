@@ -1,4 +1,4 @@
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaHeart } from "react-icons/fa";
+import { FaGithub, FaLinkedin,  FaEnvelope, FaHeart, FaMedium, FaFacebook, FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { personalInfo } from "../data/personalInfo";
 
@@ -17,15 +17,26 @@ export default function Footer() {
       icon: <FaLinkedin />,
     },
     {
-      name: "Twitter",
-      url: personalInfo.social.twitter,
-      icon: <FaTwitter />,
-    },
-    {
       name: "Email",
       url: `mailto:${personalInfo.email}`,
       icon: <FaEnvelope />,
     },
+    {
+      name: "Medium",
+      url: personalInfo.social.medium,
+      icon: <FaMedium />,
+    },
+       {
+      name: "YouTube",
+      url: personalInfo.social.youtube,
+      icon: <FaYoutube />,
+    },
+       {
+      name: "Facebook",
+      url: personalInfo.social.facebook,
+      icon: <FaFacebook />,
+    },
+ 
   ];
 
   const quickLinks = [
@@ -44,11 +55,10 @@ export default function Footer() {
           {/* About Section */}
           <div>
             <h3 className="text-2xl font-bold text-white mb-4">
-              {personalInfo.name.split(" ")[0]}
+              {personalInfo.name}
             </h3>
             <p className="text-gray-300 mb-4">
-              Computer Engineering student passionate about AI/ML and Software
-              Development. Building innovative solutions for real-world problems.
+              Former Associate Software Engineer | Former AI/ML & Software Development Intern | B.Sc. Eng. in Computer Engineering Undergraduate
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
@@ -96,7 +106,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>{personalInfo.phone}</li>
-              <li>{personalInfo.location}</li>
+              <li>{personalInfo.title}{personalInfo.location}</li>
             </ul>
           </div>
         </div>

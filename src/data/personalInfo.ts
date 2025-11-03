@@ -1,19 +1,20 @@
 // Personal Information - Update this with your actual information
 export const personalInfo = {
-  name: "Sahaswari Samoda",
-  title: "Computer Engineering Student",
-  subtitle: "AI/ML & Software Developer",
-  location: "University of Ruhuna, Sri Lanka",
-  email: "your.email@example.com", // Update with your email
-  phone: "+94 XX XXX XXXX", // Update with your phone
+  name: "Sahaswari Senanayaka",
+  title: "B.Sc.Eng. in Computer Engineering Undergraduate",
+  subtitle: "Former Software Engineer and Former AI/ML & Software Engineer Intern",
+  location: "Faculty of Engineering, University of Ruhuna, Sri Lanka",
+  email: "sahaswari.samoda.com", 
+  phone: "+94 76 344 6348/ +94 75 344 6348",
   
   // Social Links - Update with your actual profiles
   social: {
-    github: "https://github.com/yourusername",
-    linkedin: "https://linkedin.com/in/yourusername",
-    twitter: "https://twitter.com/yourusername", // Optional
-    medium: "https://medium.com/@yourusername", // Optional for blog
+    github: "https://github.com/Sahaswari",
+    linkedin: "https://linkedin.com/in/sahaswari-senanayaka-3b3bb8211",
+    medium: "https://medium.com/@smsahaswari", 
     portfolio: "https://yourportfolio.vercel.app",
+    facebook: "https://facebook.com/sahaswari.senanayaka/",
+    youtube: "https://twitter.com/yourusername",
   },
 
   // About Me
@@ -41,7 +42,7 @@ export const skills = {
   programming: [
     { name: "Python", level: 90, icon: "SiPython" },
     { name: "JavaScript/TypeScript", level: 85, icon: "SiTypescript" },
-    { name: "Java", level: 80, icon: "SiJava" },
+    { name: "Php", level: 80, icon: "Php" },
     { name: "C/C++", level: 75, icon: "SiCplusplus" },
     { name: "SQL", level: 80, icon: "SiMysql" },
   ],
@@ -77,9 +78,9 @@ export const skills = {
 // Education
 export const education = [
   {
-    degree: "B.Sc. in Computer Engineering",
-    institution: "University of Ruhuna",
-    location: "Matara, Sri Lanka",
+    degree: "B.Sc.Eng. in Computer Engineering",
+    institution: "Faculty of Engineering-University of Ruhuna",
+    location: "Galle, Sri Lanka",
     period: "2021 - Present", // Update with your actual years
     description: "Specialized in AI/ML, Software Engineering, and Computer Systems. Relevant coursework includes Machine Learning, Deep Learning, Data Structures, Algorithms, Database Systems, and Software Engineering.",
     gpa: "3.X/4.0", // Update with your GPA
@@ -94,31 +95,30 @@ export const education = [
 // Experience (Include internships, projects, volunteer work)
 export const experience = [
   {
-    title: "AI/ML Intern", // Update with actual experience
-    company: "Company Name",
-    location: "Location",
-    period: "Month Year - Month Year",
+    title: "AI/ML/Software Engineering Intern", // Update with actual experience
+    company: "Apps Technologies Pvt Ltd",
+    location: "Nugegoda",
+    period: "May 2024 - November 2024",
     type: "Internship",
     description: [
       "Developed machine learning models for [specific task]",
       "Implemented data preprocessing pipelines",
       "Collaborated with team on [specific project]",
     ],
-    technologies: ["Python", "TensorFlow", "Pandas", "Scikit-learn"]
+    technologies: ["Php-Laravel","Python", "TensorFlow", "Pandas", "Scikit-learn"]
   },
   // Add more experiences
   {
-    title: "Freelance Developer",
-    company: "Self-Employed",
+    title: "Associate Software Engineer",
+    company: "Apps Technologies Pvt Ltd",
     location: "Remote",
-    period: "2023 - Present",
-    type: "Freelance",
+    period: "November 2024 - February 2025",
     description: [
       "Built web applications for clients using React and Node.js",
       "Developed machine learning solutions for data analysis",
       "Provided technical consulting services",
     ],
-    technologies: ["React", "Node.js", "Python", "MongoDB"]
+    technologies: ["Php-Laravel", "React", "Node.js", "Python", "MySQL"]
   }
 ];
 
