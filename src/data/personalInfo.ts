@@ -122,6 +122,61 @@ export const experience = [
   }
 ];
 
+// Volunteering Experience
+export const volunteering = [
+  {
+    role: "Secretary",
+    organization: "IEEE Women in Engineering (WIE)",
+    location: "University of Ruhuna",
+    period: "2023 - Present", // Update with your actual period
+    description: "Serving as Secretary of WIE, coordinating events, managing communications, and empowering women in engineering through various technical and professional development programs.",
+    logo: "🎯", // You can replace with actual logo path
+    events: [
+      {
+        name: "WIE Technical Workshop Series",
+        date: "2024",
+        description: "Organized a series of technical workshops on AI/ML and software development, attracting 100+ participants.",
+        role: "Lead Organizer",
+        impact: "100+ participants"
+      },
+      {
+        name: "Women in Tech Conference",
+        date: "2024",
+        description: "Coordinated annual conference featuring industry speakers and networking sessions for women engineers.",
+        role: "Event Coordinator",
+        impact: "150+ attendees"
+      },
+      {
+        name: "Career Development Seminar",
+        date: "2024",
+        description: "Facilitated career guidance sessions with industry professionals for engineering students.",
+        role: "Program Manager",
+        impact: "80+ students"
+      },
+      {
+        name: "Mentorship Program Launch",
+        date: "2023",
+        description: "Established mentorship program connecting senior women engineers with undergraduate students.",
+        role: "Co-founder",
+        impact: "50+ mentor-mentee pairs"
+      },
+      {
+        name: "Engineering Outreach Initiative",
+        date: "2023",
+        description: "Conducted STEM outreach programs in local schools to inspire young women to pursue engineering.",
+        role: "Outreach Coordinator",
+        impact: "200+ school students"
+      }
+    ],
+    achievements: [
+      "Successfully organized 5 major events with 500+ total participants",
+      "Increased WIE membership by 40% during tenure",
+      "Established partnerships with 3 tech companies for sponsorships"
+    ]
+  },
+  // Add more volunteering roles if you have any
+];
+
 // Certifications
 export const certifications = [
   {

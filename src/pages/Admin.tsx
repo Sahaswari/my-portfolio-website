@@ -37,7 +37,27 @@ interface Certification {
   description?: string;
 }
 
-type ContentItem = Project | BlogPost | Achievement | Certification;
+interface VolunteeringEvent {
+  name: string;
+  date: string;
+  description: string;
+  role: string;
+  impact: string;
+}
+
+interface Volunteering {
+  id: number;
+  role: string;
+  organization: string;
+  location: string;
+  period: string;
+  description: string;
+  logo?: string;
+  events: VolunteeringEvent[];
+  achievements: string[];
+}
+
+type ContentItem = Project | BlogPost | Achievement | Certification | Volunteering;
 
 const ADMIN_CREDENTIALS: AdminUser = {
   username: import.meta.env.VITE_ADMIN_USERNAME || 'admin',
@@ -48,11 +68,12 @@ export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'achievements' | 'certifications'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering'>('projects');
   const [projects, setProjects] = useState<Project[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [volunteering, setVolunteering] = useState<Volunteering[]>([]);
   const [editingItem, setEditingItem] = useState<ContentItem | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
 
@@ -69,11 +90,13 @@ export default function Admin() {
     const savedBlogs = localStorage.getItem('portfolioBlogs');
     const savedAchievements = localStorage.getItem('portfolioAchievements');
     const savedCertifications = localStorage.getItem('portfolioCertifications');
+    const savedVolunteering = localStorage.getItem('portfolioVolunteering');
 
     if (savedProjects) setProjects(JSON.parse(savedProjects));
     if (savedBlogs) setBlogs(JSON.parse(savedBlogs));
     if (savedAchievements) setAchievements(JSON.parse(savedAchievements));
     if (savedCertifications) setCertifications(JSON.parse(savedCertifications));
+    if (savedVolunteering) setVolunteering(JSON.parse(savedVolunteering));
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -94,14 +117,15 @@ export default function Admin() {
     setPassword('');
   };
 
-  const saveData = (type: 'projects' | 'blogs' | 'achievements' | 'certifications', data: ContentItem[]) => {
+  const saveData = (type: 'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering', data: ContentItem[]) => {
     const key = `portfolio${type.charAt(0).toUpperCase() + type.slice(1)}`;
     localStorage.setItem(key, JSON.stringify(data));
     
     if (type === 'projects') setProjects(data as Project[]);
     else if (type === 'blogs') setBlogs(data as BlogPost[]);
     else if (type === 'achievements') setAchievements(data as Achievement[]);
-    else setCertifications(data as Certification[]);
+    else if (type === 'certifications') setCertifications(data as Certification[]);
+    else setVolunteering(data as Volunteering[]);
   };
 
   const handleAdd = () => {
@@ -142,8 +166,7 @@ export default function Admin() {
         type: 'award',
         icon: 'FiAward'
       };
-    } else {
-      // certifications
+    } else if (activeTab === 'certifications') {
       newItem = {
         id: Date.now(),
         name: '',
@@ -151,6 +174,19 @@ export default function Admin() {
         date: new Date().toISOString().split('T')[0],
         credentialUrl: '',
         description: ''
+      };
+    } else {
+      // volunteering
+      newItem = {
+        id: Date.now(),
+        role: '',
+        organization: '',
+        location: '',
+        period: '',
+        description: '',
+        logo: '',
+        events: [],
+        achievements: []
       };
     }
     
@@ -184,14 +220,21 @@ export default function Admin() {
         updatedData = achievements.map(a => a.id === editingItem.id ? editingItem : a);
       }
       saveData('achievements', updatedData);
-    } else {
-      // certifications
+    } else if (activeTab === 'certifications') {
       if (isAddingNew) {
         updatedData = [...certifications, editingItem];
       } else {
         updatedData = certifications.map(c => c.id === editingItem.id ? editingItem : c);
       }
       saveData('certifications', updatedData);
+    } else {
+      // volunteering
+      if (isAddingNew) {
+        updatedData = [...volunteering, editingItem];
+      } else {
+        updatedData = volunteering.map(v => v.id === editingItem.id ? editingItem : v);
+      }
+      saveData('volunteering', updatedData);
     }
 
     setEditingItem(null);
@@ -207,8 +250,10 @@ export default function Admin() {
       saveData('blogs', blogs.filter(b => b.id !== id));
     } else if (activeTab === 'achievements') {
       saveData('achievements', achievements.filter(a => a.id !== id));
-    } else {
+    } else if (activeTab === 'certifications') {
       saveData('certifications', certifications.filter(c => c.id !== id));
+    } else {
+      saveData('volunteering', volunteering.filter(v => v.id !== id));
     }
   };
 
@@ -222,7 +267,7 @@ export default function Admin() {
     setIsAddingNew(false);
   };
 
-  const updateField = (field: string, value: string | number | boolean | string[]) => {
+  const updateField = (field: string, value: string | number | boolean | string[] | VolunteeringEvent[]) => {
     if (editingItem) {
       setEditingItem({ ...editingItem, [field]: value });
     }
@@ -232,7 +277,8 @@ export default function Admin() {
     if (activeTab === 'projects') return projects;
     if (activeTab === 'blogs') return blogs;
     if (activeTab === 'achievements') return achievements;
-    return certifications;
+    if (activeTab === 'certifications') return certifications;
+    return volunteering;
   };
 
   if (!isAuthenticated) {
@@ -337,6 +383,16 @@ export default function Admin() {
           >
             Certifications ({certifications.length})
           </button>
+          <button
+            onClick={() => setActiveTab('volunteering')}
+            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+              activeTab === 'volunteering'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
+            }`}
+          >
+            Volunteering ({volunteering.length})
+          </button>
         </div>
 
         {/* Add Button */}
@@ -346,7 +402,7 @@ export default function Admin() {
             className="mb-6 flex items-center gap-2 px-4 py-2 bg-highlight hover:bg-green-600 text-light rounded-lg transition-colors"
           >
             <FiPlus />
-            Add New {activeTab === 'projects' ? 'Project' : activeTab === 'blogs' ? 'Blog' : activeTab === 'achievements' ? 'Achievement' : 'Certification'}
+            Add New {activeTab === 'projects' ? 'Project' : activeTab === 'blogs' ? 'Blog' : activeTab === 'achievements' ? 'Achievement' : activeTab === 'certifications' ? 'Certification' : 'Volunteering'}
           </button>
         )}
 
@@ -354,7 +410,7 @@ export default function Admin() {
         {editingItem && (
           <div className="bg-light p-6 rounded-xl mb-6 border border-gray-200">
             <h2 className="text-xl font-bold mb-4 font-serif text-primary">
-              {isAddingNew ? 'Add New' : 'Edit'} {activeTab === 'projects' ? 'Project' : activeTab === 'blogs' ? 'Blog' : activeTab === 'achievements' ? 'Achievement' : 'Certification'}
+              {isAddingNew ? 'Add New' : 'Edit'} {activeTab === 'projects' ? 'Project' : activeTab === 'blogs' ? 'Blog' : activeTab === 'achievements' ? 'Achievement' : activeTab === 'certifications' ? 'Certification' : 'Volunteering'}
             </h2>
             
             {activeTab === 'projects' && editingItem && 'category' in editingItem && (
@@ -371,6 +427,10 @@ export default function Admin() {
 
             {activeTab === 'certifications' && editingItem && 'issuer' in editingItem && (
               <CertificationForm item={editingItem as Certification} updateField={updateField} />
+            )}
+
+            {activeTab === 'volunteering' && editingItem && 'organization' in editingItem && (
+              <VolunteeringForm item={editingItem as Volunteering} updateField={updateField} />
             )}
 
             <div className="flex gap-4 mt-6">
@@ -393,18 +453,23 @@ export default function Admin() {
 
         {/* List */}
         <div className="grid gap-4">
-          {getCurrentData().map((item) => (
-            <div key={item.id} className="bg-light p-4 rounded-lg border border-gray-200 flex justify-between items-start">
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-primary">
-                  {'title' in item ? item.title : 'name' in item ? item.name : ''}
-                </h3>
-                <p className="text-text text-sm mt-1">
-                  {'description' in item ? item.description : 'excerpt' in item ? item.excerpt : 'issuer' in item ? item.issuer : ''}
-                </p>
-                <p className="text-gray-500 text-xs mt-2">{item.date}</p>
-              </div>
-              <div className="flex gap-2">
+          {getCurrentData().map((item) => {
+            const title = 'title' in item ? item.title : 'name' in item ? item.name : 'role' in item ? (item as Volunteering).role : '';
+            const description = 'description' in item && !('organization' in item) ? item.description 
+              : 'excerpt' in item ? item.excerpt 
+              : 'issuer' in item ? item.issuer 
+              : 'organization' in item ? (item as Volunteering).organization 
+              : '';
+            const dateInfo = 'date' in item ? item.date : 'period' in item ? (item as Volunteering).period : '';
+            
+            return (
+              <div key={item.id} className="bg-light p-4 rounded-lg border border-gray-200 flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-primary">{title}</h3>
+                  <p className="text-text text-sm mt-1">{description}</p>
+                  <p className="text-gray-500 text-xs mt-2">{dateInfo}</p>
+                </div>
+                <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(item)}
                   className="p-2 bg-primary hover:bg-green-800 text-light rounded-lg transition-colors"
@@ -419,7 +484,8 @@ export default function Admin() {
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
           
           {getCurrentData().length === 0 && !editingItem && (
             <p className="text-center text-gray-500 py-8">
@@ -777,6 +843,249 @@ function CertificationForm({ item: certification, updateField }: CertificationFo
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           required
         />
+      </div>
+    </div>
+  );
+}
+
+// Volunteering Form Component
+interface VolunteeringFormProps {
+  item: Volunteering;
+  updateField: (field: string, value: string | number | boolean | string[] | VolunteeringEvent[]) => void;
+}
+
+function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormProps) {
+  const [newEvent, setNewEvent] = useState<VolunteeringEvent>({
+    name: '',
+    date: '',
+    description: '',
+    role: '',
+    impact: ''
+  });
+  const [newAchievement, setNewAchievement] = useState('');
+
+  const handleAddEvent = () => {
+    if (newEvent.name && newEvent.date && newEvent.description) {
+      updateField('events', [...volunteering.events, newEvent]);
+      setNewEvent({ name: '', date: '', description: '', role: '', impact: '' });
+    }
+  };
+
+  const handleRemoveEvent = (index: number) => {
+    const updatedEvents = volunteering.events.filter((_, i) => i !== index);
+    updateField('events', updatedEvents);
+  };
+
+  const handleAddAchievement = () => {
+    if (newAchievement.trim()) {
+      updateField('achievements', [...volunteering.achievements, newAchievement.trim()]);
+      setNewAchievement('');
+    }
+  };
+
+  const handleRemoveAchievement = (index: number) => {
+    const updatedAchievements = volunteering.achievements.filter((_, i) => i !== index);
+    updateField('achievements', updatedAchievements);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Basic Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-text mb-2">Role *</label>
+          <input
+            type="text"
+            value={volunteering.role}
+            onChange={(e) => updateField('role', e.target.value)}
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+            placeholder="e.g., Secretary"
+            required
+          />
+        </div>
+        
+        <div>
+          <label className="block text-text mb-2">Organization *</label>
+          <input
+            type="text"
+            value={volunteering.organization}
+            onChange={(e) => updateField('organization', e.target.value)}
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+            placeholder="e.g., IEEE Women in Engineering (WIE)"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-text mb-2">Location *</label>
+          <input
+            type="text"
+            value={volunteering.location}
+            onChange={(e) => updateField('location', e.target.value)}
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+            placeholder="e.g., University of Ruhuna"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-text mb-2">Period *</label>
+          <input
+            type="text"
+            value={volunteering.period}
+            onChange={(e) => updateField('period', e.target.value)}
+            className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+            placeholder="e.g., 2023 - Present"
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-text mb-2">Description *</label>
+        <textarea
+          value={volunteering.description}
+          onChange={(e) => updateField('description', e.target.value)}
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+          rows={3}
+          placeholder="Describe your role and responsibilities..."
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-text mb-2">Logo (optional)</label>
+        <input
+          type="text"
+          value={volunteering.logo || ''}
+          onChange={(e) => updateField('logo', e.target.value)}
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+          placeholder="Logo URL or emoji (e.g., 🎯)"
+        />
+      </div>
+
+      {/* Events Section */}
+      <div className="border-t border-gray-300 pt-4">
+        <h3 className="text-lg font-semibold text-primary mb-4">Events Organized</h3>
+        
+        {/* Existing Events */}
+        {volunteering.events.length > 0 && (
+          <div className="space-y-3 mb-4">
+            {volunteering.events.map((event, index) => (
+              <div key={index} className="bg-secondary p-4 rounded-lg border border-gray-300">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-text">{event.name}</h4>
+                    <p className="text-sm text-gray-600">{event.date} • {event.role}</p>
+                    <p className="text-sm text-text mt-1">{event.description}</p>
+                    <p className="text-xs text-green-600 mt-1">Impact: {event.impact}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveEvent(index)}
+                    className="ml-2 p-1 text-red-600 hover:text-red-700"
+                  >
+                    <FiTrash2 />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Add New Event */}
+        <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+          <h4 className="font-semibold text-text">Add New Event</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <input
+              type="text"
+              value={newEvent.name}
+              onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
+              className="px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+              placeholder="Event name"
+            />
+            <input
+              type="text"
+              value={newEvent.date}
+              onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+              className="px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+              placeholder="Date (e.g., 2024)"
+            />
+            <input
+              type="text"
+              value={newEvent.role}
+              onChange={(e) => setNewEvent({ ...newEvent, role: e.target.value })}
+              className="px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+              placeholder="Your role"
+            />
+            <input
+              type="text"
+              value={newEvent.impact}
+              onChange={(e) => setNewEvent({ ...newEvent, impact: e.target.value })}
+              className="px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+              placeholder="Impact (e.g., 100+ participants)"
+            />
+          </div>
+          <textarea
+            value={newEvent.description}
+            onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
+            className="w-full px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+            rows={2}
+            placeholder="Event description"
+          />
+          <button
+            type="button"
+            onClick={handleAddEvent}
+            className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-green-800 text-white rounded-lg transition-colors"
+          >
+            <FiPlus /> Add Event
+          </button>
+        </div>
+      </div>
+
+      {/* Achievements Section */}
+      <div className="border-t border-gray-300 pt-4">
+        <h3 className="text-lg font-semibold text-primary mb-4">Key Achievements</h3>
+        
+        {/* Existing Achievements */}
+        {volunteering.achievements.length > 0 && (
+          <ul className="space-y-2 mb-4">
+            {volunteering.achievements.map((achievement, index) => (
+              <li key={index} className="bg-secondary p-3 rounded-lg border border-gray-300 flex justify-between items-center">
+                <span className="text-text">{achievement}</span>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveAchievement(index)}
+                  className="ml-2 p-1 text-red-600 hover:text-red-700"
+                >
+                  <FiTrash2 />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* Add New Achievement */}
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h4 className="font-semibold text-text mb-2">Add New Achievement</h4>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newAchievement}
+              onChange={(e) => setNewAchievement(e.target.value)}
+              className="flex-1 px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+              placeholder="Enter achievement..."
+              onKeyPress={(e) => e.key === 'Enter' && handleAddAchievement()}
+            />
+            <button
+              type="button"
+              onClick={handleAddAchievement}
+              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-green-800 text-white rounded-lg transition-colors"
+            >
+              <FiPlus /> Add
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
