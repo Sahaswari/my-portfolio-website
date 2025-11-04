@@ -23,10 +23,10 @@ export default function Blog() {
     return (
       <div className="min-h-screen bg-white">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20 pt-28">
+        <section className="bg-gradient-to-r from-green-800 to-green-900 text-white py-20 pt-28">
           <div className="container mx-auto px-6 md:px-20">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog & Articles</h1>
-            <p className="text-xl text-slate-300 max-w-3xl">
+            <p className="text-xl text-green-100 max-w-3xl">
               Sharing insights about AI/ML, software development, and technology
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20 pt-28">
+      <section className="bg-gradient-to-r from-green-800 to-green-900 text-white py-20 pt-28">
         <div className="container mx-auto px-6 md:px-20">
           <div className="inline-block mb-4">
             <span className="px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-full border border-white/20">
@@ -66,7 +66,7 @@ export default function Blog() {
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog & Articles</h1>
-          <p className="text-xl text-slate-300 max-w-3xl">
+          <p className="text-xl text-green-100 max-w-3xl">
             Sharing insights about AI/ML, software development, and technology
           </p>
         </div>
