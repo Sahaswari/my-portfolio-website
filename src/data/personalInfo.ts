@@ -73,6 +73,17 @@ export const skills = {
     { name: "Postman", level: 80, icon: "SiPostman" },
     { name: "AWS/Azure", level: 65, icon: "SiAmazonaws" },
   ],
+  
+  softSkills: [
+    { name: "Leadership & Team Management", level: 90, icon: "FaUsers" },
+    { name: "Communication & Presentation", level: 85, icon: "FaComments" },
+    { name: "Problem Solving & Critical Thinking", level: 90, icon: "FaBrain" },
+    { name: "Project Management", level: 80, icon: "FaTasks" },
+    { name: "Time Management & Organization", level: 85, icon: "FaClock" },
+    { name: "Adaptability & Flexibility", level: 88, icon: "FaSyncAlt" },
+    { name: "Mentoring & Coaching", level: 82, icon: "FaChalkboardTeacher" },
+    { name: "Event Planning & Coordination", level: 85, icon: "FaCalendarCheck" },
+  ],
 };
 
 // Education

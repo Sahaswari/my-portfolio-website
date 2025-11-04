@@ -35,6 +35,7 @@ interface Certification {
   date: string;
   credentialUrl?: string;
   description?: string;
+  category?: string;
 }
 
 interface VolunteeringEvent {
@@ -821,6 +822,26 @@ function CertificationForm({ item: certification, updateField }: CertificationFo
           rows={3}
           placeholder="Brief description of the certification..."
         />
+      </div>
+      
+      <div>
+        <label className="block text-text mb-2">Category</label>
+        <select
+          value={certification.category || ''}
+          onChange={(e) => updateField('category', e.target.value)}
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+        >
+          <option value="">Select a category...</option>
+          <option value="AI/ML">AI & Machine Learning</option>
+          <option value="Data Science">Data Science</option>
+          <option value="Cloud">Cloud Computing</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Achievements">Achievements & Awards</option>
+          <option value="Leadership">Leadership & Management</option>
+          <option value="Volunteering">Volunteering Certificates</option>
+          <option value="Language">Language & Communication</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
       
       <div>

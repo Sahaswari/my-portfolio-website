@@ -1,17 +1,38 @@
 import { useState, useEffect } from "react";
-import { FaCertificate, FaExternalLinkAlt, FaCalendar, FaBuilding } from "react-icons/fa";
+import { FaCertificate, FaExternalLinkAlt, FaCalendar, FaBuilding, FaBrain, FaDatabase, FaCloud, FaCode, FaStar, FaTrophy, FaHandsHelping, FaUsers, FaLanguage } from "react-icons/fa";
 import { getCertifications, type Certification } from "../data/certifications";
 
 export default function Certifications() {
   const [certifications, setCertifications] = useState<Certification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  // Define categories with icons
+  const categories = [
+    { id: 'All', label: 'All Certifications', icon: FaStar },
+    { id: 'AI/ML', label: 'AI & Machine Learning', icon: FaBrain },
+    { id: 'Data Science', label: 'Data Science', icon: FaDatabase },
+    { id: 'Cloud', label: 'Cloud Computing', icon: FaCloud },
+    { id: 'Web Development', label: 'Web Development', icon: FaCode },
+    { id: 'Achievements', label: 'Achievements & Awards', icon: FaTrophy },
+    { id: 'Leadership', label: 'Leadership & Management', icon: FaUsers },
+    { id: 'Volunteering', label: 'Volunteering Certificates', icon: FaHandsHelping },
+    { id: 'Language', label: 'Language & Communication', icon: FaLanguage },
+  ];
 
   useEffect(() => {
-    // Load certifications from admin panel
-    const loadedCertifications = getCertifications();
-    setCertifications(loadedCertifications);
-    setLoading(false);
+    const loadCertifications = async () => {
+      const data = getCertifications();
+      setCertifications(data);
+      setLoading(false);
+    };
+    loadCertifications();
   }, []);
+
+  // Filter certifications by category
+  const filteredCertifications = activeCategory === 'All' 
+    ? certifications 
+    : certifications.filter(cert => cert.category === activeCategory);
 
   if (loading) {
     return (
@@ -42,19 +63,56 @@ export default function Certifications() {
         </div>
       </section>
 
+      {/* Category Tabs */}
+      <div className="container mx-auto px-6 md:px-20 py-8">
+        <div className="flex flex-wrap justify-center gap-3">
+          {categories.map((category) => {
+            const Icon = category.icon;
+            return (
+              <button
+                key={category.id}
+                onClick={() => setActiveCategory(category.id)}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeCategory === category.id
+                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg transform scale-105'
+                    : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 hover:border-green-300'
+                }`}
+              >
+                <Icon className="text-lg" />
+                <span>{category.label}</span>
+                <span className={`ml-1 px-2 py-0.5 rounded-full text-xs font-bold ${
+                  activeCategory === category.id
+                    ? 'bg-white/20 text-white'
+                    : 'bg-slate-100 text-slate-600'
+                }`}>
+                  {category.id === 'All' 
+                    ? certifications.length 
+                    : certifications.filter(cert => cert.category === category.id).length
+                  }
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Certifications Grid */}
-      <div className="container mx-auto px-6 md:px-20 py-16">
-        {certifications.length === 0 ? (
+      <div className="container mx-auto px-6 md:px-20 py-8">
+        {filteredCertifications.length === 0 ? (
           <div className="text-center py-20 bg-slate-50 rounded-lg shadow-md border border-slate-200">
             <div className="inline-block p-6 bg-green-50 rounded-full mb-6">
               <FaCertificate className="text-6xl text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">No Certifications Yet</h2>
-            <p className="text-slate-600 font-medium">Check back later for updates!</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              {activeCategory === 'All' ? 'No Certifications Yet' : `No Certifications in ${activeCategory}`}
+            </h2>
+            <p className="text-slate-600 font-medium">
+              {activeCategory === 'All' ? 'Check back later for updates!' : 'Try selecting a different category'}
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {certifications.map((cert) => (
+            {filteredCertifications.map((cert) => (
               <div
                 key={cert.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-green-500 group"

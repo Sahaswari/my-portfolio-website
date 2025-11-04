@@ -65,6 +65,7 @@ export default function About() {
     { title: "AI/ML & Data Science", icon: <FaBrain />, data: skills.aiml },
     { title: "Web Development", icon: <FaLaptopCode />, data: skills.webDev },
     { title: "Tools & Technologies", icon: <FaTools />, data: skills.tools },
+    { title: "Soft Skills & Leadership", icon: <FaUsers />, data: skills.softSkills },
   ];
 
   return (
