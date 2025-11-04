@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaGraduationCap,
   FaBriefcase,
@@ -14,6 +14,51 @@ import { personalInfo, skills, education, experience, volunteering } from "../da
 
 export default function About() {
   const [activeTab, setActiveTab] = useState<"education" | "experience">("education");
+  const [activeSection, setActiveSection] = useState<string>("who-i-am");
+
+  const sections = [
+    { id: "who-i-am", label: "Who I Am", icon: "👤" },
+    { id: "skills", label: "Skills & Technologies", icon: "💻" },
+    { id: "education-experience", label: "Education & Experience", icon: "🎓" },
+    { id: "volunteering", label: "Volunteering & Leadership", icon: "🤝" },
+  ];
+
+  // Track scroll position to highlight active section
+  useEffect(() => {
+    const sectionIds = ["who-i-am", "skills", "education-experience", "volunteering"];
+    
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200; // Offset for header
+      
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sectionIds[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(sectionIds[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 120; // Account for sticky header
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
 
   const skillCategories = [
     { title: "Programming Languages", icon: <FaCode />, data: skills.programming },
@@ -34,10 +79,32 @@ export default function About() {
         </div>
       </section>
 
+      {/* Quick Navigation Menu */}
+      <div className="sticky top-16 z-30 bg-white border-b-2 border-green-100 shadow-md">
+        <div className="container mx-auto px-6 md:px-20">
+          <nav className="flex overflow-x-auto py-4 gap-2">
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => scrollToSection(section.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-300 ${
+                  activeSection === section.id
+                    ? "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md shadow-green-500/30"
+                    : "bg-green-50 text-green-700 hover:bg-green-100 border border-green-200"
+                }`}
+              >
+                <span className="text-lg">{section.icon}</span>
+                {section.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="container mx-auto px-6 md:px-20 py-16">
         {/* About Description */}
-        <section className="mb-16">
+        <section id="who-i-am" className="mb-16 scroll-mt-32">
           <div className="bg-white rounded-xl shadow-lg p-8 md:p-10 border-2 border-green-100 relative overflow-hidden">
             {/* Decorative Corner Elements */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-green-200 to-transparent opacity-40"></div>
@@ -72,7 +139,7 @@ export default function About() {
         </section>
 
         {/* Skills Section */}
-        <section className="mb-16">
+        <section id="skills" className="mb-16 scroll-mt-32">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent mb-8 text-center font-serif">Skills & Technologies</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {skillCategories.map((category, index) => (
@@ -103,7 +170,7 @@ export default function About() {
         </section>
 
         {/* Education & Experience Section */}
-        <section className="mb-16">
+        <section id="education-experience" className="mb-16 scroll-mt-32">
           <div className="bg-white rounded-xl shadow-lg p-8 border border-green-100">
             {/* Tabs */}
             <div className="flex gap-4 mb-8 border-b border-green-200">
@@ -192,7 +259,7 @@ export default function About() {
         </section>
 
         {/* Volunteering Section */}
-        <section className="mb-16">
+        <section id="volunteering" className="mb-16 scroll-mt-32">
           <div className="text-center mb-10">
             <div className="inline-block mb-4">
               <span className="px-4 py-2 bg-green-50 text-green-600 text-sm font-semibold rounded-full border border-green-200">
