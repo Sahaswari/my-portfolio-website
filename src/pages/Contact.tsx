@@ -7,6 +7,8 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    company: "",
+    phone: "",
     subject: "",
     message: "",
   });
@@ -31,7 +33,7 @@ export default function Contact() {
       await sendContactEmail(formData);
       
       setStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", company: "", phone: "", subject: "", message: "" });
       
       // Reset success message after 5 seconds
       setTimeout(() => setStatus("idle"), 5000);
@@ -66,7 +68,7 @@ export default function Contact() {
   const socialLinks = [
     { icon: <FaGithub />, url: personalInfo.social.github, name: "GitHub" },
     { icon: <FaLinkedin />, url: personalInfo.social.linkedin, name: "LinkedIn" },
-    { icon: <FaTwitter />, url: personalInfo.social.twitter, name: "Twitter" },
+    { icon: <FaTwitter />, url: personalInfo.social.youtube, name: "YouTube" },
   ];
 
   return (
@@ -121,6 +123,38 @@ export default function Contact() {
                     required
                     className="w-full px-4 py-3 border-2 border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
                     placeholder="john@example.com"
+                  />
+                </div>
+
+                {/* Company (Optional) */}
+                <div>
+                  <label htmlFor="company" className="block text-green-900 font-semibold mb-2">
+                    Company Name <span className="text-green-600 text-sm">(Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                    placeholder="Your Company"
+                  />
+                </div>
+
+                {/* Phone (Optional) */}
+                <div>
+                  <label htmlFor="phone" className="block text-green-900 font-semibold mb-2">
+                    Mobile Number <span className="text-green-600 text-sm">(Optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                    placeholder="+94 12 345 6789"
                   />
                 </div>
 

@@ -4,6 +4,8 @@ import emailjs from '@emailjs/browser';
 interface ContactFormData {
   name: string;
   email: string;
+  company?: string;
+  phone?: string;
   subject: string;
   message: string;
 }
@@ -36,11 +38,29 @@ export async function sendContactEmail(formData: ContactFormData): Promise<void>
     });
 
     // Send email using EmailJS
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    const timeStr = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true 
+    });
+
     const templateParams = {
       from_name: formData.name,
       from_email: formData.email,
+      company: formData.company || "Not provided",
+      phone: formData.phone || "Not provided",
       subject: formData.subject,
       message: formData.message,
+      date: dateStr,
+      time: timeStr,
       to_name: "Sahaswari Senanayaka", // Your name
     };
 
