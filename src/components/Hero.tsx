@@ -1,4 +1,5 @@
 import profileImage from '../assets/profile.jpg';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
@@ -51,15 +52,15 @@ export default function Hero() {
                 </svg>
                 Download Resume
               </a>
-              <a
-                href="#projects"
+              <Link
+                to="/projects#projects"
                 className="group px-8 py-4 border-2 border-slate-300 text-slate-700 font-semibold rounded-lg hover:border-green-600 hover:text-green-600 transition-all duration-200 flex items-center gap-2"
               >
                 View Projects
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </a>
+              </Link>
             </div>
           </div>
 

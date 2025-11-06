@@ -11,8 +11,8 @@ export default function Projects() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-sky-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-600 to-green-800 text-white py-20 pt-28">
+  {/* Hero Section */}
+  <section id="projects" className="bg-gradient-to-r from-green-600 to-green-800 text-white py-20 pt-28">
         <div className="container mx-auto px-6 md:px-20">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-serif">My Projects</h1>
           <p className="text-xl text-green-100 max-w-3xl">

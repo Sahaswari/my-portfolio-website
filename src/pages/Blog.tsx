@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import { FaRocket } from "react-icons/fa";
 import { FiCalendar, FiClock, FiTag } from "react-icons/fi";
 import { getBlogs, type BlogPost } from "../data/blogs";
@@ -161,12 +162,15 @@ export default function Blog() {
                 </div>
 
                 <div className="mt-4">
-                  <button className="inline-flex items-center gap-2 text-green-600 font-semibold hover:text-green-700 transition-colors">
-                    <span>Read More</span>
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
+                    <Link
+                      to={`/blog/${blog.id}`}
+                      className="inline-flex items-center gap-2 text-green-600 font-semibold hover:text-green-700 transition-colors"
+                    >
+                      <span>Read More</span>
+                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
                 </div>
               </div>
             </article>
