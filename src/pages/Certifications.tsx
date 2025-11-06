@@ -117,6 +117,9 @@ export default function Certifications() {
                 key={cert.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-green-500 group"
               >
+                {cert.image && (
+                  <img src={cert.image} alt={cert.name} className="w-full h-48 object-cover" />
+                )}
                 {/* Certificate Badge Header */}
                 <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 text-center border-b border-slate-200">
                   <FaCertificate className="text-6xl text-green-600 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />

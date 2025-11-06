@@ -7,7 +7,8 @@ export interface Certification {
   date: string;
   credentialUrl?: string;
   description?: string;
-  category?: string; // Category for filtering: AI/ML, Data Science, Cloud, Web Development, etc.
+  category?: string;
+  image?: string;
 }
 
 // Load certifications from localStorage or use defaults

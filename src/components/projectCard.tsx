@@ -10,9 +10,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group border border-slate-200 hover:border-green-500">
       {/* Project Image */}
       <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
-        {project.image ? (
+        {project.images && project.images[0] ? (
           <img
-            src={project.image}
+            src={project.images[0]}
             alt={project.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {

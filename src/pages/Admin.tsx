@@ -26,6 +26,7 @@ interface Achievement {
   date: string;
   type: 'award' | 'certification' | 'competition' | 'publication';
   icon: string;
+  image?: string;
 }
 
 interface Certification {
@@ -36,6 +37,7 @@ interface Certification {
   credentialUrl?: string;
   description?: string;
   category?: string;
+  image?: string;
 }
 
 interface VolunteeringEvent {
@@ -139,7 +141,7 @@ export default function Admin() {
         category: 'AI/ML',
         description: '',
         longDescription: '',
-        image: '',
+        images: [],
         technologies: [],
         githubUrl: '',
         liveUrl: '',
@@ -165,7 +167,8 @@ export default function Admin() {
         description: '',
         date: new Date().toISOString().split('T')[0],
         type: 'award',
-        icon: 'FiAward'
+        icon: 'FiAward',
+        image: ''
       };
     } else if (activeTab === 'certifications') {
       newItem = {
@@ -174,7 +177,8 @@ export default function Admin() {
         issuer: '',
         date: new Date().toISOString().split('T')[0],
         credentialUrl: '',
-        description: ''
+        description: '',
+        image: ''
       };
     } else {
       // volunteering
@@ -556,14 +560,46 @@ function ProjectForm({ item: project, updateField }: ProjectFormProps) {
       </div>
       
       <div>
-        <label className="block text-text mb-2">Image URL</label>
+        <label className="block text-text mb-2">Images</label>
         <input
-          type="text"
-          value={project.image}
-          onChange={(e) => updateField('image', e.target.value)}
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files) {
+              const files = Array.from(e.target.files);
+              const readers = files.map(file => {
+                return new Promise<string>((resolve, reject) => {
+                  const reader = new FileReader();
+                  reader.onloadend = () => resolve(reader.result as string);
+                  reader.onerror = reject;
+                  reader.readAsDataURL(file);
+                });
+              });
+              Promise.all(readers).then(images => {
+                updateField('images', [...(project.images || []), ...images]);
+              });
+            }
+          }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
-          placeholder="/projects/project-name.jpg"
         />
+        <div className="mt-2 flex flex-wrap gap-2">
+          {(project.images || []).map((image, index) => (
+            <div key={index} className="relative">
+              <img src={image} alt={`Project image ${index + 1}`} className="w-24 h-24 object-cover rounded-lg" />
+              <button
+                type="button"
+                onClick={() => {
+                  const newImages = project.images.filter((_, i) => i !== index);
+                  updateField('images', newImages);
+                }}
+                className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+              >
+                <FiTrash2 />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
       
       <div>
@@ -686,14 +722,33 @@ function BlogForm({ item: blog, updateField }: BlogFormProps) {
       </div>
       
       <div>
-        <label className="block text-text mb-2">Image URL</label>
+        <label className="block text-text mb-2">Image</label>
         <input
-          type="text"
-          value={blog.image}
-          onChange={(e) => updateField('image', e.target.value)}
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                updateField('image', reader.result as string);
+              };
+              reader.readAsDataURL(e.target.files[0]);
+            }
+          }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
-          placeholder="/blog/blog-image.jpg"
         />
+        {blog.image && (
+          <div className="mt-2 relative w-32 h-32">
+            <img src={blog.image} alt="Blog post" className="w-full h-full object-cover rounded-lg" />
+            <button
+              type="button"
+              onClick={() => updateField('image', '')}
+              className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+            >
+              <FiTrash2 />
+            </button>
+          </div>
+        )}
       </div>
       
       <div className="grid grid-cols-2 gap-4">
@@ -775,6 +830,35 @@ function AchievementForm({ item: achievement, updateField }: AchievementFormProp
           onChange={(e) => updateField('date', e.target.value)}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
         />
+      </div>
+      <div>
+        <label className="block text-text mb-2">Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                updateField('image', reader.result as string);
+              };
+              reader.readAsDataURL(e.target.files[0]);
+            }
+          }}
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+        />
+        {achievement.image && (
+          <div className="mt-2 relative w-32 h-32">
+            <img src={achievement.image} alt="Achievement" className="w-full h-full object-cover rounded-lg" />
+            <button
+              type="button"
+              onClick={() => updateField('image', '')}
+              className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+            >
+              <FiTrash2 />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -864,6 +948,35 @@ function CertificationForm({ item: certification, updateField }: CertificationFo
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
           required
         />
+      </div>
+      <div>
+        <label className="block text-text mb-2">Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                updateField('image', reader.result as string);
+              };
+              reader.readAsDataURL(e.target.files[0]);
+            }
+          }}
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+        />
+        {certification.image && (
+          <div className="mt-2 relative w-32 h-32">
+            <img src={certification.image} alt="Certification" className="w-full h-full object-cover rounded-lg" />
+            <button
+              type="button"
+              onClick={() => updateField('image', '')}
+              className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+            >
+              <FiTrash2 />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
