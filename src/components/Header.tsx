@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaLaptopCode } from "react-icons/fa";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,42 +36,39 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white shadow-md py-4"
-          : "bg-transparent py-6"
-      }`}
+      className={`site-header w-full backdrop-blur-sm ${isScrolled ? "scrolled" : ""}`}
+      role="banner"
     >
       <nav className="container mx-auto px-6 md:px-20">
-        <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+            className="flex items-center gap-3 text-lg font-semibold text-slate-900 hover:text-green-600 transition-colors duration-200 group"
+            aria-label="Home"
           >
-            <span className="text-blue-600">{"<"}</span>
-            SS
-            <span className="text-blue-600">{" />"}</span>
+            <div className="flex items-center" aria-hidden="true">
+              {/* Accent box with centered icon inside */}
+              <span className="site-logo-accent flex items-center justify-center">
+                <FaLaptopCode className="text-green-600 w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+              </span>
+            </div>
+            <span className="text-slate-900 group-hover:text-green-600 transition-colors duration-200">Sahaswari Senanayaka</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center space-x-8">
+          <ul className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <li key={link.path}>
                 <Link
                   to={link.path}
-                  className={`text-sm font-medium transition-colors relative group ${
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                     isActive(link.path)
-                      ? "text-blue-600"
-                      : "text-gray-700 hover:text-blue-600"
+                      ? "text-white bg-gradient-to-r from-green-500 to-green-600 shadow-md shadow-green-500/30"
+                      : "text-slate-700 hover:text-green-600 hover:bg-green-50/80"
                   }`}
                 >
                   {link.name}
-                  <span
-                    className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full ${
-                      isActive(link.path) ? "w-full" : ""
-                    }`}
-                  ></span>
                 </Link>
               </li>
             ))}
@@ -82,7 +79,7 @@ export default function Header() {
             <a
               href="/resume.pdf"
               download
-              className="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+              className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-semibold rounded-lg shadow-md shadow-green-500/30 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:shadow-green-600/40 transform hover:-translate-y-0.5 transition-all duration-200"
             >
               Download CV
             </a>
@@ -91,7 +88,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-2xl text-gray-900 hover:text-blue-600 transition-colors"
+            className="md:hidden text-2xl text-slate-700 hover:text-green-600 transition-colors"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
@@ -100,16 +97,16 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 px-6 animate-slideDown">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-2xl py-6 px-6 border-t border-green-100 animate-slideIn">
             <ul className="space-y-4">
               {navLinks.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className={`block text-base font-medium transition-colors ${
+                    className={`block text-base font-semibold transition-all duration-300 py-2 px-4 rounded-lg ${
                       isActive(link.path)
-                        ? "text-blue-600"
-                        : "text-gray-700 hover:text-blue-600"
+                        ? "text-white bg-gradient-to-r from-green-500 to-green-600 shadow-md shadow-green-500/30"
+                        : "text-gray-700 hover:text-green-600 hover:bg-green-50"
                     }`}
                   >
                     {link.name}
@@ -120,7 +117,7 @@ export default function Header() {
                 <a
                   href="/resume.pdf"
                   download
-                  className="block px-5 py-2.5 bg-blue-600 text-white text-center text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                  className="block px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white text-center text-sm font-semibold rounded-lg shadow-md shadow-green-500/30 hover:shadow-lg hover:shadow-green-600/40 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300"
                 >
                   Download CV
                 </a>

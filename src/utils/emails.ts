@@ -1,59 +1,91 @@
 // Email utility functions for contact form
+import emailjs from '@emailjs/browser';
 
 interface ContactFormData {
   name: string;
   email: string;
+  company?: string;
+  phone?: string;
   subject: string;
   message: string;
 }
 
-// Option 1: Using EmailJS (Recommended for frontend-only solution)
-// Sign up at https://www.emailjs.com/ and get your credentials
-export async function sendContactEmail(formData: ContactFormData): Promise<void> {
-  // Using fetch to send email via EmailJS
-  // You need to replace these with your actual EmailJS credentials
-  // Uncomment these when you have EmailJS credentials
-  /*
-  const EMAILJS_SERVICE_ID = "your_service_id"; // Replace with your EmailJS service ID
-  const EMAILJS_TEMPLATE_ID = "your_template_id"; // Replace with your EmailJS template ID
-  const EMAILJS_PUBLIC_KEY = "your_public_key"; // Replace with your EmailJS public key
+// EmailJS Configuration
+// Get credentials from environment variables
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "";
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "";
 
-  // Uncomment this when you have EmailJS credentials
-  /*
-  const emailData = {
-    service_id: EMAILJS_SERVICE_ID,
-    template_id: EMAILJS_TEMPLATE_ID,
-    user_id: EMAILJS_PUBLIC_KEY,
-    template_params: {
+// Initialize EmailJS with public key
+if (EMAILJS_PUBLIC_KEY) {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
+// Main function to send contact form emails
+export async function sendContactEmail(formData: ContactFormData): Promise<void> {
+  try {
+    // Check if EmailJS credentials are configured
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      console.warn("EmailJS credentials not configured. Please set up your credentials.");
+      console.log("Form data that would be sent:", formData);
+      throw new Error("Email service not configured. Please contact the administrator.");
+    }
+
+    console.log("Sending email with credentials:", {
+      serviceId: EMAILJS_SERVICE_ID,
+      templateId: EMAILJS_TEMPLATE_ID,
+      publicKey: EMAILJS_PUBLIC_KEY ? "configured" : "missing"
+    });
+
+    // Send email using EmailJS
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    const timeStr = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true 
+    });
+
+    const templateParams = {
       from_name: formData.name,
       from_email: formData.email,
+      company: formData.company || "Not provided",
+      phone: formData.phone || "Not provided",
       subject: formData.subject,
       message: formData.message,
-      to_name: "Sahaswari Samoda", // Your name
-    },
-  };
-  
-  const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(emailData),
-  });
+      date: dateStr,
+      time: timeStr,
+      to_name: "Sahaswari Senanayaka", // Your name
+    };
 
-  if (!response.ok) {
-    throw new Error("Failed to send email");
+    const response = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams
+    );
+
+    console.log("Email sent successfully:", response);
+    return Promise.resolve();
+  } catch (error: unknown) {
+    console.error("Error sending email:", error);
+    
+    // Provide more specific error messages
+    const emailError = error as { text?: string; status?: number };
+    
+    if (emailError.text) {
+      throw new Error(`Email failed: ${emailError.text}`);
+    } else if (emailError.status) {
+      throw new Error(`Email service error (${emailError.status}). Please check your EmailJS configuration.`);
+    } else {
+      throw new Error("Failed to send email. Please try again or contact me directly.");
+    }
   }
-  */
-
-  // For now, just log to console (remove this when implementing real email service)
-  console.log("Email would be sent with data:", formData);
-  
-  // Simulate API call delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  
-  // Simulate success (remove this when implementing real email service)
-  return Promise.resolve();
 }
 
 // Option 2: Using a custom backend API

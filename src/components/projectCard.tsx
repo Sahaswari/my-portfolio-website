@@ -7,28 +7,28 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 group">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group border border-slate-200 hover:border-green-500">
       {/* Project Image */}
-      <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500 overflow-hidden">
-        {project.image ? (
+      <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
+        {project.images && project.images[0] ? (
           <img
-            src={project.image}
+            src={project.images[0]}
             alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {
               // Fallback if image doesn't exist
               e.currentTarget.style.display = "none";
             }}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-white text-4xl font-bold">
+          <div className="w-full h-full flex items-center justify-center text-slate-600 text-4xl font-bold">
             {project.title.charAt(0)}
           </div>
         )}
         
         {/* Category Badge */}
         <div className="absolute top-4 right-4">
-          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-blue-600 text-xs font-semibold rounded-full">
+          <span className="px-3 py-1 bg-white text-green-600 text-xs font-semibold rounded-md shadow-md border border-green-200">
             {project.category}
           </span>
         </div>
@@ -36,8 +36,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         {/* Featured Badge */}
         {project.featured && (
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-yellow-400 text-gray-900 text-xs font-semibold rounded-full">
-              ⭐ Featured
+            <span className="px-3 py-1 bg-green-600 text-white text-xs font-semibold rounded-md shadow-md">
+              FEATURED
             </span>
           </div>
         )}
@@ -46,12 +46,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       {/* Project Content */}
       <div className="p-6">
         {/* Title */}
-        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
+        <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-1">
           {project.title}
         </h3>
 
         {/* Date */}
-        <p className="text-sm text-gray-500 mb-3">
+        <p className="text-sm text-slate-500 mb-3 font-medium">
           {new Date(project.date).toLocaleDateString("en-US", {
             month: "short",
             year: "numeric",
@@ -59,7 +59,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </p>
 
         {/* Description */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+        <p className="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed">
           {project.description}
         </p>
 
@@ -68,13 +68,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {project.technologies.slice(0, 4).map((tech, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded"
+              className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-md"
             >
               {tech}
             </span>
           ))}
           {project.technologies.length > 4 && (
-            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded">
+            <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">
               +{project.technologies.length - 4} more
             </span>
           )}
@@ -87,9 +87,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-md hover:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-200"
             >
-              <FaGithub />
+              <FaGithub className="text-lg" />
               Code
             </a>
           )}
@@ -98,9 +98,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border-2 border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:border-green-600 hover:text-green-600 transition-all duration-200"
             >
-              <FaExternalLinkAlt />
+              <FaExternalLinkAlt className="text-sm" />
               Live
             </a>
           )}
@@ -109,9 +109,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border border-purple-600 text-purple-600 text-sm font-medium rounded-lg hover:bg-purple-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border-2 border-slate-300 text-slate-700 text-sm font-semibold rounded-md hover:border-green-600 hover:text-green-600 transition-all duration-200"
             >
-              <FaVideo />
+              <FaVideo className="text-sm" />
               Demo
             </a>
           )}

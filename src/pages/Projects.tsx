@@ -10,12 +10,12 @@ export default function Projects() {
   const filteredProjects = getProjectsByCategory(selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-sky-50">
+  {/* Hero Section */}
+  <section id="projects" className="bg-gradient-to-r from-green-600 to-green-800 text-white py-20 pt-28">
         <div className="container mx-auto px-6 md:px-20">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">My Projects</h1>
-          <p className="text-xl text-purple-100 max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-serif">My Projects</h1>
+          <p className="text-xl text-green-100 max-w-3xl">
             A collection of projects showcasing my expertise in AI/ML, Software Development, and Data Science
           </p>
         </div>
@@ -30,10 +30,10 @@ export default function Projects() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2.5 rounded-full font-medium transition-all ${
+                className={`px-6 py-2.5 rounded-full font-semibold transition-all duration-300 ${
                   selectedCategory === category
-                    ? "bg-purple-600 text-white shadow-lg scale-105"
-                    : "bg-white text-gray-700 hover:bg-gray-100 shadow"
+                    ? "bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg scale-105"
+                    : "bg-white text-gray-700 hover:bg-green-50 hover:text-green-600 shadow-md border border-green-100"
                 }`}
               >
                 {category}
@@ -44,8 +44,8 @@ export default function Projects() {
 
         {/* Project Count */}
         <div className="text-center mb-8">
-          <p className="text-gray-600">
-            Showing <span className="font-semibold text-purple-600">{filteredProjects.length}</span>{" "}
+          <p className="text-green-800 text-lg font-semibold">
+            Showing <span className="font-bold text-green-600 text-xl">{filteredProjects.length}</span>{" "}
             {filteredProjects.length === 1 ? "project" : "projects"}
           </p>
         </div>
@@ -64,15 +64,15 @@ export default function Projects() {
         )}
 
         {/* CTA Section */}
-        <section className="mt-20 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-10 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">Interested in Working Together?</h2>
-          <p className="text-lg text-purple-100 mb-6 max-w-2xl mx-auto">
+        <section className="mt-20 bg-white rounded-2xl p-10 text-center border border-green-200 shadow-lg">
+          <h2 className="text-3xl font-bold mb-4 font-serif bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">Interested in Working Together?</h2>
+          <p className="text-lg text-green-800 mb-6 max-w-2xl mx-auto font-medium">
             I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a
               href="/contact"
-              className="px-8 py-3 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
+              className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             >
               Get in Touch
             </a>
@@ -80,7 +80,7 @@ export default function Projects() {
               href="https://github.com/yourusername"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-purple-600 transition-colors"
+              className="px-8 py-3 border-2 border-green-600 text-green-700 font-semibold rounded-lg hover:bg-green-50 transition-all duration-300"
             >
               View GitHub
             </a>
