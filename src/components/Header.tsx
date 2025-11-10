@@ -82,7 +82,7 @@ export default function Header() {
             <a
               href="/resume.pdf"
               download
-              className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-semibold rounded-lg shadow-md shadow-green-500/30 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:shadow-green-600/40 transform hover:-translate-y-0.5 transition-all duration-200"
+              className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-semibold rounded-lg shadow-md shadow-green-500/30 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:shadow-green-600/40 transform hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap"
             >
               Download CV
             </a>
@@ -121,7 +121,7 @@ export default function Header() {
                 <a
                   href="/resume.pdf"
                   download
-                  className="block px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white text-center text-sm font-semibold rounded-lg shadow-md shadow-green-500/30 hover:shadow-lg hover:shadow-green-600/40 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300"
+                  className="block px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white text-center text-sm font-semibold rounded-lg shadow-md shadow-green-500/30 hover:shadow-lg hover:shadow-green-600/40 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 whitespace-nowrap"
                 >
                   Download CV
                 </a>
