@@ -46,6 +46,7 @@ interface VolunteeringEvent {
   description: string;
   role: string;
   impact: string;
+  image?: string;
 }
 
 interface Volunteering {
@@ -56,6 +57,7 @@ interface Volunteering {
   period: string;
   description: string;
   logo?: string;
+  image?: string;
   events: VolunteeringEvent[];
   achievements: string[];
 }
@@ -66,6 +68,46 @@ const ADMIN_CREDENTIALS: AdminUser = {
   username: import.meta.env.VITE_ADMIN_USERNAME || 'admin',
   password: import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'
 };
+
+// Helper function to resize and compress images
+const resizeImage = (file: File, maxWidth = 800, maxHeight = 800): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round(height * (maxWidth / width));
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round(width * (maxHeight / height));
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          return reject(new Error('Could not get canvas context'));
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.8)); // Use JPEG format with 80% quality
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
+};
+
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -190,6 +232,7 @@ export default function Admin() {
         period: '',
         description: '',
         logo: '',
+        image: '',
         events: [],
         achievements: []
       };
@@ -369,16 +412,6 @@ export default function Admin() {
             Blogs ({blogs.length})
           </button>
           <button
-            onClick={() => setActiveTab('achievements')}
-            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-              activeTab === 'achievements'
-                ? 'bg-primary text-light'
-                : 'bg-light text-text hover:bg-gray-200'
-            }`}
-          >
-            Achievements ({achievements.length})
-          </button>
-          <button
             onClick={() => setActiveTab('certifications')}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === 'certifications'
@@ -387,6 +420,16 @@ export default function Admin() {
             }`}
           >
             Certifications ({certifications.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('achievements')}
+            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+              activeTab === 'achievements'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
+            }`}
+          >
+            Achievements ({achievements.length})
           </button>
           <button
             onClick={() => setActiveTab('volunteering')}
@@ -565,20 +608,17 @@ function ProjectForm({ item: project, updateField }: ProjectFormProps) {
           type="file"
           multiple
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files) {
               const files = Array.from(e.target.files);
-              const readers = files.map(file => {
-                return new Promise<string>((resolve, reject) => {
-                  const reader = new FileReader();
-                  reader.onloadend = () => resolve(reader.result as string);
-                  reader.onerror = reject;
-                  reader.readAsDataURL(file);
-                });
-              });
-              Promise.all(readers).then(images => {
-                updateField('images', [...(project.images || []), ...images]);
-              });
+              try {
+                const resizedImages = await Promise.all(
+                  files.map(file => resizeImage(file))
+                );
+                updateField('images', [...(project.images || []), ...resizedImages]);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -726,13 +766,14 @@ function BlogForm({ item: blog, updateField }: BlogFormProps) {
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                updateField('image', reader.result as string);
-              };
-              reader.readAsDataURL(e.target.files[0]);
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -836,13 +877,14 @@ function AchievementForm({ item: achievement, updateField }: AchievementFormProp
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                updateField('image', reader.result as string);
-              };
-              reader.readAsDataURL(e.target.files[0]);
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -954,13 +996,14 @@ function CertificationForm({ item: certification, updateField }: CertificationFo
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                updateField('image', reader.result as string);
-              };
-              reader.readAsDataURL(e.target.files[0]);
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -994,14 +1037,15 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
     date: '',
     description: '',
     role: '',
-    impact: ''
+    impact: '',
+    image: ''
   });
   const [newAchievement, setNewAchievement] = useState('');
 
   const handleAddEvent = () => {
     if (newEvent.name && newEvent.date && newEvent.description) {
       updateField('events', [...volunteering.events, newEvent]);
-      setNewEvent({ name: '', date: '', description: '', role: '', impact: '' });
+      setNewEvent({ name: '', date: '', description: '', role: '', impact: '', image: '' });
     }
   };
 
@@ -1098,6 +1142,37 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
         />
       </div>
 
+      <div>
+        <label className="block text-text mb-2">Image (Optional)</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={async (e) => {
+            if (e.target.files && e.target.files[0]) {
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
+            }
+          }}
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+        />
+        {volunteering.image && (
+          <div className="mt-2 relative w-32 h-32">
+            <img src={volunteering.image} alt="Volunteering" className="w-full h-full object-cover rounded-lg" />
+            <button
+              type="button"
+              onClick={() => updateField('image', '')}
+              className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+            >
+              <FiTrash2 />
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Events Section */}
       <div className="border-t border-gray-300 pt-4">
         <h3 className="text-lg font-semibold text-primary mb-4">Events Organized</h3>
@@ -1113,6 +1188,7 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
                     <p className="text-sm text-gray-600">{event.date} • {event.role}</p>
                     <p className="text-sm text-text mt-1">{event.description}</p>
                     <p className="text-xs text-green-600 mt-1">Impact: {event.impact}</p>
+                    {event.image && <img src={event.image} alt={event.name} className="w-16 h-16 object-cover rounded-md mt-2" />}
                   </div>
                   <button
                     type="button"
@@ -1167,6 +1243,36 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
             rows={2}
             placeholder="Event description"
           />
+          <div>
+            <label className="block text-text text-sm mb-1">Event Image (Optional)</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                if (e.target.files && e.target.files[0]) {
+                  try {
+                    const resizedImage = await resizeImage(e.target.files[0]);
+                    setNewEvent({ ...newEvent, image: resizedImage });
+                  } catch (error) {
+                    console.error("Image resizing failed:", error);
+                  }
+                }
+              }}
+              className="w-full px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+            />
+            {newEvent.image && (
+              <div className="mt-2 relative w-24 h-24">
+                <img src={newEvent.image} alt="New event" className="w-full h-full object-cover rounded-lg" />
+                <button
+                  type="button"
+                  onClick={() => setNewEvent({ ...newEvent, image: '' })}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
+            )}
+          </div>
           <button
             type="button"
             onClick={handleAddEvent}

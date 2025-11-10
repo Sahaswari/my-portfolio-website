@@ -27,6 +27,7 @@ export default function Header() {
     { name: "Projects", path: "/projects" },
     { name: "Blog", path: "/blog" },
     { name: "Certifications", path: "/certifications" },
+    { name: "Volunteering", path: "/volunteering" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -39,7 +40,7 @@ export default function Header() {
       className={`site-header w-full backdrop-blur-sm ${isScrolled ? "scrolled" : ""}`}
       role="banner"
     >
-      <nav className="container mx-auto px-6 md:px-20">
+      <nav className="container mx-auto px-6 md:px-25">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           {/* Logo */}
           <Link
@@ -56,26 +57,28 @@ export default function Header() {
             <span className="text-slate-900 group-hover:text-green-600 transition-colors duration-200">Sahaswari Senanayaka</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <li key={link.path}>
-                <Link
-                  to={link.path}
-                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                    isActive(link.path)
-                      ? "text-white bg-gradient-to-r from-green-500 to-green-600 shadow-md shadow-green-500/30"
-                      : "text-slate-700 hover:text-green-600 hover:bg-green-50/80"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/* Right side container */}
+          <div className="hidden md:flex items-center">
+            {/* Desktop Navigation */}
+            <ul className="flex items-center space-x-1">
+              {navLinks.map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                      isActive(link.path)
+                        ? "text-white bg-gradient-to-r from-green-500 to-green-600 shadow-md shadow-green-500/30"
+                        : "text-slate-700 hover:text-green-600 hover:bg-green-50/80"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+            {/* CTA Button */}
+            <div className="ml-4">
             <a
               href="/resume.pdf"
               download
@@ -83,6 +86,7 @@ export default function Header() {
             >
               Download CV
             </a>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
