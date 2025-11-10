@@ -43,7 +43,7 @@ export default function Hero() {
             </p>
             
             <div className="flex flex-wrap gap-4 pt-4">
-              <a
+              {/* <a
                 href="/resume.pdf"
                 className="group px-8 py-4 bg-green-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-green-700 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
               >
@@ -51,7 +51,7 @@ export default function Hero() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Download Resume
-              </a>
+              </a> */}
               <Link
                 to="/projects#projects"
                 className="group px-8 py-4 border-2 border-slate-300 text-slate-700 font-semibold rounded-lg hover:border-green-600 hover:text-green-600 transition-all duration-200 flex items-center gap-2"
