@@ -234,6 +234,65 @@ export default function Admin() {
     }
   };
 
+  const handleExportData = () => {
+    // Get all data from localStorage
+    const allData = {
+      projects: projects.length > 0 ? projects : JSON.parse(localStorage.getItem('portfolioProjects') || '[]'),
+      blogs: blogs.length > 0 ? blogs : JSON.parse(localStorage.getItem('portfolioBlogs') || '[]'),
+      achievements: achievements.length > 0 ? achievements : JSON.parse(localStorage.getItem('portfolioAchievements') || '[]'),
+      certifications: certifications.length > 0 ? certifications : JSON.parse(localStorage.getItem('portfolioCertifications') || '[]'),
+      volunteering: volunteering.length > 0 ? volunteering : JSON.parse(localStorage.getItem('portfolioVolunteering') || '[]'),
+      exportDate: new Date().toISOString()
+    };
+
+    // Create blob and download
+    const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `portfolio-data-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    alert('Data exported successfully! Check your downloads folder.');
+  };
+
+  const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string);
+        
+        // Validate data structure
+        if (!data.projects || !data.blogs || !data.achievements || !data.certifications || !data.volunteering) {
+          alert('Invalid data format. Please check the file.');
+          return;
+        }
+
+        // Import data to localStorage
+        localStorage.setItem('portfolioProjects', JSON.stringify(data.projects));
+        localStorage.setItem('portfolioBlogs', JSON.stringify(data.blogs));
+        localStorage.setItem('portfolioAchievements', JSON.stringify(data.achievements));
+        localStorage.setItem('portfolioCertifications', JSON.stringify(data.certifications));
+        localStorage.setItem('portfolioVolunteering', JSON.stringify(data.volunteering));
+
+        // Reload data
+        loadData();
+        
+        alert('Data imported successfully! All content has been updated.');
+      } catch (error) {
+        alert('Error importing data. Please check the file format.');
+        console.error('Import error:', error);
+      }
+    };
+    reader.readAsText(file);
+  };
+
   const saveData = (type: 'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering', data: ContentItem[]) => {
     const key = `portfolio${type.charAt(0).toUpperCase() + type.slice(1)}`;
     localStorage.setItem(key, JSON.stringify(data));
@@ -450,13 +509,38 @@ export default function Admin() {
       <header className="bg-light border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold font-serif text-primary">Portfolio Admin Panel</h1>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-light rounded-lg transition-colors"
-          >
-            <FiLogOut />
-            Logout
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Export Button */}
+            <button
+              onClick={handleExportData}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-semibold"
+              title="Export all data to JSON file"
+            >
+              <FiSave />
+              Export Data
+            </button>
+            
+            {/* Import Button */}
+            <label className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors cursor-pointer text-sm font-semibold">
+              <FiPlus />
+              Import Data
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleImportData}
+                className="hidden"
+              />
+            </label>
+            
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-light rounded-lg transition-colors"
+            >
+              <FiLogOut />
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 
