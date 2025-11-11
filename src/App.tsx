@@ -8,6 +8,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import Certifications from "./pages/Certifications";
+import VolunteeringPage from "./pages/Volunteering";
 import Admin from "./pages/Admin";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:id" element={<BlogPost />} />
                   <Route path="/certifications" element={<Certifications />} />
+                  <Route path="/volunteering" element={<VolunteeringPage />} />
                   <Route path="/contact" element={<Contact />} />
                 </Routes>
               </main>

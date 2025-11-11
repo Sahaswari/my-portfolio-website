@@ -46,6 +46,7 @@ interface VolunteeringEvent {
   description: string;
   role: string;
   impact: string;
+  image?: string;
 }
 
 interface Volunteering {
@@ -56,6 +57,7 @@ interface Volunteering {
   period: string;
   description: string;
   logo?: string;
+  image?: string;
   events: VolunteeringEvent[];
   achievements: string[];
 }
@@ -67,11 +69,51 @@ const ADMIN_CREDENTIALS: AdminUser = {
   password: import.meta.env.VITE_ADMIN_PASSWORD || 'admin123'
 };
 
+// Helper function to resize and compress images
+const resizeImage = (file: File, maxWidth = 800, maxHeight = 800): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round(height * (maxWidth / width));
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round(width * (maxHeight / height));
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          return reject(new Error('Could not get canvas context'));
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.8)); // Use JPEG format with 80% quality
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
+};
+
+
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering' | 'cv'>('projects');
   const [projects, setProjects] = useState<Project[]>([]);
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -79,6 +121,8 @@ export default function Admin() {
   const [volunteering, setVolunteering] = useState<Volunteering[]>([]);
   const [editingItem, setEditingItem] = useState<ContentItem | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [cvUploading, setCvUploading] = useState(false);
+  const [cvStatus, setCvStatus] = useState<string>('');
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
@@ -118,6 +162,135 @@ export default function Admin() {
     localStorage.removeItem('adminAuth');
     setUsername('');
     setPassword('');
+  };
+
+  const handleCvUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate PDF file
+    if (file.type !== 'application/pdf') {
+      setCvStatus('Error: Please upload a PDF file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setCvStatus('Error: File size should be less than 5MB');
+      return;
+    }
+
+    setCvUploading(true);
+    setCvStatus('Uploading CV...');
+
+    try {
+      // Convert PDF to base64 and store in localStorage
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result as string;
+        localStorage.setItem('portfolioCV', JSON.stringify({
+          name: file.name,
+          data: base64,
+          uploadDate: new Date().toISOString()
+        }));
+        setCvStatus('CV uploaded successfully! ✓');
+        setCvUploading(false);
+        
+        // Note: In production, you would actually upload this to your public folder
+        // For now, we're storing it in localStorage as a demo
+        setTimeout(() => {
+          setCvStatus('Note: To use this CV on your site, copy the PDF to /public/resume.pdf');
+        }, 3000);
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      setCvStatus('Error uploading CV. Please try again.');
+      setCvUploading(false);
+    }
+  };
+
+  const handleDownloadStoredCv = () => {
+    const storedCv = localStorage.getItem('portfolioCV');
+    if (!storedCv) {
+      alert('No CV stored in admin panel');
+      return;
+    }
+
+    const cvData = JSON.parse(storedCv);
+    const link = document.createElement('a');
+    link.href = cvData.data;
+    link.download = cvData.name || 'resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDeleteStoredCv = () => {
+    if (confirm('Are you sure you want to delete the stored CV?')) {
+      localStorage.removeItem('portfolioCV');
+      setCvStatus('CV deleted successfully');
+      // Force re-render by clearing status after a delay
+      setTimeout(() => setCvStatus(''), 3000);
+    }
+  };
+
+  const handleExportData = () => {
+    // Get all data from localStorage
+    const allData = {
+      projects: projects.length > 0 ? projects : JSON.parse(localStorage.getItem('portfolioProjects') || '[]'),
+      blogs: blogs.length > 0 ? blogs : JSON.parse(localStorage.getItem('portfolioBlogs') || '[]'),
+      achievements: achievements.length > 0 ? achievements : JSON.parse(localStorage.getItem('portfolioAchievements') || '[]'),
+      certifications: certifications.length > 0 ? certifications : JSON.parse(localStorage.getItem('portfolioCertifications') || '[]'),
+      volunteering: volunteering.length > 0 ? volunteering : JSON.parse(localStorage.getItem('portfolioVolunteering') || '[]'),
+      exportDate: new Date().toISOString()
+    };
+
+    // Create blob and download
+    const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `portfolio-data-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    alert('Data exported successfully! Check your downloads folder.');
+  };
+
+  const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string);
+        
+        // Validate data structure
+        if (!data.projects || !data.blogs || !data.achievements || !data.certifications || !data.volunteering) {
+          alert('Invalid data format. Please check the file.');
+          return;
+        }
+
+        // Import data to localStorage
+        localStorage.setItem('portfolioProjects', JSON.stringify(data.projects));
+        localStorage.setItem('portfolioBlogs', JSON.stringify(data.blogs));
+        localStorage.setItem('portfolioAchievements', JSON.stringify(data.achievements));
+        localStorage.setItem('portfolioCertifications', JSON.stringify(data.certifications));
+        localStorage.setItem('portfolioVolunteering', JSON.stringify(data.volunteering));
+
+        // Reload data
+        loadData();
+        
+        alert('Data imported successfully! All content has been updated.');
+      } catch (error) {
+        alert('Error importing data. Please check the file format.');
+        console.error('Import error:', error);
+      }
+    };
+    reader.readAsText(file);
   };
 
   const saveData = (type: 'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering', data: ContentItem[]) => {
@@ -190,6 +363,7 @@ export default function Admin() {
         period: '',
         description: '',
         logo: '',
+        image: '',
         events: [],
         achievements: []
       };
@@ -335,13 +509,38 @@ export default function Admin() {
       <header className="bg-light border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold font-serif text-primary">Portfolio Admin Panel</h1>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-light rounded-lg transition-colors"
-          >
-            <FiLogOut />
-            Logout
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Export Button */}
+            <button
+              onClick={handleExportData}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-semibold"
+              title="Export all data to JSON file"
+            >
+              <FiSave />
+              Export Data
+            </button>
+            
+            {/* Import Button */}
+            <label className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors cursor-pointer text-sm font-semibold">
+              <FiPlus />
+              Import Data
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleImportData}
+                className="hidden"
+              />
+            </label>
+            
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-light rounded-lg transition-colors"
+            >
+              <FiLogOut />
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 
@@ -369,16 +568,6 @@ export default function Admin() {
             Blogs ({blogs.length})
           </button>
           <button
-            onClick={() => setActiveTab('achievements')}
-            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-              activeTab === 'achievements'
-                ? 'bg-primary text-light'
-                : 'bg-light text-text hover:bg-gray-200'
-            }`}
-          >
-            Achievements ({achievements.length})
-          </button>
-          <button
             onClick={() => setActiveTab('certifications')}
             className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === 'certifications'
@@ -387,6 +576,16 @@ export default function Admin() {
             }`}
           >
             Certifications ({certifications.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('achievements')}
+            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+              activeTab === 'achievements'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
+            }`}
+          >
+            Achievements ({achievements.length})
           </button>
           <button
             onClick={() => setActiveTab('volunteering')}
@@ -398,10 +597,20 @@ export default function Admin() {
           >
             Volunteering ({volunteering.length})
           </button>
+          <button
+            onClick={() => setActiveTab('cv')}
+            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+              activeTab === 'cv'
+                ? 'bg-primary text-light'
+                : 'bg-light text-text hover:bg-gray-200'
+            }`}
+          >
+            CV / Resume
+          </button>
         </div>
 
         {/* Add Button */}
-        {!editingItem && (
+        {!editingItem && activeTab !== 'cv' && (
           <button
             onClick={handleAdd}
             className="mb-6 flex items-center gap-2 px-4 py-2 bg-highlight hover:bg-green-600 text-light rounded-lg transition-colors"
@@ -456,9 +665,126 @@ export default function Admin() {
           </div>
         )}
 
+        {/* CV Management Section */}
+        {activeTab === 'cv' && (
+          <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+            <h2 className="text-2xl font-bold text-primary mb-6">CV / Resume Management</h2>
+            
+            <div className="space-y-6">
+              {/* Upload Section */}
+              <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
+                <h3 className="text-lg font-semibold text-text mb-4">Upload New CV</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-text mb-2">
+                      Select PDF file (max 5MB)
+                    </label>
+                    <input
+                      type="file"
+                      accept=".pdf,application/pdf"
+                      onChange={handleCvUpload}
+                      className="w-full px-4 py-3 bg-white text-text rounded-lg border-2 border-gray-300 focus:outline-none focus:border-primary cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-green-800"
+                    />
+                  </div>
+                  
+                  {cvStatus && (
+                    <div className={`p-3 rounded-lg ${
+                      cvStatus.includes('Error') 
+                        ? 'bg-red-50 text-red-700 border border-red-200' 
+                        : cvStatus.includes('successfully')
+                        ? 'bg-green-50 text-green-700 border border-green-200'
+                        : 'bg-blue-50 text-blue-700 border border-blue-200'
+                    }`}>
+                      {cvStatus}
+                    </div>
+                  )}
+                  
+                  {cvUploading && (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                      <span className="ml-3 text-text">Uploading...</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Current CV Info */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-text mb-4">Current CV Status</h3>
+                {(() => {
+                  const storedCv = localStorage.getItem('portfolioCV');
+                  if (storedCv) {
+                    const cvData = JSON.parse(storedCv);
+                    return (
+                      <div className="space-y-4">
+                        <div className="flex items-start justify-between bg-white p-4 rounded-lg border border-gray-200">
+                          <div className="flex-1">
+                            <p className="font-semibold text-primary">{cvData.name}</p>
+                            <p className="text-sm text-gray-600 mt-1">
+                              Uploaded: {new Date(cvData.uploadDate).toLocaleDateString()} at {new Date(cvData.uploadDate).toLocaleTimeString()}
+                            </p>
+                          </div>
+                          <div className="flex gap-2 ml-4">
+                            <button
+                              onClick={handleDownloadStoredCv}
+                              className="px-4 py-2 bg-primary hover:bg-green-800 text-white rounded-lg transition-colors text-sm font-semibold"
+                            >
+                              Download
+                            </button>
+                            <button
+                              onClick={handleDeleteStoredCv}
+                              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm font-semibold"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                          <h4 className="font-semibold text-yellow-800 mb-2">📝 Important Instructions:</h4>
+                          <ol className="list-decimal list-inside space-y-2 text-sm text-yellow-700">
+                            <li>Download the uploaded CV using the button above</li>
+                            <li>Manually copy/replace it as <code className="bg-yellow-100 px-2 py-1 rounded">/public/resume.pdf</code> in your project</li>
+                            <li>This ensures the "Download CV" button on your website works correctly</li>
+                            <li>The CV is stored here for backup and management purposes</li>
+                          </ol>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="text-center py-8 text-gray-500">
+                      <p>No CV uploaded yet</p>
+                      <p className="text-sm mt-2">Upload a PDF file to get started</p>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Public Folder Instructions */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-blue-900 mb-3">💡 How to Deploy Your CV</h3>
+                <div className="space-y-3 text-sm text-blue-800">
+                  <p><strong>Step 1:</strong> Upload your CV using the form above</p>
+                  <p><strong>Step 2:</strong> Click "Download" to save it to your computer</p>
+                  <p><strong>Step 3:</strong> Place the file in your project:</p>
+                  <pre className="bg-blue-100 p-3 rounded-lg overflow-x-auto mt-2">
+                    <code>my-portfolio/public/resume.pdf</code>
+                  </pre>
+                  <p><strong>Step 4:</strong> The "Download CV" button in your header will automatically use this file</p>
+                  <p className="mt-4 pt-3 border-t border-blue-300">
+                    <strong>Note:</strong> For security reasons, we can't automatically write files to your public folder. 
+                    You need to manually place the CV there before deploying to Vercel.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* List */}
         <div className="grid gap-4">
-          {getCurrentData().map((item) => {
+          {activeTab !== 'cv' && getCurrentData().map((item) => {
             const title = 'title' in item ? item.title : 'name' in item ? item.name : 'role' in item ? (item as Volunteering).role : '';
             const description = 'description' in item && !('organization' in item) ? item.description 
               : 'excerpt' in item ? item.excerpt 
@@ -492,7 +818,7 @@ export default function Admin() {
             );
           })}
           
-          {getCurrentData().length === 0 && !editingItem && (
+          {activeTab !== 'cv' && getCurrentData().length === 0 && !editingItem && (
             <p className="text-center text-gray-500 py-8">
               No {activeTab} added yet. Click "Add New" to get started.
             </p>
@@ -565,20 +891,17 @@ function ProjectForm({ item: project, updateField }: ProjectFormProps) {
           type="file"
           multiple
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files) {
               const files = Array.from(e.target.files);
-              const readers = files.map(file => {
-                return new Promise<string>((resolve, reject) => {
-                  const reader = new FileReader();
-                  reader.onloadend = () => resolve(reader.result as string);
-                  reader.onerror = reject;
-                  reader.readAsDataURL(file);
-                });
-              });
-              Promise.all(readers).then(images => {
-                updateField('images', [...(project.images || []), ...images]);
-              });
+              try {
+                const resizedImages = await Promise.all(
+                  files.map(file => resizeImage(file))
+                );
+                updateField('images', [...(project.images || []), ...resizedImages]);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -726,13 +1049,14 @@ function BlogForm({ item: blog, updateField }: BlogFormProps) {
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                updateField('image', reader.result as string);
-              };
-              reader.readAsDataURL(e.target.files[0]);
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -836,13 +1160,14 @@ function AchievementForm({ item: achievement, updateField }: AchievementFormProp
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                updateField('image', reader.result as string);
-              };
-              reader.readAsDataURL(e.target.files[0]);
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -954,13 +1279,14 @@ function CertificationForm({ item: certification, updateField }: CertificationFo
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
+          onChange={async (e) => {
             if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                updateField('image', reader.result as string);
-              };
-              reader.readAsDataURL(e.target.files[0]);
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
             }
           }}
           className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
@@ -994,14 +1320,15 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
     date: '',
     description: '',
     role: '',
-    impact: ''
+    impact: '',
+    image: ''
   });
   const [newAchievement, setNewAchievement] = useState('');
 
   const handleAddEvent = () => {
     if (newEvent.name && newEvent.date && newEvent.description) {
       updateField('events', [...volunteering.events, newEvent]);
-      setNewEvent({ name: '', date: '', description: '', role: '', impact: '' });
+      setNewEvent({ name: '', date: '', description: '', role: '', impact: '', image: '' });
     }
   };
 
@@ -1098,6 +1425,37 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
         />
       </div>
 
+      <div>
+        <label className="block text-text mb-2">Image (Optional)</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={async (e) => {
+            if (e.target.files && e.target.files[0]) {
+              try {
+                const resizedImage = await resizeImage(e.target.files[0]);
+                updateField('image', resizedImage);
+              } catch (error) {
+                console.error("Image resizing failed:", error);
+              }
+            }
+          }}
+          className="w-full px-4 py-2 bg-secondary text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300"
+        />
+        {volunteering.image && (
+          <div className="mt-2 relative w-32 h-32">
+            <img src={volunteering.image} alt="Volunteering" className="w-full h-full object-cover rounded-lg" />
+            <button
+              type="button"
+              onClick={() => updateField('image', '')}
+              className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+            >
+              <FiTrash2 />
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Events Section */}
       <div className="border-t border-gray-300 pt-4">
         <h3 className="text-lg font-semibold text-primary mb-4">Events Organized</h3>
@@ -1113,6 +1471,7 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
                     <p className="text-sm text-gray-600">{event.date} • {event.role}</p>
                     <p className="text-sm text-text mt-1">{event.description}</p>
                     <p className="text-xs text-green-600 mt-1">Impact: {event.impact}</p>
+                    {event.image && <img src={event.image} alt={event.name} className="w-16 h-16 object-cover rounded-md mt-2" />}
                   </div>
                   <button
                     type="button"
@@ -1167,6 +1526,36 @@ function VolunteeringForm({ item: volunteering, updateField }: VolunteeringFormP
             rows={2}
             placeholder="Event description"
           />
+          <div>
+            <label className="block text-text text-sm mb-1">Event Image (Optional)</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                if (e.target.files && e.target.files[0]) {
+                  try {
+                    const resizedImage = await resizeImage(e.target.files[0]);
+                    setNewEvent({ ...newEvent, image: resizedImage });
+                  } catch (error) {
+                    console.error("Image resizing failed:", error);
+                  }
+                }
+              }}
+              className="w-full px-3 py-2 bg-white text-text rounded-lg border border-gray-300"
+            />
+            {newEvent.image && (
+              <div className="mt-2 relative w-24 h-24">
+                <img src={newEvent.image} alt="New event" className="w-full h-full object-cover rounded-lg" />
+                <button
+                  type="button"
+                  onClick={() => setNewEvent({ ...newEvent, image: '' })}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs"
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
+            )}
+          </div>
           <button
             type="button"
             onClick={handleAddEvent}

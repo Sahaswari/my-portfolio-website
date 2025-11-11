@@ -82,18 +82,34 @@ export const projects: Project[] = [
 
 ## 🚀 Deployment
 
-### Deploy to Vercel (Easiest)
+This project includes automated CI/CD with GitHub Actions and Vercel.
 
-1. Push code to GitHub
-2. Visit [vercel.com](https://vercel.com)
-3. Import your repository
-4. Deploy! 🎉
+### Quick Deployment (15 minutes)
 
-**Automatic deployments** on every push to `main`.
+Follow the [**Quick Start Deploy Guide**](QUICK_START_DEPLOY.md) for step-by-step instructions.
 
-### Using GitHub Actions
+**TL;DR:**
+1. Create Vercel account
+2. Get Vercel credentials (token, org ID, project ID)
+3. Add 3 secrets to GitHub repository
+4. Add environment variables in Vercel
+5. Push to `master`/`main` → Auto-deploy! 🎉
 
-See detailed setup in [`GITHUB_VERCEL_GUIDE.md`](GITHUB_VERCEL_GUIDE.md)
+### Comprehensive Guide
+
+For detailed instructions, troubleshooting, and advanced configuration:
+- [**Full Deployment Guide**](DEPLOYMENT_GUIDE.md) - Complete CI/CD setup with GitHub Actions
+- [**Quick Start**](QUICK_START_DEPLOY.md) - Fast deployment checklist
+
+### Automatic Deployments
+
+Every push to `master`/`main` automatically:
+- ✅ Runs tests and linting
+- ✅ Builds production bundle
+- ✅ Deploys to Vercel
+- ✅ Updates live site
+
+**Preview deployments** for pull requests with unique URLs!
 
 ---
 
