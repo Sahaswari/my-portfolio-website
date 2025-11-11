@@ -1,6 +1,6 @@
 // API route for achievements
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getAchievements, createAchievement, updateAchievement, deleteAchievement } from './_db';
+import { getAchievements, createAchievement, updateAchievement, deleteAchievement } from './_db.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');

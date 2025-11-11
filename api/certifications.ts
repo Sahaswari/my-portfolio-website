@@ -1,6 +1,6 @@
 // API route for certifications
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getCertifications, createCertification, updateCertification, deleteCertification } from './_db';
+import { getCertifications, createCertification, updateCertification, deleteCertification } from './_db.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
