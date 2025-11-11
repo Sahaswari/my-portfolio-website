@@ -1,6 +1,6 @@
 // API route to initialize database tables
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { initializeDatabase } from './_db';
+import { initializeDatabase } from './_db.js';
 
 export const config = {
   runtime: 'nodejs',
