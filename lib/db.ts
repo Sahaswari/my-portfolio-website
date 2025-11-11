@@ -4,6 +4,61 @@ import { neon } from '@neondatabase/serverless';
 // Get database connection
 const sql = neon(process.env.DATABASE_URL || process.env.POSTGRES_URL || '');
 
+// Type definitions
+interface ProjectData {
+  title: string;
+  category: string;
+  description: string;
+  longDescription?: string;
+  images?: string[];
+  technologies?: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+  demoUrl?: string;
+  featured?: boolean;
+  date: string;
+}
+
+interface BlogData {
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
+  tags?: string[];
+  image?: string;
+  readTime?: string;
+}
+
+interface CertificationData {
+  name: string;
+  issuer: string;
+  date: string;
+  credentialUrl?: string;
+  description?: string;
+  category?: string;
+  image?: string;
+}
+
+interface AchievementData {
+  title: string;
+  description: string;
+  date: string;
+  type: string;
+  icon?: string;
+  image?: string;
+}
+
+interface VolunteeringData {
+  role: string;
+  organization: string;
+  location?: string;
+  period: string;
+  description: string;
+  image?: string;
+  events?: Record<string, unknown>;
+}
+
 // Initialize database tables
 export async function initializeDatabase() {
   try {
@@ -104,7 +159,7 @@ export async function getProjects() {
   return rows;
 }
 
-export async function createProject(project: any) {
+export async function createProject(project: ProjectData) {
   const rows = await sql`
     INSERT INTO projects (
       title, category, description, long_description, 
@@ -120,7 +175,7 @@ export async function createProject(project: any) {
   return rows[0];
 }
 
-export async function updateProject(id: number, project: any) {
+export async function updateProject(id: number, project: ProjectData) {
   const rows = await sql`
     UPDATE projects SET
       title = ${project.title},
@@ -151,7 +206,7 @@ export async function getBlogs() {
   return rows;
 }
 
-export async function createBlog(blog: any) {
+export async function createBlog(blog: BlogData) {
   const rows = await sql`
     INSERT INTO blogs (
       title, excerpt, content, author, date, tags, image, read_time
@@ -164,7 +219,7 @@ export async function createBlog(blog: any) {
   return rows[0];
 }
 
-export async function updateBlog(id: number, blog: any) {
+export async function updateBlog(id: number, blog: BlogData) {
   const rows = await sql`
     UPDATE blogs SET
       title = ${blog.title},
@@ -192,7 +247,7 @@ export async function getCertifications() {
   return rows;
 }
 
-export async function createCertification(cert: any) {
+export async function createCertification(cert: CertificationData) {
   const rows = await sql`
     INSERT INTO certifications (
       name, issuer, date, credential_url, description, category, image
@@ -205,7 +260,7 @@ export async function createCertification(cert: any) {
   return rows[0];
 }
 
-export async function updateCertification(id: number, cert: any) {
+export async function updateCertification(id: number, cert: CertificationData) {
   const rows = await sql`
     UPDATE certifications SET
       name = ${cert.name},
@@ -232,7 +287,7 @@ export async function getAchievements() {
   return rows;
 }
 
-export async function createAchievement(achievement: any) {
+export async function createAchievement(achievement: AchievementData) {
   const rows = await sql`
     INSERT INTO achievements (
       title, description, date, type, icon, image
@@ -244,7 +299,7 @@ export async function createAchievement(achievement: any) {
   return rows[0];
 }
 
-export async function updateAchievement(id: number, achievement: any) {
+export async function updateAchievement(id: number, achievement: AchievementData) {
   const rows = await sql`
     UPDATE achievements SET
       title = ${achievement.title},
@@ -270,7 +325,7 @@ export async function getVolunteering() {
   return rows;
 }
 
-export async function createVolunteering(volunteering: any) {
+export async function createVolunteering(volunteering: VolunteeringData) {
   const rows = await sql`
     INSERT INTO volunteering (
       role, organization, location, period, description, image, events
@@ -283,7 +338,7 @@ export async function createVolunteering(volunteering: any) {
   return rows[0];
 }
 
-export async function updateVolunteering(id: number, volunteering: any) {
+export async function updateVolunteering(id: number, volunteering: VolunteeringData) {
   const rows = await sql`
     UPDATE volunteering SET
       role = ${volunteering.role},

@@ -1,6 +1,6 @@
 // API route for volunteering
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getVolunteering, createVolunteering, updateVolunteering, deleteVolunteering } from '../../lib/db';
+import { getVolunteering, createVolunteering, updateVolunteering, deleteVolunteering } from '../lib/db';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');

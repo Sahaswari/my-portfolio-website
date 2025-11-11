@@ -86,3 +86,4 @@ DEPLOYMENT_GUIDE.md
 
 
 .vercel
+.env*.local
