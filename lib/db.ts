@@ -1,5 +1,8 @@
-// Database configuration for Vercel Postgres
-import { sql } from '@vercel/postgres';
+// Database configuration for Neon Postgres
+import { neon } from '@neondatabase/serverless';
+
+// Get database connection
+const sql = neon(process.env.DATABASE_URL || process.env.POSTGRES_URL || '');
 
 // Initialize database tables
 export async function initializeDatabase() {
@@ -97,12 +100,12 @@ export async function initializeDatabase() {
 
 // Projects CRUD operations
 export async function getProjects() {
-  const { rows } = await sql`SELECT * FROM projects ORDER BY date DESC`;
+  const rows = await sql`SELECT * FROM projects ORDER BY date DESC`;
   return rows;
 }
 
 export async function createProject(project: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     INSERT INTO projects (
       title, category, description, long_description, 
       images, technologies, github_url, live_url, demo_url, 
@@ -118,7 +121,7 @@ export async function createProject(project: any) {
 }
 
 export async function updateProject(id: number, project: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     UPDATE projects SET
       title = ${project.title},
       category = ${project.category},
@@ -144,12 +147,12 @@ export async function deleteProject(id: number) {
 
 // Blogs CRUD operations
 export async function getBlogs() {
-  const { rows } = await sql`SELECT * FROM blogs ORDER BY date DESC`;
+  const rows = await sql`SELECT * FROM blogs ORDER BY date DESC`;
   return rows;
 }
 
 export async function createBlog(blog: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     INSERT INTO blogs (
       title, excerpt, content, author, date, tags, image, read_time
     ) VALUES (
@@ -162,7 +165,7 @@ export async function createBlog(blog: any) {
 }
 
 export async function updateBlog(id: number, blog: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     UPDATE blogs SET
       title = ${blog.title},
       excerpt = ${blog.excerpt},
@@ -185,12 +188,12 @@ export async function deleteBlog(id: number) {
 
 // Certifications CRUD operations
 export async function getCertifications() {
-  const { rows } = await sql`SELECT * FROM certifications ORDER BY date DESC`;
+  const rows = await sql`SELECT * FROM certifications ORDER BY date DESC`;
   return rows;
 }
 
 export async function createCertification(cert: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     INSERT INTO certifications (
       name, issuer, date, credential_url, description, category, image
     ) VALUES (
@@ -203,7 +206,7 @@ export async function createCertification(cert: any) {
 }
 
 export async function updateCertification(id: number, cert: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     UPDATE certifications SET
       name = ${cert.name},
       issuer = ${cert.issuer},
@@ -225,12 +228,12 @@ export async function deleteCertification(id: number) {
 
 // Achievements CRUD operations
 export async function getAchievements() {
-  const { rows } = await sql`SELECT * FROM achievements ORDER BY date DESC`;
+  const rows = await sql`SELECT * FROM achievements ORDER BY date DESC`;
   return rows;
 }
 
 export async function createAchievement(achievement: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     INSERT INTO achievements (
       title, description, date, type, icon, image
     ) VALUES (
@@ -242,7 +245,7 @@ export async function createAchievement(achievement: any) {
 }
 
 export async function updateAchievement(id: number, achievement: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     UPDATE achievements SET
       title = ${achievement.title},
       description = ${achievement.description},
@@ -263,12 +266,12 @@ export async function deleteAchievement(id: number) {
 
 // Volunteering CRUD operations
 export async function getVolunteering() {
-  const { rows } = await sql`SELECT * FROM volunteering ORDER BY period DESC`;
+  const rows = await sql`SELECT * FROM volunteering ORDER BY period DESC`;
   return rows;
 }
 
 export async function createVolunteering(volunteering: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     INSERT INTO volunteering (
       role, organization, location, period, description, image, events
     ) VALUES (
@@ -281,7 +284,7 @@ export async function createVolunteering(volunteering: any) {
 }
 
 export async function updateVolunteering(id: number, volunteering: any) {
-  const { rows } = await sql`
+  const rows = await sql`
     UPDATE volunteering SET
       role = ${volunteering.role},
       organization = ${volunteering.organization},
