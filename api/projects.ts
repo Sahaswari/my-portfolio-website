@@ -1,6 +1,6 @@
 // API route for projects
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getProjects, createProject, updateProject, deleteProject } from '../lib/db';
+import { getProjects, createProject, updateProject, deleteProject } from './_db';
 
 export const config = {
   runtime: 'nodejs',
