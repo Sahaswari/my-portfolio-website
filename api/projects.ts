@@ -1,6 +1,10 @@
 // API route for projects
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getProjects, createProject, updateProject, deleteProject } from '../../lib/db';
+import { getProjects, createProject, updateProject, deleteProject } from '../lib/db';
+
+export const config = {
+  runtime: 'nodejs',
+};
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS
