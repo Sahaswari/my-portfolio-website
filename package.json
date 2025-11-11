@@ -12,6 +12,8 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@types/react-router-dom": "^5.3.3",
+    "@vercel/node": "^5.5.5",
+    "@vercel/postgres": "^0.10.0",
     "axios": "^1.13.1",
     "framer-motion": "^12.23.24",
     "react": "^19.1.1",
