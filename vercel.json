@@ -3,12 +3,6 @@
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "nodejs20.x",
-      "includeFiles": "lib/**"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
