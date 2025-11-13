@@ -87,7 +87,16 @@
         <p class="subtitle">Upload your exported JSON file to the database</p>
 
         <div class="input-group">
-            <label for="siteUrl">Your Vercel Site URL:</label>
+            <label for="environment">Target Environment:</label>
+            <select id="environment" onchange="updateSiteUrl()">
+                <option value="localhost">Local Development (http://localhost:5173)</option>
+                <option value="vercel" selected>Vercel Deployment</option>
+                <option value="custom">Custom URL</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="siteUrl">Site URL:</label>
             <input type="text" id="siteUrl" placeholder="https://your-site.vercel.app" value="https://my-portfolio-website-aedrl1muy-sahaswaris-projects.vercel.app">
         </div>
 
@@ -96,12 +105,29 @@
             <input type="file" id="jsonFile" accept="application/json">
         </div>
 
-        <button id="uploadBtn" onclick="uploadData()">Import Data</button>
+        <button id="uploadBtn" onclick="uploadData()">Import Data to Database</button>
 
         <div id="result" class="result"></div>
     </div>
 
     <script>
+        function updateSiteUrl() {
+            const environment = document.getElementById('environment').value;
+            const siteUrlInput = document.getElementById('siteUrl');
+            
+            if (environment === 'localhost') {
+                siteUrlInput.value = 'http://localhost:5173';
+                siteUrlInput.readOnly = true;
+            } else if (environment === 'vercel') {
+                siteUrlInput.value = 'https://my-portfolio-website-aedrl1muy-sahaswaris-projects.vercel.app';
+                siteUrlInput.readOnly = true;
+            } else {
+                siteUrlInput.value = '';
+                siteUrlInput.readOnly = false;
+                siteUrlInput.placeholder = 'Enter your custom URL';
+            }
+        }
+
         async function uploadData() {
             const siteUrl = document.getElementById('siteUrl').value.trim();
             const fileInput = document.getElementById('jsonFile');
@@ -146,12 +172,12 @@
 
                 if (response.ok && result.success) {
                     const message = `
-                        <strong>✅ Success! Data imported:</strong><br>
-                        • Projects: ${result.results.projects}<br>
-                        • Blogs: ${result.results.blogs}<br>
-                        • Certifications: ${result.results.certifications}<br>
-                        • Achievements: ${result.results.achievements}<br>
-                        • Volunteering: ${result.results.volunteering}
+                        <strong>✅ Success! Data imported to database:</strong><br>
+                        • Projects: ${result.projects || 0}<br>
+                        • Blogs: ${result.blogs || 0}<br>
+                        • Certifications: ${result.certifications || 0}<br>
+                        • Achievements: ${result.achievements || 0}<br>
+                        • Volunteering: ${result.volunteering || 0}
                     `;
                     showResult(message, 'success');
                 } else {
