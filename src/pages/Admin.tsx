@@ -132,18 +132,52 @@ export default function Admin() {
     }
   }, []);
 
-  const loadData = () => {
-    const savedProjects = localStorage.getItem('portfolioProjects');
-    const savedBlogs = localStorage.getItem('portfolioBlogs');
-    const savedAchievements = localStorage.getItem('portfolioAchievements');
-    const savedCertifications = localStorage.getItem('portfolioCertifications');
-    const savedVolunteering = localStorage.getItem('portfolioVolunteering');
+  const loadData = async () => {
+    try {
+      // Load data from database API
+      const [projectsRes, blogsRes, achievementsRes, certificationsRes, volunteeringRes] = await Promise.all([
+        fetch('/api/projects'),
+        fetch('/api/blogs'),
+        fetch('/api/achievements'),
+        fetch('/api/certifications'),
+        fetch('/api/volunteering')
+      ]);
 
-    if (savedProjects) setProjects(JSON.parse(savedProjects));
-    if (savedBlogs) setBlogs(JSON.parse(savedBlogs));
-    if (savedAchievements) setAchievements(JSON.parse(savedAchievements));
-    if (savedCertifications) setCertifications(JSON.parse(savedCertifications));
-    if (savedVolunteering) setVolunteering(JSON.parse(savedVolunteering));
+      if (projectsRes.ok) {
+        const data = await projectsRes.json();
+        setProjects(data);
+      }
+      if (blogsRes.ok) {
+        const data = await blogsRes.json();
+        setBlogs(data);
+      }
+      if (achievementsRes.ok) {
+        const data = await achievementsRes.json();
+        setAchievements(data);
+      }
+      if (certificationsRes.ok) {
+        const data = await certificationsRes.json();
+        setCertifications(data);
+      }
+      if (volunteeringRes.ok) {
+        const data = await volunteeringRes.json();
+        setVolunteering(data);
+      }
+    } catch (error) {
+      console.error('Error loading data from database:', error);
+      // Fallback to localStorage if API fails
+      const savedProjects = localStorage.getItem('portfolioProjects');
+      const savedBlogs = localStorage.getItem('portfolioBlogs');
+      const savedAchievements = localStorage.getItem('portfolioAchievements');
+      const savedCertifications = localStorage.getItem('portfolioCertifications');
+      const savedVolunteering = localStorage.getItem('portfolioVolunteering');
+
+      if (savedProjects) setProjects(JSON.parse(savedProjects));
+      if (savedBlogs) setBlogs(JSON.parse(savedBlogs));
+      if (savedAchievements) setAchievements(JSON.parse(savedAchievements));
+      if (savedCertifications) setCertifications(JSON.parse(savedCertifications));
+      if (savedVolunteering) setVolunteering(JSON.parse(savedVolunteering));
+    }
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -259,12 +293,12 @@ export default function Admin() {
     alert('Data exported successfully! Check your downloads folder.');
   };
 
-  const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportData = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       try {
         const data = JSON.parse(event.target?.result as string);
         
@@ -274,34 +308,55 @@ export default function Admin() {
           return;
         }
 
-        // Import data to localStorage
-        localStorage.setItem('portfolioProjects', JSON.stringify(data.projects));
-        localStorage.setItem('portfolioBlogs', JSON.stringify(data.blogs));
-        localStorage.setItem('portfolioAchievements', JSON.stringify(data.achievements));
-        localStorage.setItem('portfolioCertifications', JSON.stringify(data.certifications));
-        localStorage.setItem('portfolioVolunteering', JSON.stringify(data.volunteering));
+        // Import data to database via API
+        const response = await fetch('/api/import-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
 
-        // Reload data
-        loadData();
-        
-        alert('Data imported successfully! All content has been updated.');
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Import result:', result);
+          
+          // Also save to localStorage as backup
+          localStorage.setItem('portfolioProjects', JSON.stringify(data.projects));
+          localStorage.setItem('portfolioBlogs', JSON.stringify(data.blogs));
+          localStorage.setItem('portfolioAchievements', JSON.stringify(data.achievements));
+          localStorage.setItem('portfolioCertifications', JSON.stringify(data.certifications));
+          localStorage.setItem('portfolioVolunteering', JSON.stringify(data.volunteering));
+
+          // Reload data from database
+          await loadData();
+          
+          alert(`Data imported successfully to database!\nProjects: ${result.projects}\nBlogs: ${result.blogs}\nAchievements: ${result.achievements}\nCertifications: ${result.certifications}\nVolunteering: ${result.volunteering}`);
+        } else {
+          throw new Error('Failed to import data to database');
+        }
       } catch (error) {
-        alert('Error importing data. Please check the file format.');
+        alert('Error importing data. Please check the file format and try again.');
         console.error('Import error:', error);
       }
     };
     reader.readAsText(file);
   };
 
-  const saveData = (type: 'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering', data: ContentItem[]) => {
+  const saveData = async (type: 'projects' | 'blogs' | 'achievements' | 'certifications' | 'volunteering', data: ContentItem[]) => {
     const key = `portfolio${type.charAt(0).toUpperCase() + type.slice(1)}`;
+    
+    // Save to localStorage as backup
     localStorage.setItem(key, JSON.stringify(data));
     
+    // Update state immediately for UI responsiveness
     if (type === 'projects') setProjects(data as Project[]);
     else if (type === 'blogs') setBlogs(data as BlogPost[]);
     else if (type === 'achievements') setAchievements(data as Achievement[]);
     else if (type === 'certifications') setCertifications(data as Certification[]);
     else setVolunteering(data as Volunteering[]);
+
+    // Note: Individual items are saved to database via handleSave/handleDelete functions
   };
 
   const handleAdd = () => {
@@ -373,66 +428,148 @@ export default function Admin() {
     setIsAddingNew(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!editingItem) return;
 
-    let updatedData: ContentItem[];
-    
-    if (activeTab === 'projects') {
-      if (isAddingNew) {
-        updatedData = [...projects, editingItem];
-      } else {
-        updatedData = projects.map(p => p.id === editingItem.id ? editingItem : p);
-      }
-      saveData('projects', updatedData);
-    } else if (activeTab === 'blogs') {
-      if (isAddingNew) {
-        updatedData = [...blogs, editingItem];
-      } else {
-        updatedData = blogs.map(b => b.id === editingItem.id ? editingItem : b);
-      }
-      saveData('blogs', updatedData);
-    } else if (activeTab === 'achievements') {
-      if (isAddingNew) {
-        updatedData = [...achievements, editingItem];
-      } else {
-        updatedData = achievements.map(a => a.id === editingItem.id ? editingItem : a);
-      }
-      saveData('achievements', updatedData);
-    } else if (activeTab === 'certifications') {
-      if (isAddingNew) {
-        updatedData = [...certifications, editingItem];
-      } else {
-        updatedData = certifications.map(c => c.id === editingItem.id ? editingItem : c);
-      }
-      saveData('certifications', updatedData);
-    } else {
-      // volunteering
-      if (isAddingNew) {
-        updatedData = [...volunteering, editingItem];
-      } else {
-        updatedData = volunteering.map(v => v.id === editingItem.id ? editingItem : v);
-      }
-      saveData('volunteering', updatedData);
-    }
+    try {
+      const method = isAddingNew ? 'POST' : 'PUT';
+      const endpoint = `/api/${activeTab}`;
+      
+      const response = await fetch(endpoint, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editingItem),
+      });
 
-    setEditingItem(null);
-    setIsAddingNew(false);
+      if (!response.ok) {
+        throw new Error(`Failed to save to database: ${response.statusText}`);
+      }
+
+      const savedItem = await response.json();
+      let updatedData: ContentItem[];
+      
+      if (activeTab === 'projects') {
+        if (isAddingNew) {
+          updatedData = [...projects, savedItem];
+        } else {
+          updatedData = projects.map(p => p.id === editingItem.id ? savedItem : p);
+        }
+        saveData('projects', updatedData);
+      } else if (activeTab === 'blogs') {
+        if (isAddingNew) {
+          updatedData = [...blogs, savedItem];
+        } else {
+          updatedData = blogs.map(b => b.id === editingItem.id ? savedItem : b);
+        }
+        saveData('blogs', updatedData);
+      } else if (activeTab === 'achievements') {
+        if (isAddingNew) {
+          updatedData = [...achievements, savedItem];
+        } else {
+          updatedData = achievements.map(a => a.id === editingItem.id ? savedItem : a);
+        }
+        saveData('achievements', updatedData);
+      } else if (activeTab === 'certifications') {
+        if (isAddingNew) {
+          updatedData = [...certifications, savedItem];
+        } else {
+          updatedData = certifications.map(c => c.id === editingItem.id ? savedItem : c);
+        }
+        saveData('certifications', updatedData);
+      } else {
+        // volunteering
+        if (isAddingNew) {
+          updatedData = [...volunteering, savedItem];
+        } else {
+          updatedData = volunteering.map(v => v.id === editingItem.id ? savedItem : v);
+        }
+        saveData('volunteering', updatedData);
+      }
+
+      setEditingItem(null);
+      setIsAddingNew(false);
+      alert('Saved successfully to database!');
+    } catch (error) {
+      console.error('Error saving to database:', error);
+      alert('Error saving to database. Changes saved locally only.');
+      
+      // Fallback to local save
+      let updatedData: ContentItem[];
+      
+      if (activeTab === 'projects') {
+        if (isAddingNew) {
+          updatedData = [...projects, editingItem];
+        } else {
+          updatedData = projects.map(p => p.id === editingItem.id ? editingItem : p);
+        }
+        saveData('projects', updatedData);
+      } else if (activeTab === 'blogs') {
+        if (isAddingNew) {
+          updatedData = [...blogs, editingItem];
+        } else {
+          updatedData = blogs.map(b => b.id === editingItem.id ? editingItem : b);
+        }
+        saveData('blogs', updatedData);
+      } else if (activeTab === 'achievements') {
+        if (isAddingNew) {
+          updatedData = [...achievements, editingItem];
+        } else {
+          updatedData = achievements.map(a => a.id === editingItem.id ? editingItem : a);
+        }
+        saveData('achievements', updatedData);
+      } else if (activeTab === 'certifications') {
+        if (isAddingNew) {
+          updatedData = [...certifications, editingItem];
+        } else {
+          updatedData = certifications.map(c => c.id === editingItem.id ? editingItem : c);
+        }
+        saveData('certifications', updatedData);
+      } else {
+        // volunteering
+        if (isAddingNew) {
+          updatedData = [...volunteering, editingItem];
+        } else {
+          updatedData = volunteering.map(v => v.id === editingItem.id ? editingItem : v);
+        }
+        saveData('volunteering', updatedData);
+      }
+
+      setEditingItem(null);
+      setIsAddingNew(false);
+    }
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this item?')) return;
 
-    if (activeTab === 'projects') {
-      saveData('projects', projects.filter(p => p.id !== id));
-    } else if (activeTab === 'blogs') {
-      saveData('blogs', blogs.filter(b => b.id !== id));
-    } else if (activeTab === 'achievements') {
-      saveData('achievements', achievements.filter(a => a.id !== id));
-    } else if (activeTab === 'certifications') {
-      saveData('certifications', certifications.filter(c => c.id !== id));
-    } else {
-      saveData('volunteering', volunteering.filter(v => v.id !== id));
+    try {
+      const response = await fetch(`/api/${activeTab}?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete from database: ${response.statusText}`);
+      }
+
+      // Update local state after successful deletion
+      if (activeTab === 'projects') {
+        saveData('projects', projects.filter(p => p.id !== id));
+      } else if (activeTab === 'blogs') {
+        saveData('blogs', blogs.filter(b => b.id !== id));
+      } else if (activeTab === 'achievements') {
+        saveData('achievements', achievements.filter(a => a.id !== id));
+      } else if (activeTab === 'certifications') {
+        saveData('certifications', certifications.filter(c => c.id !== id));
+      } else {
+        saveData('volunteering', volunteering.filter(v => v.id !== id));
+      }
+
+      alert('Deleted successfully from database!');
+    } catch (error) {
+      console.error('Error deleting from database:', error);
+      alert('Error deleting from database. Please try again.');
     }
   };
 
