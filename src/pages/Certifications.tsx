@@ -187,7 +187,7 @@ export default function Certifications() {
                     )}
                     
                     {/* Credential Info */}
-                    {cert.credentialUrl && (
+                    {cert.credentialUrl && cert.credentialUrl.trim() !== '' && (
                       <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
                         <div className="flex items-center gap-2 mb-2">
                           <FaCertificate className="text-green-600" />
@@ -207,7 +207,7 @@ export default function Certifications() {
                 </div>
 
                 {/* Credential Action Button */}
-                {cert.credentialUrl && (
+                {cert.credentialUrl && cert.credentialUrl.trim() !== '' && (
                   <div className="flex justify-end pt-4 border-t border-slate-200">
                     <a
                       href={cert.credentialUrl}
