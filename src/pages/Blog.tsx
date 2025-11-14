@@ -7,11 +7,13 @@ import { getBlogs, type BlogPost } from "../data/blogs";
 export default function Blog() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [selectedTag, setSelectedTag] = useState<string>("All");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadBlogs = async () => {
       const data = await getBlogs();
       setBlogs(data);
+      setLoading(false);
     };
     loadBlogs();
   }, []);
@@ -23,6 +25,17 @@ export default function Blog() {
   const filteredBlogs = selectedTag === "All" 
     ? blogs 
     : blogs.filter(blog => blog.tags.includes(selectedTag));
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600 mb-4"></div>
+          <p className="text-xl text-slate-600">Loading blogs...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (blogs.length === 0) {
     return (
@@ -44,16 +57,9 @@ export default function Blog() {
               <FaRocket className="inline-block" />
             </div>
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Coming Soon!</h2>
-            <p className="text-slate-600 text-lg mb-8">
-              I'm currently working on creating valuable content. Check the admin panel to add your first blog post!
+            <p className="text-slate-600 text-lg">
+              Stay tuned for exciting articles!
             </p>
-            
-            <a
-              href="/admin"
-              className="px-8 py-3 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center gap-2"
-            >
-              <span>Go to Admin Panel</span>
-            </a>
           </div>
         </div>
       </div>
