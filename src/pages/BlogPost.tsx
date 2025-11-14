@@ -1,11 +1,33 @@
 import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { getBlogById } from '../data/blogs';
+import type { BlogPost as BlogPostType } from '../data/blogs';
 import { FiCalendar, FiClock } from 'react-icons/fi';
 
 export default function BlogPost() {
   const { id } = useParams();
-  const blogId = id ? parseInt(id, 10) : NaN;
-  const blog = !isNaN(blogId) ? getBlogById(blogId) : undefined;
+  const [blog, setBlog] = useState<BlogPostType | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadBlog = async () => {
+      const blogId = id ? parseInt(id, 10) : NaN;
+      if (!isNaN(blogId)) {
+        const blogData = await getBlogById(blogId);
+        setBlog(blogData);
+      }
+      setLoading(false);
+    };
+    loadBlog();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-sky-50 flex items-center justify-center">
+        <div className="text-xl text-slate-600">Loading...</div>
+      </div>
+    );
+  }
 
   if (!blog) {
     return (
