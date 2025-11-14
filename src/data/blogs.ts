@@ -126,12 +126,12 @@ We'll use TensorFlow and Keras to build a simple image classifier. Code examples
   return defaultBlogs;
 };
 
-export const getBlogById = (id: number): BlogPost | undefined => {
-  const blogs = getBlogs();
+export const getBlogById = async (id: number): Promise<BlogPost | undefined> => {
+  const blogs = await getBlogs();
   return blogs.find(blog => blog.id === id);
 };
 
-export const getBlogsByTag = (tag: string): BlogPost[] => {
-  const blogs = getBlogs();
+export const getBlogsByTag = async (tag: string): Promise<BlogPost[]> => {
+  const blogs = await getBlogs();
   return blogs.filter(blog => blog.tags.includes(tag));
 };
