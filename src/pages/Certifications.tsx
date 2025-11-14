@@ -78,6 +78,11 @@ export default function Certifications() {
                 ? certifications.length 
                 : certifications.filter(cert => cert.category === category.id).length;
               
+              // Hide category if count is 0 (except "All")
+              if (count === 0 && category.id !== 'All') {
+                return null;
+              }
+              
               return (
                 <button
                   key={category.id}
@@ -180,10 +185,28 @@ export default function Certifications() {
                     {cert.description && (
                       <p className="text-slate-700 text-sm leading-relaxed">{cert.description}</p>
                     )}
+                    
+                    {/* Credential Info */}
+                    {cert.credentialUrl && (
+                      <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <FaCertificate className="text-green-600" />
+                          <span className="text-sm font-semibold text-green-900">Credential Information</span>
+                        </div>
+                        <a
+                          href={cert.credentialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-green-700 hover:text-green-800 underline break-all font-medium"
+                        >
+                          {cert.credentialUrl}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Credential Link */}
+                {/* Credential Action Button */}
                 {cert.credentialUrl && (
                   <div className="flex justify-end pt-4 border-t border-slate-200">
                     <a
@@ -193,7 +216,7 @@ export default function Certifications() {
                       className="inline-flex items-center gap-2 bg-green-600 text-white hover:bg-green-700 font-semibold text-sm px-5 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                     >
                       <FaExternalLinkAlt className="text-xs" />
-                      <span>View Credential</span>
+                      <span>Verify Credential</span>
                     </a>
                   </div>
                 )}
