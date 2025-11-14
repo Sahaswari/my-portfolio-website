@@ -1,13 +1,20 @@
-import { useState } from "react";
-import { getProjectsByCategory } from "../data/projects";
+import { useState, useEffect } from "react";
+import { getProjectsByCategory, type Project } from "../data/projects";
 import ProjectCard from "../components/projectCard";
 
 export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
 
   const categories = ["All", "AI/ML", "Web Development", "Data Science", "Mobile", "Other"];
 
-  const filteredProjects = getProjectsByCategory(selectedCategory);
+  useEffect(() => {
+    const loadProjects = async () => {
+      const projects = await getProjectsByCategory(selectedCategory);
+      setFilteredProjects(projects);
+    };
+    loadProjects();
+  }, [selectedCategory]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-sky-50">

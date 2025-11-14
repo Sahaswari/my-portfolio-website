@@ -9,7 +9,11 @@ export default function Blog() {
   const [selectedTag, setSelectedTag] = useState<string>("All");
 
   useEffect(() => {
-    setBlogs(getBlogs());
+    const loadBlogs = async () => {
+      const data = await getBlogs();
+      setBlogs(data);
+    };
+    loadBlogs();
   }, []);
 
   // Get all unique tags

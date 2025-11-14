@@ -15,8 +15,18 @@ export interface Project {
   date: string;
 }
 
-// Load projects from localStorage or use defaults
-export const getProjects = (): Project[] => {
+// Load projects from database API or localStorage fallback
+export const getProjects = async (): Promise<Project[]> => {
+  try {
+    const response = await fetch('/api/projects');
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error('Error fetching projects from API:', error);
+  }
+  
+  // Fallback to localStorage
   const saved = localStorage.getItem('portfolioProjects');
   if (saved) {
     return JSON.parse(saved);
@@ -130,18 +140,18 @@ export const projects: Project[] = [
 ];
 
 // Filter functions for project categories
-export const getProjectsByCategory = (category: string) => {
-  const allProjects = getProjects();
+export const getProjectsByCategory = async (category: string) => {
+  const allProjects = await getProjects();
   if (category === "All") return allProjects;
   return allProjects.filter(project => project.category === category);
 };
 
-export const getFeaturedProjects = () => {
-  const allProjects = getProjects();
+export const getFeaturedProjects = async () => {
+  const allProjects = await getProjects();
   return allProjects.filter(project => project.featured);
 };
 
-export const getProjectById = (id: number) => {
-  const allProjects = getProjects();
+export const getProjectById = async (id: number) => {
+  const allProjects = await getProjects();
   return allProjects.find(project => project.id === id);
 };

@@ -7,9 +7,12 @@ export default function VolunteeringPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const data = getVolunteering();
-    setVolunteering(data);
-    setLoading(false);
+    const loadVolunteering = async () => {
+      const data = await getVolunteering();
+      setVolunteering(data);
+      setLoading(false);
+    };
+    loadVolunteering();
   }, []);
 
   if (loading) {

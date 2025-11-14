@@ -1,12 +1,21 @@
+import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaCode, FaBrain, FaRocket } from "react-icons/fa";
 import { personalInfo } from "../data/personalInfo";
-import { getFeaturedProjects } from "../data/projects";
+import { getFeaturedProjects, type Project } from "../data/projects";
 import ProjectCard from "../components/projectCard";
 
 export default function Home() {
-  const featuredProjects = getFeaturedProjects().slice(0, 3);
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      const projects = await getFeaturedProjects();
+      setFeaturedProjects(projects.slice(0, 3));
+    };
+    loadProjects();
+  }, []);
 
   const features = [
     {

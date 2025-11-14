@@ -22,8 +22,18 @@ export interface Volunteering {
   achievements: string[];
 }
 
-// Load volunteering data from localStorage or use defaults
-export const getVolunteering = (): Volunteering[] => {
+// Load volunteering data from database API or localStorage fallback
+export const getVolunteering = async (): Promise<Volunteering[]> => {
+  try {
+    const response = await fetch('/api/volunteering');
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error('Error fetching volunteering from API:', error);
+  }
+  
+  // Fallback to localStorage
   const saved = localStorage.getItem('portfolioVolunteering');
   if (saved) {
     return JSON.parse(saved);

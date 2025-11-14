@@ -11,8 +11,18 @@ export interface Certification {
   image?: string;
 }
 
-// Load certifications from localStorage or use defaults
-export const getCertifications = (): Certification[] => {
+// Load certifications from database API or localStorage fallback
+export const getCertifications = async (): Promise<Certification[]> => {
+  try {
+    const response = await fetch('/api/certifications');
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error('Error fetching certifications from API:', error);
+  }
+  
+  // Fallback to localStorage
   const saved = localStorage.getItem('portfolioCertifications');
   if (saved) {
     return JSON.parse(saved);
@@ -117,7 +127,7 @@ export const getCertifications = (): Certification[] => {
   return defaultCertifications;
 };
 
-export const getCertificationById = (id: number): Certification | undefined => {
-  const certifications = getCertifications();
+export const getCertificationById = async (id: number): Promise<Certification | undefined> => {
+  const certifications = await getCertifications();
   return certifications.find(cert => cert.id === id);
 };

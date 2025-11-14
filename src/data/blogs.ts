@@ -12,8 +12,18 @@ export interface BlogPost {
   readTime: string;
 }
 
-// Load blogs from localStorage or use defaults
-export const getBlogs = (): BlogPost[] => {
+// Load blogs from database API or localStorage fallback
+export const getBlogs = async (): Promise<BlogPost[]> => {
+  try {
+    const response = await fetch('/api/blogs');
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error('Error fetching blogs from API:', error);
+  }
+  
+  // Fallback to localStorage
   const saved = localStorage.getItem('portfolioBlogs');
   if (saved) {
     return JSON.parse(saved);

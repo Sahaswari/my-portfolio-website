@@ -9,8 +9,18 @@ export interface Achievement {
   icon: string;
 }
 
-// Load achievements from localStorage or use defaults
-export const getAchievements = (): Achievement[] => {
+// Load achievements from database API or localStorage fallback
+export const getAchievements = async (): Promise<Achievement[]> => {
+  try {
+    const response = await fetch('/api/achievements');
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error('Error fetching achievements from API:', error);
+  }
+  
+  // Fallback to localStorage
   const saved = localStorage.getItem('portfolioAchievements');
   if (saved) {
     return JSON.parse(saved);
