@@ -6,7 +6,8 @@ export interface Achievement {
   description: string;
   date: string;
   type: 'award' | 'certification' | 'competition' | 'publication';
-  icon: string;
+  icon?: string;
+  image?: string;
 }
 
 // Load achievements from database API or localStorage fallback
@@ -14,15 +15,25 @@ export const getAchievements = async (): Promise<Achievement[]> => {
   try {
     const response = await fetch('/api/achievements');
     if (response.ok) {
-      return await response.json();
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        console.log('Achievements loaded from API:', data);
+        return data;
+      } else {
+        console.warn('API returned non-JSON response (likely running on localhost)');
+      }
+    } else {
+      console.warn('API response not OK:', response.status, response.statusText);
     }
-  } catch (error) {
-    console.error('Error fetching achievements from API:', error);
+  } catch {
+    console.log('Using localStorage fallback (API not available on localhost)');
   }
   
   // Fallback to localStorage
   const saved = localStorage.getItem('portfolioAchievements');
   if (saved) {
+    console.log('Loading achievements from localStorage');
     return JSON.parse(saved);
   }
   
@@ -34,7 +45,7 @@ export const getAchievements = async (): Promise<Achievement[]> => {
       description: "Achieved Dean's List honors for academic excellence in Computer Engineering",
       date: "2024-06",
       type: "award",
-      icon: "FiAward"
+      icon: "🏆"
     },
     {
       id: 2,
@@ -42,7 +53,7 @@ export const getAchievements = async (): Promise<Achievement[]> => {
       description: "Successfully completed AWS Solutions Architect Associate certification",
       date: "2024-05",
       type: "certification",
-      icon: "FiAward"
+      icon: "🎓"
     },
     {
       id: 3,
@@ -50,7 +61,7 @@ export const getAchievements = async (): Promise<Achievement[]> => {
       description: "First place in National AI Hackathon for innovative ML solution",
       date: "2024-03",
       type: "competition",
-      icon: "FiAward"
+      icon: "🥇"
     },
     {
       id: 4,
@@ -58,7 +69,7 @@ export const getAchievements = async (): Promise<Achievement[]> => {
       description: "Published paper on 'Deep Learning for Image Recognition' in IEEE conference",
       date: "2024-02",
       type: "publication",
-      icon: "FiAward"
+      icon: "📄"
     }
   ];
   
