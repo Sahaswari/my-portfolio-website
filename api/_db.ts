@@ -163,7 +163,20 @@ export async function initializeDatabase() {
 // Projects CRUD operations
 export async function getProjects() {
   const rows = await sql`SELECT * FROM projects ORDER BY date DESC`;
-  return rows;
+  return rows.map(row => ({
+    id: row.id,
+    title: row.title,
+    category: row.category,
+    description: row.description,
+    longDescription: row.long_description,
+    images: row.images,
+    technologies: row.technologies,
+    githubUrl: row.github_url,
+    liveUrl: row.live_url,
+    demoUrl: row.demo_url,
+    featured: row.featured,
+    date: row.date
+  }));
 }
 
 export async function createProject(project: ProjectData) {

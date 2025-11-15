@@ -98,7 +98,7 @@ export default function Projects() {
                   {/* Header Section */}
                   <div className="flex flex-col md:flex-row items-start gap-6 mb-6">
                     {/* Project Image */}
-                    {project.images && project.images[0] && (
+                    {project.images && project.images.length > 0 && project.images[0] && (
                       <div className="w-full md:w-64 flex-shrink-0">
                         <img
                           src={project.images[0]}
@@ -106,7 +106,9 @@ export default function Projects() {
                           className="w-full h-auto rounded-lg shadow-md object-cover"
                           onError={(e) => {
                             const target = e.currentTarget;
-                            target.style.display = 'none';
+                            if (target.parentElement) {
+                              target.parentElement.style.display = 'none';
+                            }
                           }}
                         />
                       </div>
@@ -123,85 +125,95 @@ export default function Projects() {
                             </span>
                           )}
                         </div>
-                        <span className="px-4 py-2 bg-green-100 text-green-700 font-semibold rounded-full border border-green-200">
-                          {project.category}
-                        </span>
+                        {project.category && (
+                          <span className="px-4 py-2 bg-green-100 text-green-700 font-semibold rounded-full border border-green-200">
+                            {project.category}
+                          </span>
+                        )}
                       </div>
 
                       {/* Date */}
-                      <p className="text-slate-600 text-sm mb-3 flex items-center gap-2">
-                        <FaCalendarAlt className="text-green-600" />
-                        <span className="font-medium">
-                          {new Date(project.date).toLocaleDateString("en-US", {
-                            month: "long",
-                            year: "numeric",
-                          })}
-                        </span>
-                      </p>
+                      {project.date && (
+                        <p className="text-slate-600 text-sm mb-3 flex items-center gap-2">
+                          <FaCalendarAlt className="text-green-600" />
+                          <span className="font-medium">
+                            {new Date(project.date).toLocaleDateString("en-US", {
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </span>
+                        </p>
+                      )}
 
                       {/* Short Description */}
-                      <p className="text-slate-700 text-sm leading-relaxed mb-4">
-                        {project.description}
-                      </p>
+                      {project.description && (
+                        <p className="text-slate-700 text-sm leading-relaxed mb-4">
+                          {project.description}
+                        </p>
+                      )}
 
                       {/* Technologies */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.slice(0, 6).map((tech, index) => (
-                          <span
-                            key={index}
-                            className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-md"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 6 && (
-                          <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">
-                            +{project.technologies.length - 6} more
-                          </span>
-                        )}
-                      </div>
+                      {project.technologies && project.technologies.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {project.technologies.slice(0, 6).map((tech, index) => (
+                            <span
+                              key={index}
+                              className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-md"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                          {project.technologies.length > 6 && (
+                            <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">
+                              +{project.technologies.length - 6} more
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                       {/* Action Links */}
-                      <div className="flex flex-wrap gap-3">
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-md hover:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-200"
-                          >
-                            <FaGithub className="text-lg" />
-                            Code
-                          </a>
-                        )}
-                        {project.liveUrl && (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md hover:bg-green-700 shadow-sm hover:shadow-md transition-all duration-200"
-                          >
-                            <FaExternalLinkAlt className="text-sm" />
-                            Live Demo
-                          </a>
-                        )}
-                        {project.demoUrl && (
-                          <a
-                            href={project.demoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 shadow-sm hover:shadow-md transition-all duration-200"
-                          >
-                            <FaVideo className="text-sm" />
-                            Video Demo
-                          </a>
-                        )}
-                      </div>
+                      {(project.githubUrl || project.liveUrl || project.demoUrl) && (
+                        <div className="flex flex-wrap gap-3">
+                          {project.githubUrl && (
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-md hover:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-200"
+                            >
+                              <FaGithub className="text-lg" />
+                              Code
+                            </a>
+                          )}
+                          {project.liveUrl && (
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md hover:bg-green-700 shadow-sm hover:shadow-md transition-all duration-200"
+                            >
+                              <FaExternalLinkAlt className="text-sm" />
+                              Live Demo
+                            </a>
+                          )}
+                          {project.demoUrl && (
+                            <a
+                              href={project.demoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 shadow-sm hover:shadow-md transition-all duration-200"
+                            >
+                              <FaVideo className="text-sm" />
+                              Video Demo
+                            </a>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   {/* Expandable Long Description */}
-                  {project.longDescription && (
+                  {project.longDescription && project.longDescription.trim() !== '' && (
                     <>
                       {isExpanded && (
                         <div className="mt-6 p-6 bg-gradient-to-r from-green-50 to-slate-50 rounded-lg border-2 border-green-100">
