@@ -94,7 +94,7 @@ export const education = [
     location: "Galle, Sri Lanka",
     period: "2021 - Present", // Update with your actual years
     description: "Specialized in AI/ML, Software Engineering, and Computer Systems. Relevant coursework includes Machine Learning, Deep Learning, Data Structures, Algorithms, Database Systems, and Software Engineering.",
-    gpa: "3.X/4.0", // Update with your GPA
+    // gpa: "3.X/4.0", // Update with your GPA
     achievements: [
       "Dean's List (if applicable)",
       "Relevant project or achievement",
