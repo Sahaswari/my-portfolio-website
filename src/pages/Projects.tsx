@@ -84,7 +84,7 @@ export default function Projects() {
               Get in Touch
             </a>
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/Sahaswari"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-3 border-2 border-green-600 text-green-700 font-semibold rounded-lg hover:bg-green-50 transition-all duration-300"
