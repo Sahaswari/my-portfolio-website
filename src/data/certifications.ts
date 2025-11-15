@@ -16,10 +16,19 @@ export const getCertifications = async (): Promise<Certification[]> => {
   try {
     const response = await fetch('/api/certifications');
     if (response.ok) {
-      return await response.json();
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        console.log('Certifications loaded from API:', data);
+        return data;
+      } else {
+        console.warn('API returned non-JSON response (likely running on localhost)');
+      }
+    } else {
+      console.warn('API response not OK:', response.status, response.statusText);
     }
-  } catch (error) {
-    console.error('Error fetching certifications from API:', error);
+  } catch {
+    console.log('Using localStorage fallback (API not available on localhost)');
   }
   
   // Fallback to localStorage

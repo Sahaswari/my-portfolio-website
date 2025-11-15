@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { FaCertificate, FaExternalLinkAlt, FaCalendar, FaBuilding, FaBrain, FaDatabase, FaCloud, FaCode, FaStar, FaTrophy, FaHandsHelping, FaUsers, FaLanguage } from "react-icons/fa";
 import { getCertifications, type Certification } from "../data/certifications";
+import { getAchievements, type Achievement } from "../data/achievements";
 
 export default function Certifications() {
   const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'certifications' | 'achievements'>('certifications');
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
   // Define categories with icons
@@ -21,12 +24,16 @@ export default function Certifications() {
   ];
 
   useEffect(() => {
-    const loadCertifications = async () => {
-      const data = await getCertifications();
-      setCertifications(data);
+    const loadData = async () => {
+      const [certsData, achievementsData] = await Promise.all([
+        getCertifications(),
+        getAchievements()
+      ]);
+      setCertifications(certsData);
+      setAchievements(achievementsData);
       setLoading(false);
     };
-    loadCertifications();
+    loadData();
   }, []);
 
   // Filter certifications by category
@@ -63,8 +70,49 @@ export default function Certifications() {
         </div>
       </section>
 
-      {/* Category Tabs */}
-      <div className="bg-slate-50 border-y border-slate-200">
+      {/* Main Tabs - Certifications vs Achievements */}
+      <div className="bg-white border-b border-slate-200 sticky top-16 z-10 shadow-sm">
+        <div className="container mx-auto px-6 md:px-20">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setActiveTab('certifications')}
+              className={`px-8 py-4 font-semibold text-lg transition-all duration-300 border-b-4 ${
+                activeTab === 'certifications'
+                  ? 'border-green-600 text-green-700 bg-green-50'
+                  : 'border-transparent text-slate-600 hover:text-green-600 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <FaCertificate />
+                <span>Certifications</span>
+                <span className="ml-2 px-2.5 py-0.5 bg-green-100 text-green-700 text-sm rounded-full font-bold">
+                  {certifications.length}
+                </span>
+              </div>
+            </button>
+            <button
+              onClick={() => setActiveTab('achievements')}
+              className={`px-8 py-4 font-semibold text-lg transition-all duration-300 border-b-4 ${
+                activeTab === 'achievements'
+                  ? 'border-yellow-600 text-yellow-700 bg-yellow-50'
+                  : 'border-transparent text-slate-600 hover:text-yellow-600 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <FaTrophy />
+                <span>Achievements</span>
+                <span className="ml-2 px-2.5 py-0.5 bg-yellow-100 text-yellow-700 text-sm rounded-full font-bold">
+                  {achievements.length}
+                </span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Category Tabs - Only show for certifications */}
+      {activeTab === 'certifications' && (
+        <div className="bg-slate-50 border-y border-slate-200">
         <div className="container mx-auto px-6 md:px-20 py-8">
           <div className="text-center mb-6">
             <h2 className="text-xl font-bold text-slate-900 mb-2">Filter by Category</h2>
@@ -108,10 +156,12 @@ export default function Certifications() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Certifications List */}
-      <div className="container mx-auto px-6 md:px-20 py-12">
-        {filteredCertifications.length === 0 ? (
+      {activeTab === 'certifications' && (
+        <div className="container mx-auto px-6 md:px-20 py-12">
+          {filteredCertifications.length === 0 ? (
           <div className="text-center py-24 bg-gradient-to-br from-slate-50 to-green-50 rounded-2xl shadow-xl border border-green-100">
             <div className="inline-block p-8 bg-gradient-to-br from-green-100 to-green-50 rounded-full mb-6 shadow-inner">
               <FaCertificate className="text-7xl text-green-600" />
@@ -197,9 +247,12 @@ export default function Certifications() {
                           href={cert.credentialUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-green-700 hover:text-green-800 underline break-all font-medium"
+                          title={cert.credentialUrl}
+                          aria-label={`Open credential link: ${cert.credentialUrl}`}
+                          className="text-sm text-green-700 hover:text-green-800 font-medium inline-flex items-center gap-2"
                         >
-                          {cert.credentialUrl}
+                          <span className="underline">Credentials</span>
+                          <FaExternalLinkAlt className="text-xs" />
                         </a>
                       </div>
                     )}
@@ -277,7 +330,85 @@ export default function Certifications() {
             </div>
           </div>
         )}
-      </div>
+        </div>
+      )}
+
+      {/* Achievements List */}
+      {activeTab === 'achievements' && (
+        <div className="container mx-auto px-6 md:px-20 py-12">
+          {achievements.length === 0 ? (
+            <div className="text-center py-24 bg-gradient-to-br from-slate-50 to-yellow-50 rounded-2xl shadow-xl border border-yellow-100">
+              <div className="inline-block p-8 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-full mb-6 shadow-inner">
+                <FaTrophy className="text-7xl text-yellow-600" />
+              </div>
+              <h2 className="text-3xl font-bold text-slate-900 mb-3">No Achievements Yet</h2>
+              <p className="text-slate-600 text-lg font-medium">Check back later for updates!</p>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {achievements.map((achievement) => (
+                <div
+                  key={achievement.id}
+                  className="bg-white rounded-xl shadow-lg p-8 md:p-10 border-2 border-yellow-100 hover:shadow-2xl transition-shadow duration-300"
+                >
+                  <div className="flex flex-col md:flex-row items-start gap-6">
+                    {/* Achievement Image */}
+                    {achievement.image && (
+                      <div className="w-full md:w-64 flex-shrink-0">
+                        <img 
+                          src={achievement.image} 
+                          alt={achievement.title} 
+                          className="w-full h-auto rounded-lg shadow-md" 
+                        />
+                      </div>
+                    )}
+                    
+                    {!achievement.image && achievement.icon && (
+                      <div className="w-24 h-24 flex-shrink-0 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <span className="text-5xl">{achievement.icon}</span>
+                      </div>
+                    )}
+                    
+                    {/* Achievement Info */}
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
+                        <div>
+                          <h3 className="text-xl font-bold text-yellow-700 mb-1">{achievement.title}</h3>
+                          {achievement.type && (
+                            <span className="px-3 py-1.5 bg-yellow-100 text-yellow-700 text-sm font-semibold rounded-full border border-yellow-200 inline-block">
+                              {achievement.type.charAt(0).toUpperCase() + achievement.type.slice(1)}
+                            </span>
+                          )}
+                        </div>
+                        <FaTrophy className="text-yellow-500 text-3xl flex-shrink-0" />
+                      </div>
+                      
+                      {/* Date */}
+                      <p className="text-slate-600 text-sm mb-3 flex items-center gap-2">
+                        <FaCalendar className="text-yellow-600" />
+                        <span className="font-medium">
+                          {achievement.date.includes('-') 
+                            ? new Date(achievement.date).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long',
+                                day: 'numeric'
+                              })
+                            : achievement.date}
+                        </span>
+                      </p>
+                      
+                      {/* Description */}
+                      {achievement.description && (
+                        <p className="text-slate-700 text-sm leading-relaxed">{achievement.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

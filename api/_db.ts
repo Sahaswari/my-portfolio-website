@@ -251,7 +251,11 @@ export async function deleteBlog(id: number) {
 // Certifications CRUD operations
 export async function getCertifications() {
   const rows = await sql`SELECT * FROM certifications ORDER BY date DESC`;
-  return rows;
+  return rows.map(row => ({
+    ...row,
+    credentialUrl: row.credential_url,
+    credential_url: undefined // Remove the snake_case version
+  }));
 }
 
 export async function createCertification(cert: CertificationData) {
