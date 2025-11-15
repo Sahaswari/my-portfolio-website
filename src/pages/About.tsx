@@ -189,15 +189,15 @@ export default function About() {
                     </div>
                     <p className="text-lg text-green-900 font-semibold mb-1">{edu.institution}</p>
                     <p className="text-green-600 mb-3 font-medium">{edu.location}</p>
-                    {edu.gpa && <p className="text-green-600 mb-3 font-bold">GPA: {edu.gpa}</p>}
+                    {/* {edu.gpa && <p className="text-green-600 mb-3 font-bold">GPA: {edu.gpa}</p>} */}
                     <p className="text-green-800 mb-3 font-medium">{edu.description}</p>
-                    {edu.achievements && edu.achievements.length > 0 && (
+                    {/* {edu.achievements && edu.achievements.length > 0 && (
                       <ul className="list-disc list-inside text-green-800 space-y-1">
                         {edu.achievements.map((achievement, idx) => (
                           <li key={idx} className="font-medium">{achievement}</li>
                         ))}
                       </ul>
-                    )}
+                    )} */}
                   </div>
                 ))}
               </div>
