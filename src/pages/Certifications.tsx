@@ -247,9 +247,12 @@ export default function Certifications() {
                           href={cert.credentialUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-green-700 hover:text-green-800 underline break-all font-medium"
+                          title={cert.credentialUrl}
+                          aria-label={`Open credential link: ${cert.credentialUrl}`}
+                          className="text-sm text-green-700 hover:text-green-800 font-medium inline-flex items-center gap-2"
                         >
-                          {cert.credentialUrl}
+                          <span className="underline">Credentials</span>
+                          <FaExternalLinkAlt className="text-xs" />
                         </a>
                       </div>
                     )}
