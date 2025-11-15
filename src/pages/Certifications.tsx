@@ -407,57 +407,6 @@ export default function Certifications() {
               ))}
             </div>
           )}
-
-          {/* Stats Section for Achievements */}
-          {achievements.length > 0 && (
-            <div className="mt-20 bg-gradient-to-br from-slate-50 to-yellow-50 rounded-2xl p-10 shadow-xl border border-yellow-100">
-              <div className="text-center mb-10">
-                <div className="inline-block p-3 bg-yellow-100 rounded-full mb-4">
-                  <FaTrophy className="text-3xl text-yellow-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Achievement Statistics</h3>
-                <p className="text-slate-600">Celebrating Success & Milestones</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div className="p-8 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-100 group">
-                  <div className="inline-block p-3 bg-yellow-50 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                    <FaTrophy className="text-2xl text-yellow-600" />
-                  </div>
-                  <p className="text-4xl font-bold text-yellow-600 mb-2">{achievements.length}</p>
-                  <p className="text-slate-700 font-semibold">Total Achievements</p>
-                  <p className="text-slate-500 text-xs mt-2">Recognized excellence</p>
-                </div>
-
-                <div className="p-8 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-100 group">
-                  <div className="inline-block p-3 bg-yellow-50 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                    <FaStar className="text-2xl text-yellow-600" />
-                  </div>
-                  <p className="text-4xl font-bold text-yellow-600 mb-2">
-                    {achievements.filter(a => a.type === 'award').length}
-                  </p>
-                  <p className="text-slate-700 font-semibold">Awards Received</p>
-                  <p className="text-slate-500 text-xs mt-2">Excellence recognized</p>
-                </div>
-
-                <div className="p-8 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-100 group">
-                  <div className="inline-block p-3 bg-yellow-50 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                    <FaCalendar className="text-2xl text-yellow-600" />
-                  </div>
-                  <p className="text-4xl font-bold text-yellow-600 mb-2">
-                    {new Date().getFullYear() - Math.min(...achievements.map(a => {
-                      const year = a.date.includes('-') 
-                        ? new Date(a.date).getFullYear()
-                        : parseInt(a.date);
-                      return year;
-                    }))}+
-                  </p>
-                  <p className="text-slate-700 font-semibold">Years of Excellence</p>
-                  <p className="text-slate-500 text-xs mt-2">Consistent achievement</p>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>
